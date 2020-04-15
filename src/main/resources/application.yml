@@ -9,20 +9,5 @@ server:
 spring:
   profiles:
     active: dev
-
-# Mybatis-Plus Configuration
-mybatis-plus:
-  mapper-locations: classpath:mapping/*.xml
-  global-config:
-    db-config:
-      # �������� AUTO:"���ݿ�ID����" INPUT:"�û�����ID",ID_WORKER:"ȫ��ΨһID (��������ΨһID)", UUID:"ȫ��ΨһID UUID";
-      id-type:
-      # �ֶβ��� IGNORED:"�����ж�"  NOT_NULL:"�� NULL �ж�")  NOT_EMPTY:"�ǿ��ж�"
-      field-strategy: not_empty
-      # ���ݿ�����
-      db-type: mysql
-  configuration:
-    # �Ƿ����Զ��շ���������ӳ��:�����ݿ�������Java�����շ�����������ӳ��
-    map-underscore-to-camel-case: true
-    # �����ѯ����а�����ֵ���У��� MyBatis ��ӳ���ʱ�򣬲���ӳ������ֶ�
-    call-setters-on-nulls: true
+  redis:
+    host: localhost

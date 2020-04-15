@@ -1,4 +1,4 @@
-package com.wyhw.pmp.swagger;
+package com.wyhw.pmp.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
