@@ -3,7 +3,7 @@ package com.wyhw.pmp;
 import com.wyhw.pmp.entity.UserEntity;
 import com.wyhw.pmp.service.UserService;
 import com.wyhw.pmp.wechat.AccessToken;
-import com.wyhw.pmp.wechat.Wechat;
+import com.wyhw.pmp.wechat.WeChatConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +14,8 @@ import java.util.Collection;
 public class MainTest {
     @Test
     void test01() {
-        Wechat wechat = Wechat.getInstance();
-        AccessToken token = wechat.getAccessToken("wxd5f4742ba87f84a4", "dbae107f3a1a009edbdb45fbcc618e7f");
+        WeChatConfig config = WeChatConfig.getInstance();
+        AccessToken token = config.getAccessToken("wxd5f4742ba87f84a4", "dbae107f3a1a009edbdb45fbcc618e7f");
         System.out.println(token.getAccessToken());
     }
 

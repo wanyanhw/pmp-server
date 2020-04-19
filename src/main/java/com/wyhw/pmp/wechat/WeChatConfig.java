@@ -4,31 +4,27 @@ import com.alibaba.fastjson.JSONObject;
 import com.wyhw.pmp.util.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-@Component
-public class Wechat {
-
-    private String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APP_ID&secret=APP_SECRET";
+public class WeChatConfig {
 
     private HttpUtils httpUtils = new HttpUtils();
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private Wechat() {}
+    private WeChatConfig() {}
 
-    private static Wechat wechat;
+    private static WeChatConfig instance;
 
-    public static Wechat getInstance() {
-        if (wechat == null) {
-            synchronized (Wechat.class) {
-                if (wechat == null) {
-                    wechat = new Wechat();
+    public static WeChatConfig getInstance() {
+        if (instance == null) {
+            synchronized (WeChatConfig.class) {
+                if (instance == null) {
+                    instance = new WeChatConfig();
                 }
             }
         }
-        return wechat;
+        return instance;
     }
 
     /**
@@ -38,6 +34,7 @@ public class Wechat {
      * @return accessToken
      */
     public AccessToken getAccessToken(String appId, String appSecret) {
+        String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APP_ID&secret=APP_SECRET";
         String url = ACCESS_TOKEN_URL.replace("APP_ID", appId).replace("APP_SECRET", appSecret);
 
         String resultJsonData = httpUtils.doGet(url);
@@ -50,6 +47,7 @@ public class Wechat {
                 logger.error("accessToken获取失败，errcode：" +
                         jsonObject.getString("errcode") + ", errmsg：" + jsonObject.getString("errmsg"));
             } else {
+                logger.info("accessToken获取成功，过期时间为：" + expires_in + "ms");
                 accessToken.setAccessToken(access_token);
                 accessToken.setExpiresIn(expires_in);
                 return accessToken;
