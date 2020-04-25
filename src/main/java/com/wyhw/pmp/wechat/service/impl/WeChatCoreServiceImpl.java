@@ -22,6 +22,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -125,7 +126,6 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
             remarkDataDetail.put("color", null);
             data.put("remark", remarkDataDetail);
             String result = sendTemplateData(token, toUser, templateId, url, appId, data.toString());
-            System.out.println("推送结果:\n" + result);
             log.info("推送结束--------------------");
         }
         return "";
@@ -140,8 +140,9 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
         wechatTemplate.setTemplate_id(templateId);
         wechatTemplate.setUrl(url);
         wechatTemplate.setAppid(appId);
-        TemplateData templateData = parseJsonDataToTemplate(data);
-        wechatTemplate.setData(templateData);
+//        TemplateData templateData = parseJsonDataToTemplate(data);
+        Map<String, Object> dataMap = parseData(data);
+        wechatTemplate.setData(dataMap);
         JSONObject postData = (JSONObject) JSONObject.toJSON(wechatTemplate);
         if (postData != null) {
 //            String result = pushUtil.push(postUrl, postData.toString());
@@ -156,6 +157,14 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
             log.error("消息发送失败！！！ errcode:{ {} }, errmsg{ {} }", errcode, errmsg);
         }
         return null;
+    }
+
+    private Map<String, Object> parseData(String data) {
+        if (StringUtils.isEmpty(data)) {
+            return null;
+        }
+        JSONObject jsonData = JSONObject.parseObject(data);
+        return jsonData;
     }
 
     /**

@@ -2,6 +2,8 @@ package com.wyhw.pmp.wechat.bean;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class WechatTemplate {
     /**
@@ -27,6 +29,6 @@ public class WechatTemplate {
     /**
      * 模板数据
      */
-    private TemplateData data;
+    private Map<String, Object> data;
 
 }
