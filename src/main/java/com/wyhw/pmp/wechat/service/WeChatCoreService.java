@@ -20,5 +20,18 @@ public interface WeChatCoreService {
      * @return 返回消息内容
      * @throws IOException 异常信息
      */
-    String parseXmlMessage(HttpServletRequest req, HttpServletResponse resp) throws IOException;
+    String parseXmlMessage(HttpServletRequest req, HttpServletResponse resp) throws Exception;
+
+    /**
+     * 模版消息推送接口
+     * @param accessToken 用户获取的token
+     * @param toUser 接收者openId
+     * @param templateId 模版Id
+     * @param url 模版跳转链接
+     * @param appId 公众号appId
+     * @param data 模版数据（json格式）
+     * @see com.wyhw.pmp.wechat.bean.WechatTemplate
+     * @return 消息发送结果（json格式）
+     */
+    String sendTemplateData(String accessToken, String toUser, String templateId, String url, String appId, String data);
 }

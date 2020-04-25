@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class HttpUtils {
 
     RestTemplate restTemplate = new RestTemplate();
@@ -17,7 +19,7 @@ public class HttpUtils {
 
     public String doPost(String url, JSONObject requestBody) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<JSONObject> request = new HttpEntity<>(requestBody, httpHeaders);
         JSONObject jsonObject = restTemplate.postForObject(url, request, new JSONObject().getClass());
         return jsonObject.toString();

@@ -1,14 +1,14 @@
 package com.wyhw.pmp.wechat.em;
 
 public enum MsgTypeEnum {
-    Text("text"),
-    Image("image"),
-    Music("music"),
-    Video("video"),
-    Voice("voice"),
-    Location("location"),
-    Link("link"),
-    Event("event");
+    TEXT("text"),
+    IMAGE("image"),
+    MUSIC("music"),
+    VIDEO("video"),
+    VOICE("voice"),
+    LOCATION("location"),
+    LINK("link"),
+    EVENT("event");
 
     private String msgType = "";
 

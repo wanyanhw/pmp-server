@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/wx")
@@ -26,13 +25,13 @@ public class WeChatController {
     private WeChatConfig instance = WeChatConfig.getInstance();
 
     @ApiOperation("开发者认证接口")
-    @RequestMapping("/checkSignature")
-    public String checkSignature(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @RequestMapping("/wxMessage")
+    public String wxMessage(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         boolean isGet = req.getMethod().toLowerCase().equals("get");
         if (isGet) {
             return coreService.checkSignature(req, resp);
         } else {
-            return coreService.parseXmlMessage(req,resp);
+            return coreService.parseXmlMessage(req, resp);
         }
     }
 

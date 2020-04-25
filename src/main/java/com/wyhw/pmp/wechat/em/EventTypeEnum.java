@@ -1,8 +1,20 @@
 package com.wyhw.pmp.wechat.em;
 
 public enum EventTypeEnum {
-    Subscribe("subscribe"),
-    Unsubscribe("unsubscribe");
+    /**
+     * 订阅
+     */
+    SUBSCRIBE("subscribe"),
+
+    /**
+     * 取消订阅
+     */
+    UNSUBSCRIBE("unsubscribe"),
+
+    /**
+     * 模板消息发送结束
+     */
+    TEMPLATESENDJOBFINISH("templateSendJobFinish");
 
     private String msgType = "";
 
