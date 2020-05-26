@@ -17,9 +17,8 @@ import java.util.Set;
  * @date 2020/5/26 13:54
  */
 @Component
+@Slf4j
 public class IpUtils {
-    Logger log = LoggerFactory.getLogger(this.getClass().toString());
-
     public String getIpAddress(HttpServletRequest request) {
         String unknown = "unknown";
         // ip地址分割符号
