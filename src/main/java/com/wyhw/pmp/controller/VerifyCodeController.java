@@ -1,6 +1,6 @@
 package com.wyhw.pmp.controller;
 
-import com.wyhw.pmp.util.VerifyCode;
+import com.wyhw.pmp.util.VerifyCodeUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class VerifyCodeController {
     @ApiOperation("获取图片验证码")
     @GetMapping("/getCodeImg")
     public void getCodeImg(HttpServletRequest request, HttpServletResponse response) {
-        VerifyCode code = new VerifyCode();
+        VerifyCodeUtils code = new VerifyCodeUtils();
         code.getCodeImg(request, response);
         String randomCodeKey = (String) request.getSession().getAttribute("RANDOM_CODE_KEY");
         session.put(RANDOM_CODE_KEY, randomCodeKey);

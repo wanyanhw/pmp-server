@@ -13,14 +13,29 @@ import java.util.Random;
  * @date 2020年4月12日
  * @author wanyanhw
  */
-public class VerifyCode {
+public class VerifyCodeUtils {
 
     private final static String RANDOM_CODE_KEY = "RANDOM_CODE_KEY";
-    private final String randomChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 随机字符
-    private final int imgWidth = 80; // 图片宽度
-    private final int imgHeight = 35; // 图片高度
-    private final int charNum = 5; // 字符数量
-    private final int lineNum = 6; // 干扰线数量
+    /**
+     * 随机字符
+     */
+    private final String randomChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    /**
+     * 图片宽度
+     */
+    private final int imgWidth = 80;
+    /**
+     * 图片高度
+     */
+    private final int imgHeight = 35;
+    /**
+     * 字符数量
+     */
+    private final int charNum = 5;
+    /**
+     * 干扰线数量
+     */
+    private final int lineNum = 6;
 
     private Random random = new Random();
 
@@ -33,7 +48,8 @@ public class VerifyCode {
         Graphics g = image.getGraphics();
         g.fillRect(0, 0, imgWidth, imgHeight);
         g.setFont(new Font("Times New Roman", Font.ROMAN_BASELINE, 18));
-        g.setColor(getRandColor(110, 133));//字体颜色
+        // 字体颜色
+        g.setColor(getRandColor(110, 133));
         // 绘制干扰线
         for (int i = 0; i <= lineNum; i++) {
             drowLine(g);
@@ -50,8 +66,10 @@ public class VerifyCode {
         session.setMaxInactiveInterval(60);
         g.dispose();
         try {
-            response.setContentType("image/jpeg");//设置相应类型,告诉浏览器输出的内容为图片
-            response.setHeader("Pragma", "No-cache");//设置响应头信息，告诉浏览器不要缓存此内容
+            // 设置相应类型,告诉浏览器输出的内容为图片
+            response.setContentType("image/jpeg");
+            // 设置响应头信息，告诉浏览器不要缓存此内容
+            response.setHeader("Pragma", "No-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expire", 0);
             // 将内存中的图片通过流动形式输出到客户端
@@ -64,10 +82,12 @@ public class VerifyCode {
      * 获得颜色
      */
     private Color getRandColor(int fc, int bc) {
-        if (fc > 255)
+        if (fc > 255) {
             fc = 255;
-        if (bc > 255)
+        }
+        if (bc > 255) {
             bc = 255;
+        }
         int r = fc + random.nextInt(bc - fc - 16);
         int g = fc + random.nextInt(bc - fc - 14);
         int b = fc + random.nextInt(bc - fc - 18);
@@ -80,7 +100,7 @@ public class VerifyCode {
     private void drowLine(Graphics g) {
         int x = random.nextInt(imgWidth);
         int y = random.nextInt(imgHeight);
-        int xl = random.nextInt(13);
+int xl = random.nextInt(13);
         int yl = random.nextInt(15);
         g.drawLine(x, y, x + xl, y + yl);
     }

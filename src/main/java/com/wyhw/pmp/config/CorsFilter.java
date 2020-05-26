@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author wyhw
+ * @date 2020-5-26
+ */
 @Slf4j
 @WebFilter(urlPatterns = {"/*"}, filterName = "corsFilter")
 public class CorsFilter implements Filter {
@@ -45,7 +49,8 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "content-Type");
-        if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod()) &&/*options 请求返回允许跨域的头*/
+        /*options 请求返回允许跨域的头*/
+        if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod()) &&
                 request.getHeader(HttpHeaders.ORIGIN) != null) {
             logger.info("doFilter options request");
             return;
