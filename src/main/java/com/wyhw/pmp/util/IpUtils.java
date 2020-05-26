@@ -2,6 +2,8 @@ package com.wyhw.pmp.util;
 
 import com.alibaba.druid.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +17,9 @@ import java.util.Set;
  * @date 2020/5/26 13:54
  */
 @Component
-@Slf4j
 public class IpUtils {
+    Logger log = LoggerFactory.getLogger(this.getClass().toString());
+
     public String getIpAddress(HttpServletRequest request) {
         String unknown = "unknown";
         // ip地址分割符号
@@ -26,12 +29,12 @@ public class IpUtils {
         localhostIps.add("0:0:0:0:0:0:0:1");
         localhostIps.add("127.0.0.1");
 
-        String ip = request.getHeader("x-Forward-For");
+        String ip = request.getHeader("x-forwarded-for");
+        log.info("x-forwarded-for Ip : {}", ip);
         if (!StringUtils.isEmpty(ip) && !unknown.equalsIgnoreCase(ip)) {
             if (ip.contains(ipSplitChar)) {
                 ip = ip.split(ipSplitChar)[0];
             }
-            log.info("x-Forward-For Ip : {}", ip);
         }
         if (StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
