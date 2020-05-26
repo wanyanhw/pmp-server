@@ -22,8 +22,8 @@ public class IpUtils {
         if (!StringUtils.isEmpty(ip) && !unknown.equalsIgnoreCase(ip)) {
             if (ip.contains(ipSplitChar)) {
                 ip = ip.split(ipSplitChar)[0];
-                log.info("x-Forward-For Ip : {{}}", ip);
             }
+            log.info("x-Forward-For Ip : {{}}", ip);
         }
         if (StringUtils.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
