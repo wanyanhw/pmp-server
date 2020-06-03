@@ -11,3 +11,8 @@ spring:
     active: dev
   redis:
     host: localhost
+logging:
+  level:
+    com:
+      wyhw:
+        pmp: debug

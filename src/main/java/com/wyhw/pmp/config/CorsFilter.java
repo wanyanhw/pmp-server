@@ -34,7 +34,10 @@ public class CorsFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("doFilter start ...");
+        logger.info("CorsFilter ...");
+        if (logger.isDebugEnabled()) {
+            log.debug("allow origin:{}", allowOrigin);
+        }
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         if (StringUtils.isNotEmpty(allowOrigin)) {
