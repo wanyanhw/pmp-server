@@ -25,7 +25,7 @@ import java.util.List;
 public class CorsFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(CorsFilter.class);
 
-    private String allowOrigin = "http://***:8080,http://localhost:8080";
+    private String allowOrigin = "http://***:8080,http://localhost:8080,http://localhost:7071";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
