@@ -2,27 +2,28 @@ package com.wyhw.pmp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wyhw.pmp.service.FileService;
-import lombok.extern.slf4j.Slf4j;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@Controller
-@Slf4j
+
+@Api(tags = "文件秒传")
+@RestController
 @RequestMapping("/file")
 public class FileController {
 
     @Autowired
     private FileService fileService;
 
-    @ResponseBody
-    @PostMapping("/sliceUpload")
+    @ApiOperation("文件分片上传")
+    @PostMapping("/upload/slice")
     public String sliceUpload(@RequestParam("fileName") String fileName,
                               @RequestParam("chunkIndex") int chunkIndex,
                               @RequestParam("fileData") MultipartFile fileData) {
@@ -44,8 +45,8 @@ public class FileController {
         return result.toJSONString();
     }
 
-    @ResponseBody
-    @PostMapping("/mergeUpload")
+    @ApiOperation("合并分片文件")
+    @PostMapping("/upload/merge")
     public String mergeUpload(@RequestParam("fileName") String fileName,
                               @RequestParam("chunkTotal") int chunkTotal) {
         JSONObject result = new JSONObject();
