@@ -1,5 +1,6 @@
 package com.wyhw.pmp.controller;
 
+import com.wyhw.pmp.mq.Sender;
 import com.wyhw.pmp.util.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 public class IpController {
 
     @Autowired
+    private Sender sender;
+
+    @Autowired
     private IpUtils ipUtils;
 
     @GetMapping("/getClientIp")
     String getClientIp(HttpServletRequest request) {
-        return ipUtils.getIpAddress(request);
+        String ipAddress = ipUtils.getIpAddress(request);
+        sender.sendMsg(ipAddress);
+        return ipAddress;
     }
 }

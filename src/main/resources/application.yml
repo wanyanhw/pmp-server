@@ -11,6 +11,16 @@ spring:
     active: dev
   redis:
     host: localhost
+  activemq:
+    broker-url: tcp://localhost:61616
+    in-memory: false
+    pool:
+      enabled: true
+      max-connections: 10
+      idle-timeout: 30000
+
+queue-name: Queue-Demo
+
 logging:
   level:
     com:
