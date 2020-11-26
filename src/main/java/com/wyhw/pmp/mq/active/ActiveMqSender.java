@@ -1,4 +1,4 @@
-package com.wyhw.pmp.mq;
+package com.wyhw.pmp.mq.active;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import javax.jms.Queue;
 
 @Configuration
-public class Sender {
+public class ActiveMqSender {
 
     @Autowired
     private Queue queue;

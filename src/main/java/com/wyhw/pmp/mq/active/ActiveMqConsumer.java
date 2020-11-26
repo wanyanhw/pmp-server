@@ -1,4 +1,4 @@
-package com.wyhw.pmp.mq;
+package com.wyhw.pmp.mq.active;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import javax.jms.TextMessage;
 
 @Configuration
 @Slf4j
-public class Consumer {
+public class ActiveMqConsumer {
 
     @JmsListener(destination = "${queue-name}")
     public void receiveMsg(TextMessage textMessage) {

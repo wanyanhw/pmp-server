@@ -1,4 +1,4 @@
-package com.wyhw.pmp.mq;
+package com.wyhw.pmp.mq.active;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
