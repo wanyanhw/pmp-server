@@ -23,6 +23,4 @@ queue-name: Queue-Demo
 
 logging:
   level:
-    com:
-      wyhw:
-        pmp: debug
+    com: debug
