@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 @RestController
 public class MainTest {
@@ -57,5 +60,26 @@ public class MainTest {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    void testHashMap() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("one", "hello");
+        map.put("two", "world");
+
+        System.out.println(map.get("one") + " " + map.get("two"));
+
+    }
+
+    @Test
+    void testTreeMap() {
+        RBTree<String, Integer> treeMap = new RBTree<>();
+        treeMap.put("d", 5);
+        treeMap.put("b", 3);
+        treeMap.put("c", 4);
+        treeMap.put("a", 2);
+        treeMap.put("e", 4);
+        System.out.println(treeMap.getSize());
     }
 }
