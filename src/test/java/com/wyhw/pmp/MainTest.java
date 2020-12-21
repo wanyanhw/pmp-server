@@ -6,11 +6,15 @@ import com.wyhw.pmp.wechat.AccessToken;
 import com.wyhw.pmp.wechat.WeChatConfig;
 import com.wyhw.pmp.wechat.bean.TemplateData;
 import com.wyhw.pmp.wechat.bean.TemplateDataDetail;
+import org.apache.ibatis.cursor.Cursor;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
+import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,5 +85,32 @@ public class MainTest {
         treeMap.put("a", 2);
         treeMap.put("e", 4);
         System.out.println(treeMap.getSize());
+    }
+
+    @Test
+    void testLimitMuchData() {
+        createJDBCConnection("select id from user");
+    }
+
+
+    private void createJDBCConnection(String sql) {
+        String driver = "com.mysql.jdbc.Driver";
+        String name = "root";
+        String pwd = "";
+        String url = "jdbc:mysql://localhost:3306/test";
+        try {
+            Class.forName(driver);
+            Connection connection = DriverManager.getConnection(url, name, pwd);
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                try (ResultSet resultSet = ps.executeQuery(sql)) {
+                    while (resultSet.next()) {
+                        Object column1 = resultSet.getObject("id");
+                        System.out.printf("id: %s\n", column1);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
