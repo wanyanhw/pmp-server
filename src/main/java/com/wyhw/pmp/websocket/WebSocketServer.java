@@ -13,83 +13,61 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint("/websocket/{sid}")
 @Component
 public class WebSocketServer {
-    public static Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
-    private static int onlineCount = 0;
+    private static Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
     private Session session;
     private String sid = "";
 
-    /**
-     * 建立连接成功调用的方法
-     */
     @OnOpen
     public void onOpen(Session session, @PathParam("sid") String sid) {
         this.session = session;
         webSocketSet.add(this);
-        addOnlineCount();
-        logger.info("有新窗口开始监听：" + sid + ", 当前在线人数：" + getOnlineCount());
         this.sid = sid;
-        try {
-            sendMessage("连接成功");
-        } catch (IOException e) {
-            logger.error("websocket IO异常");
+        logger.info("socket{}：连接成功", sid);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sendMsg();
+            }
+        }).start();
+    }
+
+    private void sendMsg() {
+        int i = 1;
+        while (true) {
+            if (i >= 100) {
+                return;
+            }
+            try {
+                if (this.session == null) {
+                    logger.info("socket{}已关闭", this.sid);
+                    return;
+                }
+                this.session.getBasicRemote().sendText("发送第" + i++ + "条消息");
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @OnClose
     public void onClose() {
         webSocketSet.remove(this);
-        subOnlineCount();
-        logger.info("连接退出，当前在线人数：" + getOnlineCount());
+        logger.info("socket{}断开连接", sid);
     }
 
     @OnMessage
     public void onMessage(String message, Session session) {
-        logger.info("收到来自窗口" + sid + "的消息：" + message);
-        // 群发消息
-        webSocketSet.forEach(item -> {
-            try {
-                item.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public static void sendInfo(String message, @PathParam("sid") String sid) {
-        logger.info("推送消息到窗口" + sid + ", 消息内容：" + message);
-        for (WebSocketServer item : webSocketSet) {
-            try {
-                if (sid == null) {
-                    item.sendMessage(message);
-                } else if (item.sid.equals(sid)) {
-                    item.sendMessage(message);
-                }
-            } catch (Exception e) {
-                logger.error("推送到窗口" + sid + "失败");
-                continue;
-            }
-        }
+        logger.info("收到socket{}的消息：{}", sid, message);
     }
 
     @OnError
     public void onError(Session session, Throwable error) {
-        logger.error("消息发生错误");
-        error.printStackTrace();
+        logger.error("socket{}连接异常：{}", this.sid, error.getMessage());
     }
 
-    private void sendMessage(String message) throws IOException {
-        this.session.getBasicRemote().sendText(message);
-    }
-
-    private static synchronized void addOnlineCount() {
-        WebSocketServer.onlineCount ++;
-    }
-    private static synchronized int getOnlineCount() {
-        return WebSocketServer.onlineCount;
-    }
-
-    private static synchronized void subOnlineCount() {
-        WebSocketServer.onlineCount --;
-    }
 }

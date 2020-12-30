@@ -1,3 +1,4 @@
+var BASE_URL = "http://localhost:8080/pmp";
 var width = 800,
     height = 800;
 //定义数据转换函数
@@ -16,7 +17,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform","translate(40,0)");
 
 //读取json文件，进行绘图
-d3.json("cData.json", function (value) {
+d3.json(BASE_URL + "/user/getJson?" + new Date().getTime(), function populate (value) {
     console.log("data:", value);
     var nodes = tree.nodes(value);
     var links = tree.links(nodes);

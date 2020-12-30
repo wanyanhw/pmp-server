@@ -25,4 +25,10 @@ public interface FileService {
      * @return true-合并成功 false-合并失败
      */
     boolean mergeSliceFile(String path, String fileName, int chunkTotal);
+
+    /**
+     * 播放媒体文件
+     * @param path 文件路径
+     */
+    void play(String path);
 }

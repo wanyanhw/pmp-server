@@ -6,6 +6,8 @@ import com.wyhw.pmp.wechat.AccessToken;
 import com.wyhw.pmp.wechat.WeChatConfig;
 import com.wyhw.pmp.wechat.bean.TemplateData;
 import com.wyhw.pmp.wechat.bean.TemplateDataDetail;
+import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacv.*;
 import org.apache.ibatis.cursor.Cursor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.*;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.Collection;
@@ -63,7 +66,37 @@ public class MainTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    void test04() {
+        try {
+            OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
+            grabber.start();
+            CanvasFrame canvas = new CanvasFrame("摄像头");
+            canvas.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            canvas.setAlwaysOnTop(true);
+            while (true) {
+                if (!canvas.isDisplayable()) {
+                    grabber.stop();
+                    System.exit(-1);
+                }
+                Frame frame = grabber.grab();
+                canvas.showImage(frame);
+                Thread.sleep(500);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void reverseChars() {
+        String source = "I Have A Dream, I Want You!";
+        char[] s = source.toCharArray();
+        System.out.println(s);
+        func(s, 0, s.length - 1);
+        System.out.println(s);
     }
 
     @Test
@@ -113,4 +146,15 @@ public class MainTest {
             e.printStackTrace();
         }
     }
+
+    private void func(char[] s, int left, int right) {
+        if (left > right) {
+            return;
+        }
+        char tempChar = s[left];
+        s[left] = s[right];
+        s[right] = tempChar;
+        func(s, left + 1, right - 1);
+    }
+
 }

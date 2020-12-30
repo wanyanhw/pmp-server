@@ -61,4 +61,10 @@ public class FileController {
         result.put("msg", "失败");
         return result.toJSONString();
     }
+
+    @PostMapping("/play")
+    public void play() {
+        String path = "rtmp://58.200.131.2:1935/livetv/hunantv";
+        fileService.play(path);
+    }
 }

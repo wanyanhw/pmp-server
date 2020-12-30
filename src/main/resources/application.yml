@@ -1,6 +1,6 @@
 # Port & Project-Name Configuration
 server:
-  port: 7071
+  port: 8080
   servlet:
     context-path: /pmp
 

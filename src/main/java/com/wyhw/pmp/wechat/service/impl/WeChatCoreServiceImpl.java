@@ -44,7 +44,7 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
 
     @Override
     public String checkSignature(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String TOKEN = "0123456789abcdefghijklmnopqrstuvwxyz";
+        String TOKEN = "0123456789abc";
         String signature = req.getParameter("signature");
         String timestamp = req.getParameter("timestamp");
         String nonce = req.getParameter("nonce");
