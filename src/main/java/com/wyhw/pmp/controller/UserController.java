@@ -1,5 +1,6 @@
 package com.wyhw.pmp.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wyhw.pmp.aop.config.LoginRequired;
 import com.wyhw.pmp.entity.UserEntity;
 import com.wyhw.pmp.service.UserService;
@@ -67,6 +68,13 @@ public class UserController {
         String fileName = "用户详细信息.xls";
         String[] titles = {"ID", "姓名", "密码", "类全路径"};
         userService.export(response, fileName, titles, allUserInfoList);
+    }
+
+    @GetMapping(value = "/getJson")
+    public String getJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", "张三");
+        return json.toJSONString();
     }
 
 }
