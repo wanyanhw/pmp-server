@@ -150,6 +150,30 @@
             <artifactId>activemq-pool</artifactId>
             <version>5.15.9</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-pdfa</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-xtra</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf.tool</groupId>
+            <artifactId>xmlworker</artifactId>
+            <version>5.5.13.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -160,5 +184,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>jump-pilot</id>
+            <name>central</name>
+            <url>http://jump-pilot.sourceforge.net/repository</url>
+        </repository>
+    </repositories>
 
 </project>
