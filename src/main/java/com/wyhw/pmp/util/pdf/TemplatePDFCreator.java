@@ -17,19 +17,15 @@ import java.util.Map;
  */
 public class TemplatePDFCreator {
 
-    private static void build(String path, String fileName, Map<String, String> argMap) throws Exception {
+    private static void build(String templatePath, String templateName, String targetPath, String targetName, Map<String, String> argMap) throws Exception {
         // 设置中文字体
         BaseFont bfCn = BaseFont.createFont("STSongStd-Light","UniGB-UCS2-H", false);
 
         PdfReader pdfReader = null;
         PdfStamper pdfStamper = null;
         try {
-            pdfReader = new PdfReader(path + File.separator + fileName);
-
-            String targetFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".pdf";
-
-            String root = path + File.separator + targetFileName;
-            File outFile = new File(root);
+            pdfReader = new PdfReader(templatePath + File.separator + templateName) ;
+            File outFile = new File(targetPath + File.separator + targetName);
             pdfStamper = new PdfStamper(pdfReader, new FileOutputStream(outFile));
 
             AcroFields acroFields = pdfStamper.getAcroFields();
@@ -53,13 +49,14 @@ public class TemplatePDFCreator {
     }
 
     public static void main(String[] args) {
-        String path = "C:\\Users\\lynn\\Desktop";
-        String fileName = "template_test.pdf";
+        String templatePath = "C:\\Users\\lynn\\Desktop";
+        String templateName = "template_test.pdf";
+        String targetName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss")) + ".pdf";
         Map<String, String> argMap = new HashMap<>();
         argMap.put("name", "小王");
         argMap.put("sex", "男");
         try {
-            build(path, fileName, argMap);
+            build(templatePath, templateName, templatePath, targetName, argMap);
         } catch (Exception e) {
             e.printStackTrace();
         }
