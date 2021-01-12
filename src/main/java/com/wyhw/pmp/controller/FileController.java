@@ -31,8 +31,8 @@ public class FileController {
         try {
             byte[] bytes = fileData.getBytes();
             String path = "E:\\pic";
-            boolean successed = fileService.saveFile2Path(path, fileName, chunkIndex, bytes);
-            if (successed) {
+            boolean success = fileService.saveFile2Path(path, fileName, chunkIndex, bytes);
+            if (success) {
                 result.put("status", 200);
                 result.put("msg", "成功");
                 return result.toJSONString();
