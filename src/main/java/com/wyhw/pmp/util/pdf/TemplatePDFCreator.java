@@ -18,7 +18,7 @@ import java.util.Map;
 public class TemplatePDFCreator {
 
     private static void build(String templatePath, String templateName, String targetPath, String targetName, Map<String, String> argMap) throws Exception {
-        // 设置中文字体
+        // 设置支持中文字体
         BaseFont bfCn = BaseFont.createFont("STSongStd-Light","UniGB-UCS2-H", false);
 
         PdfReader pdfReader = null;
