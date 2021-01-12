@@ -40,7 +40,7 @@ public class CorsFilter implements Filter {
         }
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        if (StringUtils.isNotEmpty(allowOrigin)) {
+        if (StringUtils.isNotBlank(allowOrigin)) {
             List<String> allowOriginList = Arrays.asList(allowOrigin.split(","));
             if (!CollectionUtils.isEmpty(allowOriginList)) {
                 String currentOrigin = request.getHeader("Origin");
