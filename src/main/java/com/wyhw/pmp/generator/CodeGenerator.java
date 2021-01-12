@@ -50,7 +50,7 @@ public class CodeGenerator {
                 // dsc.setSchemaName("public");
                 .setDriverName("com.mysql.jdbc.Driver")
                 .setUsername("root")
-                .setPassword("");
+                .setPassword("root");
 
         // 包配置
         PackageConfig pc = new PackageConfig()

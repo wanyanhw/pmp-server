@@ -1,10 +1,10 @@
 package com.wyhw.pmp.service;
 
-import com.wyhw.pmp.entity.GenealogyEntity;
+import com.wyhw.pmp.entity.PersonInfoEntity;
 
 import java.util.List;
 
 public interface GenealogyService {
 
-    List<GenealogyEntity> listAllPeople();
+    List<PersonInfoEntity> listAllPeople();
 }
