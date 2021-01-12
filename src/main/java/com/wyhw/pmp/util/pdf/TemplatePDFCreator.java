@@ -51,12 +51,16 @@ public class TemplatePDFCreator {
     public static void main(String[] args) {
         String templatePath = "C:\\Users\\lynn\\Desktop";
         String templateName = "template_test.pdf";
+
+        String targetPath = "C:\\Users\\lynn\\Desktop";
         String targetName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss")) + ".pdf";
+
         Map<String, String> argMap = new HashMap<>();
         argMap.put("name", "小王");
         argMap.put("sex", "男");
+
         try {
-            build(templatePath, templateName, templatePath, targetName, argMap);
+            build(templatePath, templateName, targetPath, targetName, argMap);
         } catch (Exception e) {
             e.printStackTrace();
         }

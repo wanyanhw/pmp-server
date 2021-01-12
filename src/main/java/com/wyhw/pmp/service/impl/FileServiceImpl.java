@@ -18,9 +18,9 @@ public class FileServiceImpl implements FileService {
     private MultipartFileUtils fileUtils;
 
     @Override
-    public boolean saveFile2Path(String target, String fileName, int chunkIndex, byte[] bytes) {
+    public boolean saveFile2Path(String path, String fileName, int chunkIndex, byte[] bytes) {
         fileName = fileName.replace(".", CHUNK_SEPARATOR + chunkIndex + ".");
-        return fileUtils.saveFile(target, fileName, bytes);
+        return fileUtils.saveFile(path, fileName, bytes);
     }
 
     @Override
