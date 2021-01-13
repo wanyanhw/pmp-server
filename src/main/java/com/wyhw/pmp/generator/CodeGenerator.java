@@ -29,7 +29,8 @@ public class CodeGenerator {
     private final static String DAO_IMPL_SUFFIX = "DaoImpl";
 
     private final static String[] TABLES = {
-            "person_info"
+            "person_info",
+            "person_relation"
     };
 
     public static void main(String[] args) {

@@ -1,9 +1,7 @@
 package com.wyhw.pmp.dao;
 
-import com.wyhw.pmp.entity.PersonInfoEntity;
+import com.wyhw.pmp.entity.PersonRelationEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * <p>
@@ -13,6 +11,6 @@ import java.util.List;
  * @author wanyanhw
  * @since 2021-01-13
  */
-public interface IPersonInfoDao extends IService<PersonInfoEntity> {
+public interface IPersonRelationDao extends IService<PersonRelationEntity> {
 
 }

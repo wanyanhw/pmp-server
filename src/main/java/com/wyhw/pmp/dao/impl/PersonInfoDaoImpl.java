@@ -19,8 +19,4 @@ import java.util.List;
 @Service
 public class PersonInfoDaoImpl extends ServiceImpl<PersonInfoMapper, PersonInfoEntity> implements IPersonInfoDao {
 
-    @Override
-    public List<PersonInfoEntity> listAllPeople() {
-        return list();
-    }
 }

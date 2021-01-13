@@ -2,7 +2,6 @@ package com.wyhw.pmp.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -20,8 +19,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("person_info")
-public class PersonInfoEntity implements Serializable {
+@TableName("person_relation")
+public class PersonRelationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,28 +28,16 @@ public class PersonInfoEntity implements Serializable {
     private Integer id;
 
     /**
-     * 姓名
+     * 用户ID
      */
-    @TableField("name")
-    private String name;
+    @TableField("user_id")
+    private Integer userId;
 
     /**
-     * 性别，1-男，2-女
+     * 父ID
      */
-    @TableField("sex")
-    private Integer sex;
-
-    /**
-     * 出生日期
-     */
-    @TableField("birthday")
-    private LocalDate birthday;
-
-    /**
-     * 地址
-     */
-    @TableField("address")
-    private String address;
+    @TableField("father_id")
+    private Integer fatherId;
 
     /**
      * 创建人
