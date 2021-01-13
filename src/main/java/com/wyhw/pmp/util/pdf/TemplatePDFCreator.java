@@ -1,9 +1,8 @@
 package com.wyhw.pmp.util.pdf;
 
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +34,13 @@ public class TemplatePDFCreator {
             }
             pdfStamper.setFormFlattening(true);
 
+            float x = 180, y = 300;
+            Rectangle rectangle = new Rectangle(x, y);
+            Image image = Image.getInstance(argMap.get("touxiang"));
+            image.scaleToFit(rectangle);
+            image.setAbsolutePosition(x, y);
+            PdfContentByte overContent = pdfStamper.getOverContent(1);
+            overContent.addImage(image);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -58,6 +64,7 @@ public class TemplatePDFCreator {
         Map<String, String> argMap = new HashMap<>();
         argMap.put("name", "小王");
         argMap.put("sex", "男");
+        argMap.put("touxiang", "C:\\Users\\lynn\\Pictures\\lizhi.jpg");
 
         try {
             build(templatePath, templateName, targetPath, targetName, argMap);
