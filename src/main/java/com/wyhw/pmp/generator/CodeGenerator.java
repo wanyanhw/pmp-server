@@ -28,6 +28,10 @@ public class CodeGenerator {
     private final static String DAO_SUFFIX = "Dao";
     private final static String DAO_IMPL_SUFFIX = "DaoImpl";
 
+    private final static String[] TABLES = {
+            "person_info"
+    };
+
     public static void main(String[] args) {
 
         // 全局配置
@@ -98,7 +102,7 @@ public class CodeGenerator {
                 .setEntityLombokModel(true)
                 .setEntityTableFieldAnnotationEnable(true)
                 .setRestControllerStyle(true)
-                .setInclude("person_info")
+                .setInclude(TABLES)
                 .setControllerMappingHyphenStyle(true)
                 .setTablePrefix("");
 

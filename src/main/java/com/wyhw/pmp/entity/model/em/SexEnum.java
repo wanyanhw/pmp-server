@@ -1,4 +1,4 @@
-package com.wyhw.pmp.entity.em;
+package com.wyhw.pmp.entity.model.em;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

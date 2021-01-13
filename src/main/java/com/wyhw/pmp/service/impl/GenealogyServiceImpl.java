@@ -2,7 +2,10 @@ package com.wyhw.pmp.service.impl;
 
 import com.wyhw.pmp.dao.IPersonInfoDao;
 import com.wyhw.pmp.entity.PersonInfoEntity;
+import com.wyhw.pmp.entity.model.GenealogyModel;
+import com.wyhw.pmp.entity.model.em.SexEnum;
 import com.wyhw.pmp.service.GenealogyService;
+import com.wyhw.pmp.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,26 +18,31 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GenealogyServiceImpl implements GenealogyService {
 
-    private IPersonInfoDao personInfoDao;
+    private  IPersonInfoDao personInfoDao;
 
     @Autowired
     public GenealogyServiceImpl(IPersonInfoDao personInfoDao) {
         this.personInfoDao = personInfoDao;
-        this.init();
-    }
-
-    private void init() {
-        generate(listAllPeople());
-    }
-
-    private void generate(List<PersonInfoEntity> personInfoEntities) {
-        Map<Integer, PersonInfoEntity> personMap = personInfoEntities.stream().collect(Collectors.toMap(PersonInfoEntity::getId, item -> item, (v1, v2) -> v1));
-
     }
 
     @Override
-    public List<PersonInfoEntity> listAllPeople() {
-        return personInfoDao.list();
+    public List<GenealogyModel> listAllPeople() {
+        List<GenealogyModel> genealogyModels = extractList(personInfoDao.listAllPeople());
+
+        return genealogyModels;
     }
 
+    private List<GenealogyModel> extractList(List<PersonInfoEntity> listAllPeople) {
+        return listAllPeople.stream().map(this::extract).collect(Collectors.toList());
+    }
+
+    private GenealogyModel extract(PersonInfoEntity entity) {
+        GenealogyModel model = new GenealogyModel();
+        model.setNo("G_" + entity.getId());
+        model.setName(entity.getName());
+        model.setAddress(entity.getAddress());
+        model.setBirthday(entity.getBirthday().format(DateUtil.STANDARD_DATE));
+        model.setSex(SexEnum.getByCode(entity.getSex()).getDesc());
+        return model;
+    }
 }
