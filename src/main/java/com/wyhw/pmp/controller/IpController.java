@@ -3,6 +3,7 @@ package com.wyhw.pmp.controller;
 import com.wyhw.pmp.mq.active.ActiveMqConsumer;
 import com.wyhw.pmp.mq.active.ActiveMqSender;
 import com.wyhw.pmp.util.IpUtils;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.jms.JMSException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author wanyanhw

@@ -2,10 +2,10 @@ package com.wyhw.pmp.service.impl;
 
 import com.wyhw.pmp.service.FileService;
 import com.wyhw.pmp.util.MultipartFileUtils;
+import org.apache.dubbo.config.annotation.Service;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacv.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.util.HashMap;

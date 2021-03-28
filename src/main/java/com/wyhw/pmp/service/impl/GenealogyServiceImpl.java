@@ -11,8 +11,8 @@ import com.wyhw.pmp.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -91,7 +91,7 @@ public class GenealogyServiceImpl implements GenealogyService {
         model.setNo(String.valueOf(entity.getId()));
         model.setName(entity.getName());
         model.setAddress(entity.getAddress());
-        model.setBirthday(entity.getBirthday().format(DateUtil.STANDARD_DATE));
+        model.setBirthday(entity.getBirthday() == null ? "" : entity.getBirthday().format(DateUtil.STANDARD_DATE));
         model.setSex(SexEnum.getByCode(entity.getSex()).getDesc());
         return model;
     }
@@ -100,7 +100,7 @@ public class GenealogyServiceImpl implements GenealogyService {
 
     @Data
     @AllArgsConstructor
-    class Node {
+    private class Node {
         private int id;
         private Node father;
         private int generation;
