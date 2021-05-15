@@ -19,6 +19,7 @@
         <dubbo.version>2.7.3</dubbo.version>
         <nacos-starter.version>0.2.1</nacos-starter.version>
         <nacos-client.version>1.1.4</nacos-client.version>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
