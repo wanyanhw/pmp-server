@@ -9,35 +9,39 @@ server:
 spring:
   profiles:
     active: dev
-  redis:
-    host: localhost
-  activemq:
-    broker-url: tcp://192.168.163.128:61616
-    in-memory: false
-    pool:
-      enabled: true
-      max-connections: 10
-      idle-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#  redis:
+#    host: localhost
+#  activemq:
+#    broker-url: tcp://192.168.163.128:61616
+#    in-memory: false
+#    pool:
+#      enabled: true
+#      max-connections: 10
+#      idle-timeout: 30000
 
 queue-name: Queue-Demo
 
 logging:
   level:
     com: debug
-  file:
-    name: console.log
+#  file:
+#    name: console.log
 
-nacos:
-  config:
-    server-addr: 192.168.163.128:8848
+#nacos:
+#  config:
+#    server-addr: 192.168.163.128:8848
 
-dubbo:
-  application:
-    name: nacos-pmp
-  registry:
-    address: nacos://${nacos.config.server-addr}
-  scan:
-    base-packages: com.wyhw.pmp.service.impl
-  protocol:
-    port: 20882
-    name: dubbo
+#dubbo:
+#  application:
+#    name: nacos-pmp
+#  registry:
+#    address: nacos://${nacos.config.server-addr}
+#  scan:
+#    base-packages: com.wyhw.pmp.service.impl
+#  protocol:
+#    port: 20882
+#    name: dubbo

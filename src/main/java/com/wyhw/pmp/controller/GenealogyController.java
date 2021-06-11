@@ -2,7 +2,7 @@ package com.wyhw.pmp.controller;
 
 import com.wyhw.pmp.service.GenealogyService;
 import io.swagger.annotations.Api;
-import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/genealogy")
 public class GenealogyController {
-    @Reference
+    @Autowired
     private GenealogyService genealogyService;
 
 

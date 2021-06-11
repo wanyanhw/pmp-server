@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.wyhw.pmp.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.dubbo.config.annotation.Reference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @RequestMapping("/file")
 public class FileController {
 
-    @Reference
+    @Autowired
     private FileService fileService;
 
     @ApiOperation("文件分片上传")
