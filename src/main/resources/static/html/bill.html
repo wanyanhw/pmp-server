@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+        .content table{
+            font-size: 16px;
+            font-family: 微软雅黑,serif;
+            padding-top: 10%;
+            padding-left: 30%;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <table class="content-table">
+            <tr>
+                <td>类型</td>
+                <td>
+                <select id="type">
+                    <option value="1">收入</option>
+                    <option value="2">支出</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>金额</td>
+                <td><input id="total" type="text"></td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td><input id="remark" type="text"></td>
+            </tr>
+            <tr>
+                <td rowspan="2">
+                    <button id="submit">提交</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script src="bill.js"></script>
+</html>
