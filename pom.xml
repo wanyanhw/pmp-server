@@ -238,6 +238,12 @@
             <version>${dubbo.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+
     </dependencies>
     <repositories>
         <repository>
