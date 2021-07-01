@@ -11,7 +11,7 @@ CREATE TABLE `person_info` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `deleted` bit(1) DEFAULT b'0' COMMENT '删除标识',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 用户关系信息表
 CREATE TABLE `person_relation` (
@@ -24,4 +24,4 @@ CREATE TABLE `person_relation` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `deleted` bit(1) DEFAULT b'0' COMMENT '删除标识',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
