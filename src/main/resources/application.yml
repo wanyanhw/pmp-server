@@ -8,7 +8,7 @@ server:
 # DataSource Configuration
 spring:
   profiles:
-    active: dev
+    active: @activeProfile@
 #  redis:
 #    host: localhost
 #  activemq:
@@ -41,3 +41,6 @@ logging:
 #  protocol:
 #    port: 20882
 #    name: dubbo
+#zookeeper:
+#  server: localhost:2181
+#  timeout: 20000

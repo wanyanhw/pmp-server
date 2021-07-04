@@ -3,13 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../js/jquery/jquery-3.4.1.js"></script>
+    <script src="bill.js"></script>
     <style type="text/css">
         .content table{
             font-size: 16px;
             font-family: 微软雅黑,serif;
-            padding-top: 10%;
-            padding-left: 30%;
+            margin-left: 30%;
+            margin-top: 10%;
+        }
+        .bill-list-content {
+            margin-left: 30%;
+            margin-top: 5px;
+            width: 700px;
+            height: 500px;
+            text-align: left;
+            font-size: 16px;
+            font-family: 微软雅黑,serif;
+        }
+        .bill-list-content table {
+            text-align: center;
+        }
+        .bill-list-content table tr {
+            border-bottom: black 5px solid;
         }
     </style>
 </head>
@@ -30,6 +46,15 @@
                 <td><input id="total" type="text"></td>
             </tr>
             <tr>
+                <td>消费者</td>
+                <td>
+                    <select id="consumer">
+                        <option value="1">wyhw</option>
+                        <option value="2">lml</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td>备注</td>
                 <td><input id="remark" type="text"></td>
             </tr>
@@ -40,6 +65,7 @@
             </tr>
         </table>
     </div>
+    <div class="bill-list-content">
+    </div>
 </body>
-<script src="bill.js"></script>
 </html>

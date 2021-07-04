@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
-    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="LOG_NAME" value="/home"/>
-    <!-- %m输出的信息,%p日志级别,%t线程名,%d日期,%c类的全名,,,, -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <!--<pattern>%d %p (%file:%line\)- %m%n</pattern>-->
-            <!--格式化输出：%d:表示日期    %thread:表示线程名     %-5level:级别从左显示5个字符宽度  %msg:日志消息    %n:是换行符-->
-            <pattern>1-%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger - %msg%n</pattern>
-            <charset>GBK</charset>
-        </encoder>
-    </appender>
-
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
     <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
     <property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <contextName>LOG_BACK</contextName>
-    <property name="LOG_PATH" value=".logs"/>
-    <!--设置系统日志目录-->
+    <property name="LOG_PATH" value="/opt/service/pmp/logs"/>
     <property name="APP_DIR" value="app"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>GBK</charset>
+        </encoder>
+    </appender>
+
     <!--
           说明：
           1、日志级别及文件
@@ -160,15 +152,8 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-    
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            <!--<charset>GBK</charset>-->
-        </encoder>
-    </appender>
 
-    <springProfile name="production">
+    <springProfile name="prod">
         <root level="DEBUG">
             <appender-ref ref="ERROR"/>
             <appender-ref ref="WARN"/>
@@ -178,12 +163,8 @@
     </springProfile>
 
     <springProfile name="dev">
-        <root level="debug">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="ERROR"/>
-            <appender-ref ref="WARN"/>
-            <appender-ref ref="INFO"/>
-            <appender-ref ref="DEBUG"/>
+        <root level="info">
+            <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
 

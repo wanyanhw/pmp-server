@@ -4,12 +4,9 @@ import com.wyhw.pmp.entity.model.BillInfo;
 import com.wyhw.pmp.service.BillService;
 import com.wyhw.pmp.util.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author: wyhw
@@ -25,8 +22,12 @@ public class BillController {
     private IpUtils ipUtils;
 
     @PostMapping("/save")
-    public boolean saveBill(HttpServletRequest request, @RequestBody BillInfo billInfo) {
-        String ipAddress = ipUtils.getIpAddress(request);
+    public boolean saveBill(@RequestBody BillInfo billInfo) {
         return billService.createBill(billInfo);
+    }
+
+    @GetMapping("/list")
+    public List<BillInfo> listBill() {
+        return billService.listAllBill();
     }
 }

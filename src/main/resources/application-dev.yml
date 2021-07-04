@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${config.mysql.server}:3306/pmp?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
-    username: ${config.mysql.name}
-    password: ${config.mysql.password}
+    url: jdbc:mysql://127.0.0.1:3306/pmp?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
   servlet:
     multipart:
       max-file-size: 1GB
@@ -11,11 +11,4 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-config:
-  mysql:
-#    server: 192.168.163.129
-    server: 127.0.0.1
-    name: root
-#    password: 123456
-    password: root
 
