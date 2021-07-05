@@ -11,7 +11,7 @@
             font-size: 16px;
             font-family: 微软雅黑,serif;
             margin-left: 30%;
-            margin-top: 10%;
+            margin-top: 5px;
         }
         .bill-list-content {
             margin-left: 30%;
@@ -21,6 +21,7 @@
             text-align: left;
             font-size: 16px;
             font-family: 微软雅黑,serif;
+            border: black 1px solid;
         }
         .bill-list-content table {
             text-align: center;
@@ -28,9 +29,23 @@
         .bill-list-content table tr {
             border-bottom: black 5px solid;
         }
+        .scroll-show {
+            margin-left: 30%;
+            margin-top: 10px;
+            width: 800px;
+            height: 150px;
+            border: black 1px solid;
+            overflow: hidden;
+        }
+        .scroll-show label {
+            margin-left: 100%;
+        }
     </style>
 </head>
 <body>
+    <div class="scroll-show">
+        <label>test0001</label>
+    </div>
     <div class="content">
         <table class="content-table">
             <tr>
@@ -66,7 +81,6 @@
             </tr>
         </table>
     </div>
-    <div class="bill-list-content">
-    </div>
+    <div class="bill-list-content"></div>
 </body>
 </html>

@@ -1,7 +1,8 @@
 $().ready(function () {
     let list_url = "/pmp/bill/list";
     let save_url = "/pmp/bill/save";
-    showList(_get(list_url));
+    scroll_show();
+    // showList(_get(list_url));
     $("#submit").click(function () {
         let type = $("#type option:selected").val();
         let consumer = $("#consumer option:selected").val();
@@ -19,8 +20,8 @@ $().ready(function () {
             "total" : total,
             "remark" : remark
         };
-        _post(save_url, JSON.stringify(data));
-        showList(_get(list_url));
+        // _post(save_url, JSON.stringify(data));
+        // showList(_get(list_url));
     });
 });
 
@@ -48,4 +49,21 @@ function showList(result) {
     }
     data += "</table>";
     $(".bill-list-content").html(data);
+}
+
+function scroll_show() {
+    let timer;
+    timer = setInterval(function () {
+        moveLeft();
+    }, 1);
+}
+
+function moveLeft() {
+    let $scroll = $(".scroll-show > label");
+    let label_margin_left = $scroll.css("marginLeft");
+    let index = label_margin_left.substr(0, label_margin_left.length - 1);
+    if (index <= 0) {
+        index = 100;
+    }
+    $scroll.css("marginLeft", (index - 0.05) + "%");
 }
