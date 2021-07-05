@@ -18,12 +18,15 @@ $().ready(function () {
 });
 
 function send() {
-    let content_val = $("#content").val();
+    let $content = $("#content");
+    let content_val = $content.val();
     socket.send(content_val);
+    $content.val(null);
 }
 
 function showContent(msg) {
-    let console_val = $("#console").html();
+    let $console = $("#console");
+    let console_val = $console.html();
     console_val += "<br/>" + msg;
-    $("#console").html(console_val);
+    $console.html(console_val);
 }
