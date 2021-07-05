@@ -21,53 +21,34 @@ public class WebSocketServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("sid") String sid) {
         this.session = session;
-        webSocketSet.add(this);
         this.sid = sid;
-        logger.info("socket{}：连接成功", sid);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendMsg();
-            }
-        }).start();
-    }
-
-    private void sendMsg() {
-        int i = 1;
-        while (true) {
-            if (i >= 100) {
-                return;
-            }
-            try {
-                if (this.session == null) {
-                    logger.info("socket{}已关闭", this.sid);
-                    return;
-                }
-                this.session.getBasicRemote().sendText("发送第" + i++ + "条消息");
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        webSocketSet.add(this);
+        logger.info("socket {}：连接成功", sid);
     }
 
     @OnClose
     public void onClose() {
         webSocketSet.remove(this);
-        logger.info("socket{}断开连接", sid);
+        this.session = null;
+        logger.info("socket {} 断开连接", sid);
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
-        logger.info("收到socket{}的消息：{}", sid, message);
+    public void onMessage(String message) {
+        try {
+            sendMsg(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnError
-    public void onError(Session session, Throwable error) {
-        logger.error("socket{}连接异常：{}", this.sid, error.getMessage());
+    public void onError(Throwable error) {
+        logger.error("socket {} 连接异常：{}", this.sid, error.getMessage());
+        this.session = null;
     }
 
+    private void sendMsg(String msg) throws IOException {
+        this.session.getBasicRemote().sendText(msg);
+    }
 }
