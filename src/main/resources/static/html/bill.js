@@ -1,3 +1,4 @@
+let timer;
 $().ready(function () {
     let list_url = "/pmp/bill/list";
     let save_url = "/pmp/bill/save";
@@ -52,18 +53,31 @@ function showList(result) {
 }
 
 function scroll_show() {
-    let timer;
     timer = setInterval(function () {
-        moveLeft();
+        moveLeft(0.5);
     }, 1);
 }
 
-function moveLeft() {
+let labelFormerWidth;
+function moveLeft(speed) {
+    let scrollShowWidth = $(".scroll-show").css("width");
+    let scrollShowWidthPx = scrollShowWidth.substr(0, scrollShowWidth.length - 2);
     let $scroll = $(".scroll-show > label");
-    let label_margin_left = $scroll.css("marginLeft");
-    let index = label_margin_left.substr(0, label_margin_left.length - 1);
-    if (index <= 0) {
-        index = 100;
+    if (labelFormerWidth == null) {
+        labelFormerWidth = $scroll.css("width");
     }
-    $scroll.css("marginLeft", (index - 0.05) + "%");
+    let labelWidth = $scroll.css("width");
+    let labelWidthPx = labelWidth.substr(0, labelWidth.length - 2);
+    let marginLeft = $scroll.css("marginLeft");
+    let marginLeftPx = marginLeft.substr(0, marginLeft.length - 2);
+    if (marginLeftPx <= 0) {
+        if (parseInt(labelWidthPx) + parseInt(marginLeftPx) <= 0) {
+            marginLeftPx = scrollShowWidthPx;
+        }
+    }
+    $scroll.css("marginLeft", (marginLeftPx - speed));
+}
+
+function hover() {
+    clearInterval(timer);
 }
