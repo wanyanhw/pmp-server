@@ -21,9 +21,6 @@ spring:
 
 queue-name: Queue-Demo
 
-logging:
-  level:
-    com: debug
 #  file:
 #    name: console.log
 
