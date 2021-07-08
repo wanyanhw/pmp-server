@@ -163,7 +163,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <root level="debug">
+        <root level="info">
             <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
