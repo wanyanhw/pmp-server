@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyhw.pmp.mapper.BillMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wyhw.pmp.entity.BillEntity">
+        <id column="id" property="id" />
+        <result column="total" property="total" />
+        <result column="remark" property="remark" />
+        <result column="consumer" property="consumer" />
+        <result column="consume_time" property="consumeTime" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, total, remark, consumer, consume_time, operator, create_time
+    </sql>
+
+</mapper>
