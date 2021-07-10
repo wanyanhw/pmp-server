@@ -2,8 +2,15 @@ let timer;
 $().ready(function () {
     let list_url = "/pmp/bill/list";
     let save_url = "/pmp/bill/save";
-    scroll_show();
-    // showList(_get(list_url));
+    let billEleList = _get(list_url);
+    // initScrollShow(billEleList);
+    // let $scroll_show_labels = $(".scroll-show label");
+    // let labelNum = $scroll_show_labels.length;
+    // timer = new Array(labelNum);
+    // for (let i = 0; i < labelNum; i++) {
+    //     scroll_show(i);
+    // }
+    showList(billEleList);
     $("#submit").click(function () {
         let type = $("#type option:selected").val();
         let consumer = $("#consumer option:selected").val();
@@ -21,10 +28,26 @@ $().ready(function () {
             "total" : total,
             "remark" : remark
         };
-        // _post(save_url, JSON.stringify(data));
-        // showList(_get(list_url));
+        _post(save_url, JSON.stringify(data));
+        showList(_get(list_url));
     });
 });
+
+/**
+ * 初始化弹幕区域
+ * @param resultList
+ */
+function initScrollShow(resultList) {
+    for (let i = 0; i < resultList.length; i++) {
+        let result = resultList[i];
+        let total = result.total;
+        let consumer = result.consumer;
+        let remark = result.remark;
+        let consumeTime = result.consumeTime;
+        let content = consumer + "在" + consumeTime + (total > 0 ? "收入了" : "支出了") + total + "元在" + remark + "上";
+        $(".scroll-show").append("<label onmouseover=\"hover(" + i + ")\" onmouseout=\"scroll_show(" + i + ")\">" + content + "</label><br><br>")
+    }
+}
 
 function showList(result) {
     let data = "<table><tr><td>第几个</td><td>啥样嘞</td><td>弄多少</td><td>谁弄嘞</td><td>弄啥嘞</td><td>啥时候</td></tr>";
@@ -52,17 +75,17 @@ function showList(result) {
     $(".bill-list-content").html(data);
 }
 
-function scroll_show() {
-    timer = setInterval(function () {
-        moveLeft(0.5);
+function scroll_show(index) {
+    let $label = $(".scroll-show label").eq(index);
+    timer[index] = setInterval(function () {
+        moveLeft($label, 0.5);
     }, 1);
 }
 
 let labelFormerWidth;
-function moveLeft(speed) {
+function moveLeft($scroll, speed) {
     let scrollShowWidth = $(".scroll-show").css("width");
     let scrollShowWidthPx = scrollShowWidth.substr(0, scrollShowWidth.length - 2);
-    let $scroll = $(".scroll-show > label");
     if (labelFormerWidth == null) {
         labelFormerWidth = $scroll.css("width");
     }
@@ -78,6 +101,6 @@ function moveLeft(speed) {
     $scroll.css("marginLeft", (marginLeftPx - speed));
 }
 
-function hover() {
-    clearInterval(timer);
+function hover(index) {
+    clearInterval(timer[index]);
 }
