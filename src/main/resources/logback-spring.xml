@@ -8,7 +8,7 @@
     <property name="LOG_PATH" value="/opt/service/pmp/logs"/>
     <property name="APP_DIR" value="app"/>
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
             <charset>UTF-8</charset>
@@ -154,7 +154,7 @@
     </appender>
 
     <springProfile name="prod">
-        <root level="DEBUG">
+        <root level="debug">
             <appender-ref ref="ERROR"/>
             <appender-ref ref="WARN"/>
             <appender-ref ref="INFO"/>
@@ -163,8 +163,9 @@
     </springProfile>
 
     <springProfile name="dev">
-        <root level="debug">
-            <appender-ref ref="STDOUT"/>
+        <logger level="debug" name="com.wyhw.pmp.mapper"/>
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 

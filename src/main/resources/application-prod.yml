@@ -8,8 +8,5 @@ spring:
     multipart:
       max-file-size: 1GB
       max-request-size: 1GB
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
