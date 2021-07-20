@@ -5,6 +5,7 @@
     <title>Chat Room</title>
     <script type="text/javascript" src="../js/jquery/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="chat_room.js"></script>
+    <script type="text/javascript" src="WebSocket.js"></script>
 </head>
 <body>
     <div style="text-align: center">
@@ -12,12 +13,14 @@
             你说：
         </label>
         <label>
-            <input id="content" type="text" placeholder="请输入...">
+            <input id="input-content" type="text" placeholder="请输入...">
             <button onclick="send()">发送</button>
+            <button onclick="connect()">连接</button>
+            <button onclick="disconnect()">断开</button>
         </label>
     </div>
     <div style="text-align: center; margin-top: 50px">
-        <label id="console">12123</label>
+        <label id="console"></label>
     </div>
 </body>
 </html>

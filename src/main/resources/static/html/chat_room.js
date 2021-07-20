@@ -1,27 +1,31 @@
-let server_url = "localhost:8080";
-let socket = null;
+let webSocket;
+let serverWebsocket;
 $().ready(function () {
-   let ws_url = "ws://" + server_url + "/pmp/websocket/c1";
-   socket = new WebSocket(ws_url);
-   socket.onopen = function () {
-       console.log("连接成功");
-   };
-   socket.onclose = function (e) {
-       console.log("断开连接", e.code);
-   };
-   socket.onerror = function (e) {
-       console.log("连接失败", e);
-   };
-   socket.onmessage = function (e) {
-       showContent(e.data);
-   }
+    serverWebsocket = new ServerWebsocket();
 });
 
+function connect(cid) {
+    webSocket = serverWebsocket.init(cid);
+    webSocket.onopen = function () {
+        console.log("ws connect success")
+    };
+    webSocket.onmessage = function (ev) {
+        showContent(ev.data);
+    };
+    webSocket.onclose = function () {
+        console.log("ws disconnect success");
+    };
+}
+
+function disconnect() {
+    webSocket.close();
+}
+
 function send() {
-    let $content = $("#content");
-    let content_val = $content.val();
-    socket.send(content_val);
-    $content.val(null);
+    let $input = $("#input-content");
+    let content_val = $input.val();
+    webSocket.send(content_val);
+    $input.val(null);
 }
 
 function showContent(msg) {
