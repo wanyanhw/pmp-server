@@ -139,6 +139,72 @@ public class MultipartFileUtils {
         }
     }
 
+    /**
+     * Split a large file into {@code total} mini-files
+     *
+     * @param file The large source source
+     * @param total The number of the mini-files. If the large source file {@code file} can not be completely divided into
+     *              {@code total} mini-files, the value of the {@code total} will increase one
+     * @param filename The mini-files prefix name. These names will be all ended with special format like, @eg: "***.1, ***.2, ***.3"
+     * @param basePath The file path which the mini-files will be stored in
+     * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
+     */
+    public File[] splitByQuantity(File file, int total, String filename, String basePath) throws IOException{
+        return splitBySize(file, (int) (file.length() / total), filename, basePath);
+    }
+
+    /**
+     * Split a large file into {@code total} mini-files
+     *
+     * @param file The large source source
+     * @param size The max byte size of the mini file. If the large source file {@code file} can not be completely divided by
+     *              {@code size}, the number of the mini-files will increase one
+     * @param filename The mini-files prefix name. These names will be all ended with special format like, @eg: "***.1, ***.2, ***.3"
+     * @param basePath The file path which the mini-files will be stored in
+     * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
+     */
+    private File[] splitBySize(File file, int size, String filename, String basePath) throws IOException {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            int splitIndex = 0;
+            int splitTotal = (int) (file.length() % size > 0 ? file.length() / size + 1 : file.length() / size);
+            File[] splitFiles = new File[splitTotal];
+            byte[] b = new byte[size];
+            int length;
+            while ((length = fis.read(b, 0, b.length)) != -1) {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bos.write(b, 0, length);
+                splitFiles[splitIndex] = new File(basePath + filename + "." + (splitIndex + 1));
+                try (FileOutputStream fos = new FileOutputStream(splitFiles[splitIndex])) {
+                    fos.write(bos.toByteArray());
+                }
+                bos.close();
+                splitIndex ++;
+            }
+            return splitFiles;
+        }
+    }
+
+    /**
+     * merge some split mini-files a large file
+     *
+     * @param files The mini file array. <Strong>The suffix-number of {@code files} must be ordered by asc in the array</Strong>
+     * @param path The large target file will be stored in
+     * @param filename Name the large target file
+     */
+    public void merge(File[] files, String path, String filename) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(new File(path + filename))) {
+            for (File file : files) {
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    byte[] b = new byte[10 * 1024 * 1024];
+                    int length;
+                    while ((length = fis.read(b)) != -1) {
+                        fos.write(b, 0, length);
+                    }
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         String fileName = "abc.JPG";
         String[] strings = fileName.split("\\.");
