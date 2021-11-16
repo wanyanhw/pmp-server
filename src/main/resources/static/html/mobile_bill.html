@@ -29,8 +29,9 @@
             margin-top: 50px;
         }
         .label-total {
+            text-align: right;
             height: 200px;
-            width: 200px;
+            width: 300px;
             font-size: 80px;
             float: left;
             line-height: 200px;
@@ -38,10 +39,14 @@
             font-family: 微软雅黑;
         }
         .label-total-value {
+            float: left;
+            width: 500px;
+            padding-left: 50px;
             text-align: left;
             height: 200px;
-            font-size: 150px;
+            font-size: 100px;
             font-weight: bolder;
+            line-height: 200px;
         }
         .bill-list {
             margin-top: 50px;
@@ -60,8 +65,9 @@
             border-bottom: 1px black solid;
         }
         .bill-list .td-index {
-            width: 80px;
-            font-weight: bolder
+            width: 150px;
+            font-weight: bolder;
+            text-align: center;
         }
         .bill-list .td-type {
             width: 80px;
@@ -119,14 +125,13 @@
             _this.className = className;
         }
         function showBillList(result) {
-            let earnTotal = 0.00;
-            let payTotal = 0.00;
+            let earnTotal = 0;
+            let payTotal = 0;
             let color = "#880000";
             let data = "<table>";
             for (let i = 0; i < result.length; i++) {
                 let element = result[i];
                 let total = element.total;
-                let consumer = element.consumer;
                 let remark = element.remark;
                 let consumeTime = element.consumeTime;
                 let type = "收";
@@ -138,13 +143,6 @@
                     earnTotal += total;
                     color = "green";
                 }
-                if (consumer === "1") {
-                    consumer = "wyhw";
-                } else if (consumer === "2") {
-                    consumer = "lml";
-                } else {
-                    consumer = "both";
-                }
                 data += "<tr>" +
                     "<td class='td-index'>" + (result.length - i) + "</td>" +
                     "<td class='td-type' style='color: " + color + "'>" + type + "</td>" +
@@ -155,16 +153,16 @@
             }
             data += "</table>";
             $(".bill-list").html(data);
-            $("#earn").html(earnTotal);
-            $("#pay").html(payTotal);
+            $("#earn").html(earnTotal.toFixed(2));
+            $("#pay").html(payTotal.toFixed(2));
         }
 
     </script>
 </head>
 <body>
     <div id="main-container">
-        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">第一</button>
-        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">第二</button>
+        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">老婆</button>
+        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">老公</button>
         <button id="btn-3" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">总</button>
         <div class="total">
             <div style="color: green">
