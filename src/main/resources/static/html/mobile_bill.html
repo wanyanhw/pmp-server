@@ -14,28 +14,9 @@
             width: 100%;
             height: 100%;
         }
-        #btn-1 {
-            border: 1px black solid;
-            color: #AAAAAA;
-            font-size: 50px;
-            line-height: 100px;
-            height: 100px;
-            width: 200px;
-            margin-top: 100px;
-            margin-right: 25px;
-        }
-        #btn-2 {
-            border: 1px black solid;
-            color: #AAAAAA;
-            font-size: 50px;
-            line-height: 100px;
-            height: 100px;
-            width: 200px;
-            margin-top: 100px;
-            margin-right: 25px;
-        }
-        #btn-3 {
-            border: 1px black solid;
+        .btn {
+            font-weight: bolder;
+            border: black solid;
             color: #AAAAAA;
             font-size: 50px;
             line-height: 100px;
@@ -48,9 +29,17 @@
             margin-top: 50px;
         }
         .label-total {
+            height: 200px;
+            width: 200px;
             font-size: 80px;
+            float: left;
+            line-height: 200px;
+            font-weight: bolder;
+            font-family: 微软雅黑;
         }
         .label-total-value {
+            text-align: left;
+            height: 200px;
             font-size: 150px;
             font-weight: bolder;
         }
@@ -60,7 +49,7 @@
         .bill-list table {
             width: 100%;
             list-style: none;
-            margin-top: 180px;
+            /*margin-top: 180px;*/
         }
         .bill-list table tr {
             text-align: left;
@@ -79,7 +68,9 @@
             font-weight: bolder;
         }
         .bill-list .td-date {
-            width: 300px
+            width: 300px;
+            font-size: 33px;
+            letter-spacing: -2px;
         }
         .bill-list .td-count {
             width: 180px;
@@ -90,28 +81,102 @@
         .bill-list .td-desc {
             width: auto; font-size: 37px; text-align: left
         }
+        .btn-hover {
+            font-weight: bolder;
+            border: #440000 solid;
+            color: black;
+            font-size: 52px;
+            line-height: 100px;
+            height: 100px;
+            width: 205px;
+            margin-top: 100px;
+            margin-right: 25px;
+            background-color: #BBBBBB;
+        }
     </style>
+    <script type="text/javascript" src="../js/jquery/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="../js/ajax.js"></script>
+    <script>
+        $().ready(function () {
+            let billList = _get("/pmp/bill/list");
+            showBillList(billList);
+
+            $("#btn-1").click(function () {
+                let filteredBillList = billList.filter(p => p.consumer === "2");
+                showBillList(filteredBillList);
+            });
+
+            $("#btn-2").click(function () {
+                let filteredBillList = billList.filter(p => p.consumer === "1");
+                showBillList(filteredBillList);
+            });
+
+            $("#btn-3").click(function () {
+                showBillList(billList);
+            });
+        });
+        function changeBtnStyle(_this, className) {
+            _this.className = className;
+        }
+        function showBillList(result) {
+            let earnTotal = 0.00;
+            let payTotal = 0.00;
+            let color = "#880000";
+            let data = "<table>";
+            for (let i = 0; i < result.length; i++) {
+                let element = result[i];
+                let total = element.total;
+                let consumer = element.consumer;
+                let remark = element.remark;
+                let consumeTime = element.consumeTime;
+                let type = "收";
+                if (total < 0) {
+                    type = "支";
+                    total = -total;
+                    payTotal += total;
+                } else {
+                    earnTotal += total;
+                    color = "green";
+                }
+                if (consumer === "1") {
+                    consumer = "wyhw";
+                } else if (consumer === "2") {
+                    consumer = "lml";
+                } else {
+                    consumer = "both";
+                }
+                data += "<tr>" +
+                    "<td class='td-index'>" + (result.length - i) + "</td>" +
+                    "<td class='td-type' style='color: " + color + "'>" + type + "</td>" +
+                    "<td class='td-date'>" + consumeTime + "</td>" +
+                    "<td class='td-count' style='color: " + color + "'>" + total + "</td>" +
+                    "<td class='td-desc'>" + remark+ "</td>" +
+                    "</tr>";
+            }
+            data += "</table>";
+            $(".bill-list").html(data);
+            $("#earn").html(earnTotal);
+            $("#pay").html(payTotal);
+        }
+
+    </script>
 </head>
 <body>
     <div id="main-container">
-        <button id="btn-1">第一</button>
-        <button id="btn-2">第二</button>
-        <button id="btn-3">总</button>
+        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">第一</button>
+        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">第二</button>
+        <button id="btn-3" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">总</button>
         <div class="total">
-            <div><label class="label-total" style="color: green">收: </label><label id="earn" class="label-total-value" style="color: green">12128</label></div>
-            <div><label class="label-total" style="color: red">支: </label><label id="pay" class="label-total-value" style="color: red;">128</label></div>
+            <div style="color: green">
+                <div class="label-total">收: </div>
+                <div id="earn" class="label-total-value">--</div>
+            </div>
+            <div style="color: #880000">
+                <div class="label-total">支:</div>
+                <div id="pay" class="label-total-value">--</div>
+            </div>
         </div>
-        <div class="bill-list">
-            <table>
-                <tr>
-                    <td class="td-index">1</td>
-                    <td class="td-type">收</td>
-                    <td class="td-date">2021-12-18</td>
-                    <td class="td-count">30</td>
-                    <td class="td-desc">啥也不是</td>
-                </tr>
-            </table>
-        </div>
+        <div class="bill-list"></div>
     </div>
 </body>
 </html>
