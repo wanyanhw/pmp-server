@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的账单</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #main-container {
+            text-align: center;
+            background-color: #DDDDDD;
+            width: 100%;
+            height: 100%;
+        }
+        #btn-1 {
+            border: 1px black solid;
+            color: #AAAAAA;
+            font-size: 50px;
+            line-height: 100px;
+            height: 100px;
+            width: 200px;
+            margin-top: 100px;
+            margin-right: 25px;
+        }
+        #btn-2 {
+            border: 1px black solid;
+            color: #AAAAAA;
+            font-size: 50px;
+            line-height: 100px;
+            height: 100px;
+            width: 200px;
+            margin-top: 100px;
+            margin-right: 25px;
+        }
+        #btn-3 {
+            border: 1px black solid;
+            color: #AAAAAA;
+            font-size: 50px;
+            line-height: 100px;
+            height: 100px;
+            width: 200px;
+            margin-top: 100px;
+            margin-right: 25px;
+        }
+        .total {
+            margin-top: 50px;
+        }
+        .label-total {
+            font-size: 80px;
+        }
+        .label-total-value {
+            font-size: 150px;
+            font-weight: bolder;
+        }
+        .bill-list {
+            margin-top: 50px;
+        }
+        .bill-list table {
+            width: 100%;
+            list-style: none;
+            margin-top: 180px;
+        }
+        .bill-list table tr {
+            text-align: left;
+            height: 130px;
+            font-size: 50px;
+        }
+        .bill-list table tr td {
+            border-bottom: 1px black solid;
+        }
+        .bill-list .td-index {
+            width: 80px;
+            font-weight: bolder
+        }
+        .bill-list .td-type {
+            width: 80px;
+            font-weight: bolder;
+        }
+        .bill-list .td-date {
+            width: 300px
+        }
+        .bill-list .td-count {
+            width: 180px;
+            text-align: center;
+            font-weight: bolder;
+            font-style: italic
+        }
+        .bill-list .td-desc {
+            width: auto; font-size: 37px; text-align: left
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <button id="btn-1">第一</button>
+        <button id="btn-2">第二</button>
+        <button id="btn-3">总</button>
+        <div class="total">
+            <div><label class="label-total" style="color: green">收: </label><label id="earn" class="label-total-value" style="color: green">12128</label></div>
+            <div><label class="label-total" style="color: red">支: </label><label id="pay" class="label-total-value" style="color: red;">128</label></div>
+        </div>
+        <div class="bill-list">
+            <table>
+                <tr>
+                    <td class="td-index">1</td>
+                    <td class="td-type">收</td>
+                    <td class="td-date">2021-12-18</td>
+                    <td class="td-count">30</td>
+                    <td class="td-desc">啥也不是</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
