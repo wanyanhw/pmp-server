@@ -39,6 +39,7 @@ public class BillServiceImpl implements BillService {
         List<BillEntity> list = billDao.list(new LambdaQueryWrapper<BillEntity>().orderByDesc(BillEntity::getCreateTime));
         return list.stream().map(e -> {
             BillInfo info = new BillInfo();
+            info.setId(e.getId());
             info.setTotal(e.getTotal());
             info.setConsumer(e.getConsumer());
             info.setRemark(e.getRemark());

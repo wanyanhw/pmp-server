@@ -11,6 +11,8 @@ import lombok.Data;
 @Data
 @ApiModel(value = "账单信息")
 public class BillInfo {
+    @ApiModelProperty("id")
+    private Integer id;
     @ApiModelProperty("消费者，1-wyhw，2-lml")
     private String consumer;
     @ApiModelProperty("消费总数")

@@ -90,7 +90,7 @@
         .btn-hover {
             font-weight: bolder;
             border: #440000 solid;
-            color: black;
+            color: #880000;
             font-size: 52px;
             line-height: 100px;
             height: 100px;
@@ -139,7 +139,7 @@
         function showBillList(result) {
             let earnTotal = 0;
             let payTotal = 0;
-            let color = "#880000";
+            let color;
             let data = "<table>";
             for (let i = 0; i < result.length; i++) {
                 let element = result[i];
@@ -151,6 +151,7 @@
                     type = "支";
                     total = -total;
                     payTotal += total;
+                    color = "#880000";
                 } else {
                     earnTotal += total;
                     color = "green";
@@ -173,10 +174,10 @@
 </head>
 <body>
     <div id="main-container">
-        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')">我</button>
-        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')">你</button>
+        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')">你</button>
+        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')">我</button>
         <button id="btn-3" class="btn-hover" onmouseover="changeBtnStyle(this, 'btn-hover')">总</button>
-        <a href="mobile_bill_record.html">点我试试</a>
+        <a href="mobile_bill_record.html" style="font-size: 35px">记录</a>
         <div class="total">
             <div style="color: green">
                 <div class="label-total">收: </div>

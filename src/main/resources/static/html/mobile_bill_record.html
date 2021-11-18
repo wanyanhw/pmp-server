@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的账单</title>
+    <script type="text/javascript" src="../js/jquery/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="../js/ajax.js"></script>
+    <script>
+        $().ready(function () {
+           $("#submit").click(function () {
+               let consumer = $("#consumer").val();
+               let type = $("#type").val();
+               let total = $("#total").val();
+               let remark = $("#remark").val();
+               if (type == 1) {
+                   // 支出
+                   total = - total;
+               }
+               let data = {
+                   "consumer": consumer,
+                   "total" : total,
+                   "remark" : remark
+               };
+               let postResult = _post("/pmp/bill/save", JSON.stringify(data));
+               if (postResult != null && postResult) {
+                   window.location.href = "mobile_bill.html";
+               } else {
+                   alert("操作失败")
+               }
+
+           });
+        });
+    </script>
+    <style>
+        .return-href {
+            font-size: 50px;
+        }
+        .bill-logo {
+            margin-top: 50px;
+            font-size: 80px;
+            font-weight: bolder;
+            width: 100%;
+            color: #880000;
+            text-align: center;
+        }
+        .bill-input {
+            margin-top: 50px;
+            font-size: 50px;
+            width: 100%;
+            line-height: 100px;
+            font-weight: bolder;
+            margin-left: 30%;
+        }
+        .bill-label-1 {
+            float: left;
+        }
+        .bill-label-2 {
+            margin-left: 20px;
+        }
+        .select {
+            height: 100px;
+            width: 200px;
+            font-size: 60px;
+            padding-left: 25px;
+            margin-left: 20px;
+            border: 1px #880000 solid;
+        }
+        #total {
+            height: 100px;
+            width: 300px;
+            font-size: 60px;
+            padding-left: 25px;
+            margin-left: 20px;
+            border: 1px #880000 solid;
+        }
+        #remark {
+            width: 400px;
+            height: 150px;
+            font-size: 60px;
+            margin-left: 20px;
+            border: 1px #880000 solid;
+        }
+        .btn-area {
+            margin-top: 50px;
+            width: 100%;
+            text-align: center;
+        }
+        .submit {
+            font-size: 50px;
+            color: #880000;
+            width: 350px;
+            font-weight: bolder;
+            border-color: #880000;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="return-href">
+        <a href="mobile_bill.html">返回</a>
+    </div>
+    <div class="bill-logo">
+        账单登记
+    </div>
+    <div id="bill-form">
+        <div class="bill-input">
+            <div class="bill-label-1">成员：</div>
+            <div class="bill-label-2">
+                <label>
+                    <select class="select" id="consumer" name="consumer">
+                        <option value="1">我</option>
+                        <option value="2">你</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="bill-input">
+            <div class="bill-label-1">类型：</div>
+            <div class="bill-label-2">
+                <label>
+                    <select class="select" id="type" name="type">
+                        <option value="1">支出</option>
+                        <option value="2">收入</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="bill-input">
+            <div class="bill-label-1">金额：</div>
+            <div class="bill-label-2">
+                <label><input id="total" type="text" name="total"></label>
+            </div>
+        </div>
+        <div class="bill-input">
+            <div class="bill-label-1">详情：</div>
+            <div class="bill-label-2">
+                <label><textarea id="remark" name="remark"></textarea></label>
+            </div>
+        </div>
+        <div class="btn-area">
+            <button class="submit" id="submit">确定</button>
+        </div>
+    </div>
+</body>
+</html>
