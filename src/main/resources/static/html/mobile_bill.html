@@ -121,8 +121,20 @@
                 showBillList(billList);
             });
         });
+
         function changeBtnStyle(_this, className) {
+            let id = _this.id;
             _this.className = className;
+            let _thisIndex = id.substring(id.length - 1, id.length);
+            let number = parseInt(_thisIndex);
+            let index = 0;
+            while (index < 3) {
+                index ++;
+                if (index === number) {
+                    continue;
+                }
+                $("#btn-" + index).attr("class", "btn");
+            }
         }
         function showBillList(result) {
             let earnTotal = 0;
@@ -161,9 +173,10 @@
 </head>
 <body>
     <div id="main-container">
-        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">老婆</button>
-        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">老公</button>
-        <button id="btn-3" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')" onmouseout="changeBtnStyle(this, 'btn')">总</button>
+        <button id="btn-1" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')">我</button>
+        <button id="btn-2" class="btn" onmouseover="changeBtnStyle(this, 'btn-hover')">你</button>
+        <button id="btn-3" class="btn-hover" onmouseover="changeBtnStyle(this, 'btn-hover')">总</button>
+        <a href="mobile_bill_record.html">点我试试</a>
         <div class="total">
             <div style="color: green">
                 <div class="label-total">收: </div>
