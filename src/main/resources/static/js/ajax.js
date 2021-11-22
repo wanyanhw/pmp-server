@@ -1,7 +1,8 @@
 let PROTOCOL = "http";
-let SERVER = "localhost";
+let SERVER = "192.168.100.230";
 let PORT = 8080;
-let SERVER_URL = PROTOCOL + "://" + SERVER + ":" + PORT;
+let APPLICATION_NAME = "pmp";
+let SERVER_URL = PROTOCOL + "://" + SERVER + ":" + PORT + "/" + APPLICATION_NAME;
 function _post(url, data) {
     let res = null;
     $.ajax({

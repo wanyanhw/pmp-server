@@ -21,7 +21,7 @@
                    "total" : total,
                    "remark" : remark
                };
-               let postResult = _post("/pmp/bill/save", JSON.stringify(data));
+               let postResult = _post("/bill/save", JSON.stringify(data));
                if (postResult != null && postResult) {
                    window.location.href = "mobile_bill.html";
                } else {

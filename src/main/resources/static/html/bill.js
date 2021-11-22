@@ -1,7 +1,7 @@
 let timer;
 $().ready(function () {
-    let list_url = "/pmp/bill/list";
-    let save_url = "/pmp/bill/save";
+    let list_url = "/bill/list";
+    let save_url = "/bill/save";
     let billEleList = _get(list_url);
     // initScrollShow(billEleList);
     // let $scroll_show_labels = $(".scroll-show label");
