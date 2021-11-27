@@ -104,21 +104,40 @@
     <script type="text/javascript" src="../js/ajax.js"></script>
     <script>
         $().ready(function () {
+            // 角色
+            let role = null;
             let billList = _get("/bill/list");
             showBillList(billList);
 
             $("#btn-1").click(function () {
-                let filteredBillList = billList.filter(p => p.consumer === "2");
+                // 老婆
+                role = "2";
+                let filteredBillList = billList.filter(p => p.consumer === role);
                 showBillList(filteredBillList);
             });
 
             $("#btn-2").click(function () {
-                let filteredBillList = billList.filter(p => p.consumer === "1");
+                // 老公
+                role = "1";
+                let filteredBillList = billList.filter(p => p.consumer === role);
                 showBillList(filteredBillList);
             });
 
             $("#btn-3").click(function () {
+                role = null;
                 showBillList(billList);
+            });
+
+            $("#earn").click(function () {
+                console.log(role);
+                let filteredBillList = billList.filter(p => p.total >= 0 && (role == null || p.consumer === role));
+                showBillList(filteredBillList);
+            });
+
+            $("#pay").click(function () {
+                console.log(role);
+                let filteredBillList = billList.filter(p => p.total < 0 && (role == null || p.consumer === role));
+                showBillList(filteredBillList);
             });
         });
 

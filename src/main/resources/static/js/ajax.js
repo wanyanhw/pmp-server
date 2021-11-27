@@ -1,5 +1,5 @@
 let PROTOCOL = "http";
-let SERVER = "192.168.100.230";
+let SERVER = "192.168.10.100";
 let PORT = 8080;
 let APPLICATION_NAME = "pmp";
 let SERVER_URL = PROTOCOL + "://" + SERVER + ":" + PORT + "/" + APPLICATION_NAME;
