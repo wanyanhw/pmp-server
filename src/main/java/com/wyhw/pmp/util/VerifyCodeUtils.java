@@ -9,9 +9,9 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
- * @desc 生成图片验证码
- * @date 2020年4月12日
+ * 生成图片验证码
  * @author wanyanhw
+ * @date 2020年4月12日
  */
 public class VerifyCodeUtils {
 

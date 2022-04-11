@@ -7,10 +7,11 @@ import java.io.*;
 
 /**
  * 文件工具类
+ * @author wanyanhw
  */
 @Slf4j
 @Component
-public class MultipartFileUtils {
+public class MultipartFileUtil {
 
 
     /**
@@ -21,28 +22,17 @@ public class MultipartFileUtils {
      * @return true-成功 false-失败
      */
     public boolean saveFile(String path, String fileName, byte[] bytes) {
-        BufferedOutputStream os = null;
         File dir = new File(path);
         if (!dir.isDirectory()) {
             // 目标不存在则新建目录
             dir.mkdirs();
         }
-        try {
-            File file = new File(path + File.separator + fileName);
-            FileOutputStream fos = new FileOutputStream(file);
-            os = new BufferedOutputStream(fos);
+        File file = new File(path + File.separator + fileName);
+        try (FileOutputStream fos = new FileOutputStream(file); BufferedOutputStream os = new BufferedOutputStream(fos)) {
             os.write(bytes);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (os != null) {
-                    os.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return false;
     }
@@ -81,12 +71,8 @@ public class MultipartFileUtils {
             return false;
         }
 
-        BufferedOutputStream os = null;
-        FileOutputStream fos = null;
-        try {
-            File targetFile = new File(path + File.separator + fileName);
-            fos = new FileOutputStream(targetFile);
-            os = new BufferedOutputStream(fos);
+        File targetFile = new File(path + File.separator + fileName);
+        try (FileOutputStream fos = new FileOutputStream(targetFile); BufferedOutputStream os = new BufferedOutputStream(fos)) {
             byte[] bytes = new byte[1024 * 1024 * 2];
             int chunkIndex = 1;
             while (chunkIndex <= chunkTotal) {
@@ -121,21 +107,6 @@ public class MultipartFileUtils {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -203,11 +174,5 @@ public class MultipartFileUtils {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        String fileName = "abc.JPG";
-        String[] strings = fileName.split("\\.");
-        System.out.println(strings.length);
     }
 }

@@ -3,7 +3,7 @@ package com.wyhw.pmp.wechat.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.thoughtworks.xstream.XStream;
-import com.wyhw.pmp.util.HttpUtils;
+import com.wyhw.pmp.util.HttpUtil;
 import com.wyhw.pmp.wechat.AccessToken;
 import com.wyhw.pmp.wechat.WeChatConfig;
 import com.wyhw.pmp.wechat.bean.TemplateData;
@@ -35,7 +35,7 @@ import java.util.*;
 @Slf4j
 public class WeChatCoreServiceImpl implements WeChatCoreService {
     @Autowired
-    private HttpUtils httpUtils;
+    private HttpUtil httpUtil;
 
     @Autowired
     private PushUtil pushUtil;
@@ -146,7 +146,7 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
         JSONObject postData = (JSONObject) JSONObject.toJSON(wechatTemplate);
         if (postData != null) {
 //            String result = pushUtil.push(postUrl, postData.toString());
-            String result = httpUtils.doPost(postUrl, postData);
+            String result = httpUtil.doPost(postUrl, postData);
             JSONObject jsonResult = JSONObject.parseObject(result);
             Integer errcode = jsonResult.getInteger("errcode");
             String errmsg = jsonResult.getString("errmsg");

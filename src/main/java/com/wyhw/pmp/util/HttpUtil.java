@@ -7,13 +7,20 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Component
-public class HttpUtils {
+import javax.annotation.Resource;
 
-    RestTemplate restTemplate = new RestTemplate();
+/**
+ * @author wanyanhw
+ */
+@Component
+public class HttpUtil {
+
+    @Resource
+    private RestTemplate restTemplate;
 
     public String doGet(String url) {
-        JSONObject jsonObject = restTemplate.getForObject(url, new JSONObject().getClass());
+        JSONObject jsonObject = restTemplate.getForObject(url, JSONObject.class);
+        assert jsonObject != null;
         return jsonObject.toString();
     }
 
@@ -21,7 +28,8 @@ public class HttpUtils {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<JSONObject> request = new HttpEntity<>(requestBody, httpHeaders);
-        JSONObject jsonObject = restTemplate.postForObject(url, request, new JSONObject().getClass());
+        JSONObject jsonObject = restTemplate.postForObject(url, request, JSONObject.class);
+        assert jsonObject != null;
         return jsonObject.toString();
     }
 }

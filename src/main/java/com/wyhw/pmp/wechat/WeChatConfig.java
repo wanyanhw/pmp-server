@@ -1,18 +1,23 @@
 package com.wyhw.pmp.wechat;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wyhw.pmp.util.HttpUtils;
+import com.wyhw.pmp.util.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author wanyanhw
+ */
 public class WeChatConfig {
 
-    private HttpUtils httpUtils = new HttpUtils();
+    @Resource
+    private HttpUtil httpUtil;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -79,7 +84,7 @@ public class WeChatConfig {
         String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APP_ID&secret=APP_SECRET";
         String url = ACCESS_TOKEN_URL.replace("APP_ID", appId).replace("APP_SECRET", appSecret);
 
-        String resultJsonData = httpUtils.doGet(url);
+        String resultJsonData = httpUtil.doGet(url);
         JSONObject jsonObject = JSONObject.parseObject(resultJsonData);
         if (jsonObject != null) {
             access_token = jsonObject.getString("access_token");
