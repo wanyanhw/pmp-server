@@ -7,16 +7,13 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
-
 /**
  * @author wanyanhw
  */
 @Component
 public class HttpUtil {
 
-    @Resource
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplate = new RestTemplate();
 
     public String doGet(String url) {
         JSONObject jsonObject = restTemplate.getForObject(url, JSONObject.class);
