@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * @author: wyhw
- * @date: 2021/6/14 15:10
+ * @author wyhw
+ * @date 2021/6/14 15:10
  */
 @Data
 @ApiModel(value = "账单信息")

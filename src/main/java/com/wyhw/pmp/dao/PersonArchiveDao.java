@@ -1,7 +1,7 @@
 package com.wyhw.pmp.dao;
 
-import com.wyhw.pmp.entity.PersonArchive;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wyhw.pmp.entity.PersonArchive;
 
 /**
  * <p>
@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PersonArchiveDao extends IService<PersonArchive> {
 
+    /**
+     * 根据人员ID获取个人档案信息
+     * @param personId 个人ID
+     * @return 档案信息
+     */
+    PersonArchive getByPersonId(Integer personId);
 }

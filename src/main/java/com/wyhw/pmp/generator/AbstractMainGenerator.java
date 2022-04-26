@@ -32,14 +32,14 @@ public abstract class AbstractMainGenerator {
 
 	protected String parentPackage = "com.example.generator";
 	protected String controllerPackageName = "controller";
-	protected String servicePackageName = "service";
-	protected String serviceImplPackageName = "service.impl";
+	protected String servicePackageName = "dao";
+	protected String serviceImplPackageName = "dao.impl";
 	protected String entityPackageName = "entity";
 	protected String mapperPackageName = "mapper";
 
 	protected String controllerSuffix = "Controller";
-	protected String serviceSuffix = "Service";
-	protected String serviceImplSuffix = "ServiceImpl";
+	protected String serviceSuffix = "Dao";
+	protected String serviceImplSuffix = "DaoImpl";
 	protected String entitySuffix = "";
 	protected String mapperSuffix = "Mapper";
 

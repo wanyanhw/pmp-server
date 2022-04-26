@@ -27,6 +27,8 @@ public class CodeGeneratorTest {
                 .includeTable(tableNames)
                 .openDir(false)
                 .disableController()
+                .enableEntityLombok(true)
+                .fileOverride(true)
                 .basePath("E:\\space\\idea\\pmp-server\\src\\main\\java")
                 .parentPackagePath("com.wyhw.pmp")
                 .mapperXmlPath("E:\\space\\idea\\pmp-server\\src\\main\\resources\\mapping")

@@ -6,20 +6,20 @@ import com.wyhw.pmp.entity.BillEntity;
 import com.wyhw.pmp.entity.model.BillInfo;
 import com.wyhw.pmp.service.BillService;
 import com.wyhw.pmp.util.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author: wyhw
- * @date: 2021/6/14 15:14
+ * @author wyhw
+ * @date 2021/6/14 15:14
  */
 @Service
 public class BillServiceImpl implements BillService {
-    @Autowired
+    @Resource
     private IBillDao billDao;
 
     @Override
