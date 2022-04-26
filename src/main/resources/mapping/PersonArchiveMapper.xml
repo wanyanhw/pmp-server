@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wyhw.pmp.mapper.PersonInfoMapper">
+<mapper namespace="com.wyhw.pmp.mapper.PersonArchiveMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.wyhw.pmp.entity.PersonInfoEntity">
+    <resultMap id="BaseResultMap" type="com.wyhw.pmp.entity.PersonArchive">
         <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="sex" property="sex" />
+        <result column="person_id" property="personId" />
+        <result column="mobile_phone" property="mobilePhone" />
         <result column="birthday" property="birthday" />
+        <result column="death_day" property="deathDay" />
         <result column="address" property="address" />
         <result column="create_user" property="createUser" />
         <result column="create_time" property="createTime" />
@@ -18,7 +19,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, sex, birthday, address, create_user, create_time, update_user, update_time, deleted
+        id, person_id, mobile_phone, birthday, death_day, address, create_user, create_time, update_user, update_time, deleted
     </sql>
 
 </mapper>
