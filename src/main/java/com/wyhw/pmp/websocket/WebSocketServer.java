@@ -8,13 +8,13 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 
 @ServerEndpoint("/websocket/{sid}")
 @Component
 public class WebSocketServer {
     private static Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
-    private static CopyOnWriteArraySet<WebSocketServer> webSocketSet = new CopyOnWriteArraySet<>();
+    private static ConcurrentHashMap<String, WebSocketServer> SOCKET_SERVER = new ConcurrentHashMap<>();
     private Session session;
     private String sid = "";
 
@@ -22,13 +22,13 @@ public class WebSocketServer {
     public void onOpen(Session session, @PathParam("sid") String sid) {
         this.session = session;
         this.sid = sid;
-        webSocketSet.add(this);
+        SOCKET_SERVER.put(sid, this);
         logger.info("socket {}：连接成功", sid);
     }
 
     @OnClose
     public void onClose() {
-        webSocketSet.remove(this);
+        SOCKET_SERVER.remove(this.sid);
         this.session = null;
         logger.info("socket {} 断开连接", sid);
     }
@@ -50,5 +50,15 @@ public class WebSocketServer {
 
     private void sendMsg(String msg) throws IOException {
         this.session.getBasicRemote().sendText(msg);
+    }
+
+    private void sendToAllClient(String msg) {
+        SOCKET_SERVER.forEach((sid, webSocketServer) -> {
+            try {
+                webSocketServer.sendMsg(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
