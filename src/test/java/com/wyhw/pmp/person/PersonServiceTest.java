@@ -30,4 +30,10 @@ public class PersonServiceTest extends BaseTest {
         PersonInfoDetail save = iPersonService.save(infoDetail);
         System.out.println(save);
     }
+
+    @Test
+    public void getPersonByIdTest() {
+        PersonInfoDetail personDetail = iPersonService.getPersonDetail(1);
+        System.out.println(personDetail);
+    }
 }

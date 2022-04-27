@@ -2,8 +2,10 @@ package com.wyhw.pmp.service.impl;
 
 import com.wyhw.pmp.dao.PersonArchiveDao;
 import com.wyhw.pmp.dao.PersonDao;
+import com.wyhw.pmp.dao.PersonRelationshipDao;
 import com.wyhw.pmp.entity.Person;
 import com.wyhw.pmp.entity.PersonArchive;
+import com.wyhw.pmp.entity.PersonRelationship;
 import com.wyhw.pmp.entity.model.AccountStatusEnum;
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
@@ -16,7 +18,11 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author wanyanhw
@@ -29,6 +35,8 @@ public class PersonServiceImpl implements IPersonService {
     private PersonDao personDao;
     @Resource
     private PersonArchiveDao personArchiveDao;
+    @Resource
+    private PersonRelationshipDao personRelationshipDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -77,7 +85,54 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public PersonInfoDetail getPersonDetail(Integer personId) {
-        return null;
+        Person person = personDao.getById(personId);
+        PersonArchive personArchive = personArchiveDao.getByPersonId(personId);
+        if (personArchive == null) {
+            personArchive = new PersonArchive();
+        }
+        List<PersonRelationship> personRelations = personRelationshipDao.listByPersonId(personId);
+
+        int relatesPersonSize = personRelations.size();
+        final Map<Integer, List<Person>> relatedPersonListMap = new HashMap<>(relatesPersonSize);
+        if (relatesPersonSize > 0) {
+            Set<Integer> relatedPersonIds = personRelations.stream().map(PersonRelationship::getPersonId).collect(Collectors.toSet());
+            relatedPersonListMap.putAll(personDao.listByIds(relatedPersonIds).stream().collect(Collectors.groupingBy(Person::getId)));
+        }
+
+        PersonInfoDetail personInfoDetail = new PersonInfoDetail();
+        personInfoDetail.setId(personId);
+        personInfoDetail.setAccount(person.getAccount());
+        personInfoDetail.setName(person.getName());
+        personInfoDetail.setPhoto(personArchive.getPhoto());
+        personInfoDetail.setPhoneNum(personArchive.getMobilePhone());
+        LocalDateTime birthday = personArchive.getBirthday();
+        LocalDateTime deathDay = personArchive.getDeathDay();
+        personInfoDetail.setBirthday(birthday == null ? null : birthday.format(DateUtil.STANDARD_DATE));
+        personInfoDetail.setDeathDay(deathDay == null ? null : deathDay.format(DateUtil.STANDARD_DATE));
+        personInfoDetail.setSex(personArchive.getSex());
+        personInfoDetail.setAge(personArchive.getAge());
+        personInfoDetail.setAddress(personArchive.getAddress());
+        personInfoDetail.setAlive(deathDay == null);
+
+        List<PersonInfoBrief> personRelationBriefList = personRelations.stream().map(personRelationship -> {
+            Integer personRelationshipId = personRelationship.getId();
+            List<Person> relatedPersonList = relatedPersonListMap.get(personRelationshipId);
+            Person relatedPerson;
+            if (relatedPersonList == null || relatedPersonList.isEmpty()) {
+                relatedPerson = new Person();
+            } else {
+                relatedPerson = relatedPersonList.get(0);
+            }
+
+            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
+            personInfoBrief.setId(personRelationshipId);
+            personInfoBrief.setAccount(relatedPerson.getAccount());
+            personInfoBrief.setName(relatedPerson.getName());
+            return personInfoBrief;
+        }).collect(Collectors.toList());
+
+        personInfoDetail.setFamilyMembers(personRelationBriefList);
+        return personInfoDetail;
     }
 
     @Override

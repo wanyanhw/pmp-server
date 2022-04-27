@@ -3,6 +3,7 @@ package com.wyhw.pmp.entity.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -10,8 +11,9 @@ import java.util.List;
  * @author wanyanhw
  * @date 2022/4/26 15:18
  */
-@Data
 @ApiModel("人员信息详情")
+@Data
+@ToString(callSuper = true)
 public class PersonInfoDetail extends PersonInfoBrief {
     @ApiModelProperty("出生日期")
     private String birthday;

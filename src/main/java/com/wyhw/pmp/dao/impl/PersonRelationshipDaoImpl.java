@@ -1,10 +1,12 @@
 package com.wyhw.pmp.dao.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wyhw.pmp.dao.PersonRelationshipDao;
 import com.wyhw.pmp.entity.PersonRelationship;
 import com.wyhw.pmp.mapper.PersonRelationshipMapper;
-import com.wyhw.pmp.dao.PersonRelationshipDao;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonRelationshipDaoImpl extends ServiceImpl<PersonRelationshipMapper, PersonRelationship> implements PersonRelationshipDao {
 
+    @Override
+    public List<PersonRelationship> listByPersonId(Integer personId) {
+        return lambdaQuery().eq(PersonRelationship::getPersonId, personId).list();
+    }
 }

@@ -1,7 +1,6 @@
 package com.wyhw.pmp.util;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 
@@ -10,7 +9,6 @@ import java.io.*;
  * @author wanyanhw
  */
 @Slf4j
-@Component
 public class MultipartFileUtil {
 
 
@@ -21,7 +19,7 @@ public class MultipartFileUtil {
      * @param bytes 文件字节
      * @return true-成功 false-失败
      */
-    public boolean saveFile(String path, String fileName, byte[] bytes) {
+    public static boolean saveFile(String path, String fileName, byte[] bytes) {
         File dir = new File(path);
         if (!dir.isDirectory()) {
             // 目标不存在则新建目录
@@ -46,7 +44,7 @@ public class MultipartFileUtil {
      * @param chunkTotal 总分片数
      * @return true-合并成功 false-合并失败
      */
-    public boolean mergeFile(String path, String fileName, String separator, int chunkTotal) {
+    public static boolean mergeFile(String path, String fileName, String separator, int chunkTotal) {
         File dir = new File(path);
         boolean isDirectory = dir.isDirectory();
         if (!isDirectory) {
@@ -120,7 +118,7 @@ public class MultipartFileUtil {
      * @param basePath The file path which the mini-files will be stored in
      * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
      */
-    public File[] splitByQuantity(File file, int total, String filename, String basePath) throws IOException{
+    public static File[] splitByQuantity(File file, int total, String filename, String basePath) throws IOException{
         return splitBySize(file, (int) (file.length() / total), filename, basePath);
     }
 
@@ -134,7 +132,7 @@ public class MultipartFileUtil {
      * @param basePath The file path which the mini-files will be stored in
      * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
      */
-    private File[] splitBySize(File file, int size, String filename, String basePath) throws IOException {
+    private static File[] splitBySize(File file, int size, String filename, String basePath) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
             int splitIndex = 0;
             int splitTotal = (int) (file.length() % size > 0 ? file.length() / size + 1 : file.length() / size);
@@ -162,7 +160,7 @@ public class MultipartFileUtil {
      * @param path The large target file will be stored in
      * @param filename Name the large target file
      */
-    public void merge(File[] files, String path, String filename) throws IOException {
+    public static void merge(File[] files, String path, String filename) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(new File(path + filename))) {
             for (File file : files) {
                 try (FileInputStream fis = new FileInputStream(file)) {

@@ -1,7 +1,9 @@
 package com.wyhw.pmp.dao;
 
-import com.wyhw.pmp.entity.PersonRelationship;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wyhw.pmp.entity.PersonRelationship;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PersonRelationshipDao extends IService<PersonRelationship> {
 
+    /**
+     * 根据人员ID获取个人关系列表
+     * @param personId 个人ID
+     * @return 关系列表
+     */
+    List<PersonRelationship> listByPersonId(Integer personId);
 }
