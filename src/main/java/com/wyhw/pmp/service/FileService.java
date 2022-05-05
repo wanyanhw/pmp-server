@@ -1,5 +1,6 @@
 package com.wyhw.pmp.service;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -8,6 +9,13 @@ import java.io.InputStream;
  * @date 2022/5/5 20:34
  */
 public interface FileService {
+
+    /**
+     * 文件上传
+     * @param file 文件
+     * @return 文件保存路径
+     */
+    String upload(File file);
 
     /**
      * 文件上传
