@@ -21,6 +21,26 @@ public class PersonRelationshipDaoImpl extends ServiceImpl<PersonRelationshipMap
 
     @Override
     public List<PersonRelationship> listByPersonId(Integer personId) {
-        return lambdaQuery().eq(PersonRelationship::getPersonId, personId).list();
+        return lambdaQuery()
+                .eq(PersonRelationship::getPersonId, personId)
+                .eq(PersonRelationship::getDeleted, false)
+                .list();
+    }
+
+    @Override
+    public boolean deletePersonRelation(Integer personId) {
+        return lambdaUpdate()
+                .and(q -> q.eq(PersonRelationship::getPersonId, personId).or().eq(PersonRelationship::getRelationPersonId, personId))
+                .set(PersonRelationship::getDeleted, true)
+                .update();
+    }
+
+    @Override
+    public boolean deletePersonRelation(Integer personId, Integer relatePersonId) {
+        return lambdaUpdate()
+                .eq(PersonRelationship::getPersonId, personId)
+                .eq(PersonRelationship::getRelationPersonId, relatePersonId)
+                .set(PersonRelationship::getDeleted, true)
+                .update();
     }
 }

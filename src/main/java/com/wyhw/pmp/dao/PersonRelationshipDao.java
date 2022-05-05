@@ -21,4 +21,19 @@ public interface PersonRelationshipDao extends IService<PersonRelationship> {
      * @return 关系列表
      */
     List<PersonRelationship> listByPersonId(Integer personId);
+
+    /**
+     * 根据人员ID删除个人所有关系
+     * @param personId 人员ID
+     * @return Boolean
+     */
+    boolean deletePersonRelation(Integer personId);
+
+    /**
+     * 删除人员特定亲属关系
+     * @param personId 人员ID
+     * @param relatePersonId 亲属ID
+     * @return Boolean
+     */
+    boolean deletePersonRelation(Integer personId, Integer relatePersonId);
 }

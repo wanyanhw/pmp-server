@@ -47,7 +47,7 @@ public interface IPersonService {
     void addPersonRelationship(Integer personId, Integer relationship, PersonInfoDetail relatePersonInfoDetail);
 
     /**
-     * 删除个人关系
+     * 删除指定关系人
      * @param personId 人员ID
      * @param relatePersonId 关系人员ID
      */

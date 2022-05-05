@@ -19,10 +19,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -75,29 +72,48 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void removePerson(Integer personId) {
-
+        // 删除个人信息
+        personDao.deletePerson(personId);
+        // 删除个人档案
+        personArchiveDao.deleteByPersonId(personId);
+        // 删除个人关系
+        personRelationshipDao.deletePersonRelation(personId);
     }
 
     @Override
     public List<PersonInfoBrief> listByName(String name) {
-        return null;
+        List<Person> persons = personDao.listByName(name);
+        if (persons.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Map<Integer, Person> personById = persons.stream().collect(Collectors.toMap(Person::getId, v -> v));
+        List<Integer> personIds = persons.stream().map(Person::getId).collect(Collectors.toList());
+        List<PersonArchive> personArchives = personArchiveDao.listByPersonIds(personIds);
+        return personArchives.stream().map(personArchive -> {
+            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
+            Integer personId = personArchive.getPersonId();
+            personInfoBrief.setId(personId);
+            Person person = personById.get(personId);
+
+            personInfoBrief.setName(person == null ? null : person.getName());
+            personInfoBrief.setAccount(person == null ? null : person.getAccount());
+            personInfoBrief.setPhoto(personArchive.getPhoto());
+            personInfoBrief.setAge(personArchive.getAge());
+            personInfoBrief.setSex(personArchive.getSex());
+            personInfoBrief.setAlive(personArchive.getDeathDay() == null);
+            return personInfoBrief;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public PersonInfoDetail getPersonDetail(Integer personId) {
-        Person person = personDao.getById(personId);
+        Person person = personDao.getPersonById(personId);
         PersonArchive personArchive = personArchiveDao.getByPersonId(personId);
         if (personArchive == null) {
             personArchive = new PersonArchive();
-        }
-        List<PersonRelationship> personRelations = personRelationshipDao.listByPersonId(personId);
-
-        int relatesPersonSize = personRelations.size();
-        final Map<Integer, List<Person>> relatedPersonListMap = new HashMap<>(relatesPersonSize);
-        if (relatesPersonSize > 0) {
-            Set<Integer> relatedPersonIds = personRelations.stream().map(PersonRelationship::getPersonId).collect(Collectors.toSet());
-            relatedPersonListMap.putAll(personDao.listByIds(relatedPersonIds).stream().collect(Collectors.groupingBy(Person::getId)));
         }
 
         PersonInfoDetail personInfoDetail = new PersonInfoDetail();
@@ -114,25 +130,8 @@ public class PersonServiceImpl implements IPersonService {
         personInfoDetail.setAge(personArchive.getAge());
         personInfoDetail.setAddress(personArchive.getAddress());
         personInfoDetail.setAlive(deathDay == null);
+        personInfoDetail.setFamilyMembers(findFamilyInfoList(personId));
 
-        List<PersonInfoBrief> personRelationBriefList = personRelations.stream().map(personRelationship -> {
-            Integer personRelationshipId = personRelationship.getId();
-            List<Person> relatedPersonList = relatedPersonListMap.get(personRelationshipId);
-            Person relatedPerson;
-            if (relatedPersonList == null || relatedPersonList.isEmpty()) {
-                relatedPerson = new Person();
-            } else {
-                relatedPerson = relatedPersonList.get(0);
-            }
-
-            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
-            personInfoBrief.setId(personRelationshipId);
-            personInfoBrief.setAccount(relatedPerson.getAccount());
-            personInfoBrief.setName(relatedPerson.getName());
-            return personInfoBrief;
-        }).collect(Collectors.toList());
-
-        personInfoDetail.setFamilyMembers(personRelationBriefList);
         return personInfoDetail;
     }
 
@@ -150,16 +149,20 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public void delPersonRelationship(Integer personId, Integer relatePersonId) {
-
+        personRelationshipDao.deletePersonRelation(personId, relatePersonId);
     }
 
     @Override
     public List<PersonInfoBrief> getPersonRelationships(Integer personId) {
         List<PersonRelationship> personRelationships = personRelationshipDao.listByPersonId(personId);
-        Map<Integer, Integer> relationCodeByRelationPersonId = personRelationships.stream().collect(Collectors.toMap(PersonRelationship::getRelationPersonId, PersonRelationship::getRelationId));
+        if (personRelationships.isEmpty()) {
+            return Collections.emptyList();
+        }
 
         List<Integer> relatedPersonIds = personRelationships.stream().map(PersonRelationship::getRelationPersonId).collect(Collectors.toList());
-        Map<Integer, Person> personById = personDao.listByIds(relatedPersonIds).stream().collect(Collectors.toMap(Person::getId, v -> v, (v0, v1) -> v1));
+        Map<Integer, Person> personById = personDao.listByIds(relatedPersonIds).stream().collect(Collectors.toMap(Person::getId, v -> v));
+
+        Map<Integer, Integer> relationCodeByRelationPersonId = personRelationships.stream().collect(Collectors.toMap(PersonRelationship::getRelationPersonId, PersonRelationship::getRelationId));
         List<PersonArchive> relatedPersonArchives = personArchiveDao.listByPersonIds(relatedPersonIds);
         return relatedPersonArchives.stream().map(personArchive -> {
             Integer archivePersonId = personArchive.getPersonId();
@@ -175,6 +178,33 @@ public class PersonServiceImpl implements IPersonService {
             relation.setAge(personArchive.getAge());
             relation.setAlive(personArchive.getDeathDay() == null);
             return relation;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取家人信息
+     * @param personId 个人信息ID
+     * @return 家人简略信息列表
+     */
+    private List<PersonInfoBrief> findFamilyInfoList(Integer personId) {
+        List<PersonRelationship> personRelations = personRelationshipDao.listByPersonId(personId);
+        int relatesPersonSize = personRelations.size();
+        final Map<Integer, Person> relatedPersonListMap = new HashMap<>(relatesPersonSize);
+        if (relatesPersonSize > 0) {
+            Set<Integer> relatedPersonIds = personRelations.stream().map(PersonRelationship::getRelationPersonId).collect(Collectors.toSet());
+            List<Person> relatedPersons = personDao.listByIds(relatedPersonIds);
+            Map<Integer, Person> relatedPersonById = relatedPersons.stream().collect(Collectors.toMap(Person::getId, v -> v));
+            relatedPersonListMap.putAll(relatedPersonById);
+        }
+        return personRelations.stream().map(personRelationship -> {
+            Integer personRelationshipId = personRelationship.getRelationPersonId();
+            Person relatedPerson = relatedPersonListMap.get(personRelationshipId);
+
+            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
+            personInfoBrief.setId(personRelationshipId);
+            personInfoBrief.setAccount(relatedPerson == null ? null : relatedPerson.getAccount());
+            personInfoBrief.setName(relatedPerson == null ? null : relatedPerson.getName());
+            return personInfoBrief;
         }).collect(Collectors.toList());
     }
 }

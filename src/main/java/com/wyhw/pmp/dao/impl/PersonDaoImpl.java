@@ -1,10 +1,13 @@
 package com.wyhw.pmp.dao.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wyhw.pmp.dao.PersonDao;
 import com.wyhw.pmp.entity.Person;
 import com.wyhw.pmp.mapper.PersonMapper;
-import com.wyhw.pmp.dao.PersonDao;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +20,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonDaoImpl extends ServiceImpl<PersonMapper, Person> implements PersonDao {
 
+    @Override
+    public boolean deletePerson(Integer personId) {
+        return lambdaUpdate()
+                .eq(Person::getId, personId)
+                .set(Person::getDeleted, true)
+                .update();
+    }
+
+    @Override
+    public List<Person> listByName(String name) {
+        return lambdaQuery()
+                .like(Person::getName, name)
+                .eq(Person::getDeleted, false)
+                .list();
+
+    }
+
+    @Override
+    public Person getPersonById(Integer personId) {
+        return getOne(new LambdaQueryWrapper<Person>()
+                .eq(Person::getId, personId)
+                .eq(Person::getDeleted, false));
+    }
 }

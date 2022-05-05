@@ -28,4 +28,11 @@ public interface PersonArchiveDao extends IService<PersonArchive> {
      * @return 档案信息列表
      */
     List<PersonArchive> listByPersonIds(List<Integer> personIds);
+
+    /**
+     * 根据人员ID删除个人信息
+     * @param personId 个人ID
+     * @return Boolean
+     */
+    boolean deleteByPersonId(Integer personId);
 }

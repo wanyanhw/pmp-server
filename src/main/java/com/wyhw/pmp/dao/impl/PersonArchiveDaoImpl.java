@@ -22,13 +22,24 @@ public class PersonArchiveDaoImpl extends ServiceImpl<PersonArchiveMapper, Perso
 
     @Override
     public PersonArchive getByPersonId(Integer personId) {
-        return getOne(new LambdaQueryWrapper<PersonArchive>().eq(PersonArchive::getPersonId, personId));
+        return getOne(new LambdaQueryWrapper<PersonArchive>()
+                .eq(PersonArchive::getDeleted, false)
+                .eq(PersonArchive::getPersonId, personId));
     }
 
     @Override
     public List<PersonArchive> listByPersonIds(List<Integer> personIds) {
         return lambdaQuery()
                 .in(PersonArchive::getPersonId, personIds)
+                .eq(PersonArchive::getDeleted, false)
                 .list();
+    }
+
+    @Override
+    public boolean deleteByPersonId(Integer personId) {
+        return lambdaUpdate()
+                .eq(PersonArchive::getPersonId, personId)
+                .set(PersonArchive::getDeleted, true)
+                .update();
     }
 }

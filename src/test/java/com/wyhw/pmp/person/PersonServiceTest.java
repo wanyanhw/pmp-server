@@ -56,4 +56,20 @@ public class PersonServiceTest extends BaseTest {
         List<PersonInfoBrief> personRelationships = iPersonService.getPersonRelationships(1);
         personRelationships.forEach(System.out::println);
     }
+
+    @Test
+    public void deletePerson() {
+        iPersonService.removePerson(1);
+    }
+
+    @Test
+    public void listByName() {
+        List<PersonInfoBrief> personInfoBriefs = iPersonService.listByName("哈");
+        personInfoBriefs.forEach(System.out::println);
+    }
+
+    @Test
+    public void deletePersonRelationship() {
+        iPersonService.delPersonRelationship(1, 4);
+    }
 }
