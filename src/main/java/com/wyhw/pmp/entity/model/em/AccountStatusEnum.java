@@ -1,4 +1,4 @@
-package com.wyhw.pmp.entity.model;
+package com.wyhw.pmp.entity.model.em;
 
 import lombok.Getter;
 

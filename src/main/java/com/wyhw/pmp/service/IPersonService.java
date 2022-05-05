@@ -41,12 +41,13 @@ public interface IPersonService {
     /**
      * 添加个人关系并创建关系账号
      * @param personId 人员ID
+     * @param relationship 关系类型 {@link com.wyhw.pmp.entity.model.em.RelationshipEnum}
      * @param relatePersonInfoDetail 关系成员信息详情
      */
-    void addPersonRelationship(Integer personId, PersonInfoDetail relatePersonInfoDetail);
+    void addPersonRelationship(Integer personId, Integer relationship, PersonInfoDetail relatePersonInfoDetail);
 
     /**
-     * 接触个人关系
+     * 删除个人关系
      * @param personId 人员ID
      * @param relatePersonId 关系人员ID
      */

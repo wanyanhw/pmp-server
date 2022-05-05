@@ -7,6 +7,8 @@ import com.wyhw.pmp.entity.PersonArchive;
 import com.wyhw.pmp.mapper.PersonArchiveMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 个人档案表 服务实现类
@@ -21,5 +23,12 @@ public class PersonArchiveDaoImpl extends ServiceImpl<PersonArchiveMapper, Perso
     @Override
     public PersonArchive getByPersonId(Integer personId) {
         return getOne(new LambdaQueryWrapper<PersonArchive>().eq(PersonArchive::getPersonId, personId));
+    }
+
+    @Override
+    public List<PersonArchive> listByPersonIds(List<Integer> personIds) {
+        return lambdaQuery()
+                .in(PersonArchive::getPersonId, personIds)
+                .list();
     }
 }

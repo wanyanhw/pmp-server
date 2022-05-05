@@ -6,9 +6,10 @@ import com.wyhw.pmp.dao.PersonRelationshipDao;
 import com.wyhw.pmp.entity.Person;
 import com.wyhw.pmp.entity.PersonArchive;
 import com.wyhw.pmp.entity.PersonRelationship;
-import com.wyhw.pmp.entity.model.AccountStatusEnum;
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
+import com.wyhw.pmp.entity.model.PersonInfoRelation;
+import com.wyhw.pmp.entity.model.em.AccountStatusEnum;
 import com.wyhw.pmp.service.IPersonService;
 import com.wyhw.pmp.util.DateUtil;
 import org.springframework.stereotype.Service;
@@ -136,8 +137,15 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
-    public void addPersonRelationship(Integer personId, PersonInfoDetail relatePersonInfoDetail) {
-
+    @Transactional(rollbackFor = Exception.class)
+    public void addPersonRelationship(Integer personId, Integer relationship, PersonInfoDetail relatePersonInfoDetail) {
+        PersonInfoDetail relatedPersonInfoDetail = save(relatePersonInfoDetail);
+        Integer relatedPersonId = relatedPersonInfoDetail.getId();
+        PersonRelationship personRelationship = new PersonRelationship();
+        personRelationship.setPersonId(personId);
+        personRelationship.setRelationId(relationship);
+        personRelationship.setRelationPersonId(relatedPersonId);
+        personRelationshipDao.save(personRelationship);
     }
 
     @Override
@@ -147,6 +155,26 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public List<PersonInfoBrief> getPersonRelationships(Integer personId) {
-        return null;
+        List<PersonRelationship> personRelationships = personRelationshipDao.listByPersonId(personId);
+        Map<Integer, Integer> relationCodeByRelationPersonId = personRelationships.stream().collect(Collectors.toMap(PersonRelationship::getRelationPersonId, PersonRelationship::getRelationId));
+
+        List<Integer> relatedPersonIds = personRelationships.stream().map(PersonRelationship::getRelationPersonId).collect(Collectors.toList());
+        Map<Integer, Person> personById = personDao.listByIds(relatedPersonIds).stream().collect(Collectors.toMap(Person::getId, v -> v, (v0, v1) -> v1));
+        List<PersonArchive> relatedPersonArchives = personArchiveDao.listByPersonIds(relatedPersonIds);
+        return relatedPersonArchives.stream().map(personArchive -> {
+            Integer archivePersonId = personArchive.getPersonId();
+            Person person = personById.get(archivePersonId);
+
+            PersonInfoRelation relation = new PersonInfoRelation();
+            relation.setRelationCode(relationCodeByRelationPersonId.get(archivePersonId));
+            relation.setId(archivePersonId);
+            relation.setName(person == null ? null : person.getName());
+            relation.setAccount(person == null ? null : person.getAccount());
+            relation.setPhoto(personArchive.getPhoto());
+            relation.setSex(personArchive.getSex());
+            relation.setAge(personArchive.getAge());
+            relation.setAlive(personArchive.getDeathDay() == null);
+            return relation;
+        }).collect(Collectors.toList());
     }
 }
