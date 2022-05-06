@@ -41,3 +41,6 @@ queue-name: Queue-Demo
 #zookeeper:
 #  server: localhost:2181
 #  timeout: 20000
+
+file:
+  path: D:/file/

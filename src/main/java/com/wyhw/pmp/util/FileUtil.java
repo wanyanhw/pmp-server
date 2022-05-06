@@ -1,15 +1,12 @@
 package com.wyhw.pmp.util;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.*;
 
 /**
  * 文件工具类
  * @author wanyanhw
  */
-@Slf4j
-public class MultipartFileUtil {
+public class FileUtil {
 
 
     /**
@@ -18,46 +15,40 @@ public class MultipartFileUtil {
      * @param fileName 文件名
      * @param bytes 文件字节
      * @return true-成功 false-失败
+     * @throws IOException 异常
      */
-    public static boolean saveFile(String path, String fileName, byte[] bytes) {
+    public static boolean saveFile(String path, String fileName, byte[] bytes) throws IOException {
         File dir = new File(path);
         if (!dir.isDirectory()) {
             // 目标不存在则新建目录
             dir.mkdirs();
         }
         File file = new File(path + File.separator + fileName);
-        try (FileOutputStream fos = new FileOutputStream(file); BufferedOutputStream os = new BufferedOutputStream(fos)) {
-            os.write(bytes);
+        try (FileOutputStream fos = new FileOutputStream(file);
+             BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+            bos.write(bytes);
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return false;
     }
 
     /**
      * 合并文件
      * 注意：合并文件时需按分片顺序从小到大合并
-     * @param path 文件位置
+     * @param fileDirectory 文件目录
      * @param fileName 文件名称
      * @param separator 分片文件分隔符号，符号前为文件名称（无类型），符号后为分片序号
      * @param chunkTotal 总分片数
      * @return true-合并成功 false-合并失败
+     * @throws IOException 异常
      */
-    public static boolean mergeFile(String path, String fileName, String separator, int chunkTotal) {
-        File dir = new File(path);
+    public static boolean mergeFile(String fileDirectory, String fileName, String separator, int chunkTotal) throws IOException {
+        File dir = new File(fileDirectory);
         boolean isDirectory = dir.isDirectory();
         if (!isDirectory) {
-            log.info("目标文件夹不存在");
             return false;
         }
         String[] fileArguments = fileName.split("\\.");
         if (fileArguments.length != 2) {
-            if (fileArguments.length == 1) {
-                log.info("未指定文件类型");
-            } else {
-                log.info("文件格式不正确");
-            }
             return false;
         }
         String targetName = fileArguments[0];
@@ -65,46 +56,45 @@ public class MultipartFileUtil {
 
         File[] files = dir.listFiles();
         if (files == null) {
-            log.info("目标文件分片不存在");
             return false;
         }
 
-        File targetFile = new File(path + File.separator + fileName);
-        try (FileOutputStream fos = new FileOutputStream(targetFile); BufferedOutputStream os = new BufferedOutputStream(fos)) {
+        File targetFile = new File(fileDirectory + File.separator + fileName);
+        try (FileOutputStream fos = new FileOutputStream(targetFile);
+             BufferedOutputStream os = new BufferedOutputStream(fos)) {
             byte[] bytes = new byte[1024 * 1024 * 2];
             int chunkIndex = 1;
-            while (chunkIndex <= chunkTotal) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        continue;
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    continue;
+                }
+                String tempFileName = file.getName();
+                String[] tempFileArguments = tempFileName.split("\\.");
+                String[] tempName = tempFileArguments[0].split(separator);
+                if (tempName.length != 2) {
+                    continue;
+                }
+                String type = tempFileArguments[1];
+                String name = tempName[0];
+                int index = Integer.parseInt(tempName[1]);
+                boolean match = targetName.equals(name) && targetType.equals(type) && index == chunkIndex;
+                if (!match) {
+                    continue;
+                }
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    int count;
+                    while ((count = fis.read(bytes)) != -1) {
+                        os.write(bytes, 0, count);
                     }
-                    String tempFileName = file.getName();
-                    String[] tempFileArguments = tempFileName.split("\\.");
-                    String[] tempName = tempFileArguments[0].split(separator);
-                    if (tempName.length != 2) {
-                        log.info("当前文件不符合格式：{}", tempFileName);
-                        continue;
-                    }
-                    String type = tempFileArguments[1];
-                    String name = tempName[0];
-                    int index = Integer.parseInt(tempName[1]);
-                    if (targetName.equals(name) && targetType.equals(type) && index == chunkIndex) {
-                        chunkIndex ++;
-                        FileInputStream fis = new FileInputStream(file);
-                        int count = -1;
-                        while ((count = fis.read(bytes)) != -1) {
-                            os.write(bytes, 0, count);
-                        }
-                        fis.close();
-                        file.delete();
-                        break;
-                    }
+                    file.delete();
+                    chunkIndex ++;
+                }
+
+                if (chunkIndex > chunkTotal) {
+                    break;
                 }
             }
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
     }
 
@@ -171,6 +161,24 @@ public class MultipartFileUtil {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 输入流转字节数组
+     * @param inputStream 输入流
+     * @return byte[] 字节数组
+     * @throws IOException 异常
+     */
+    public static byte[] toByteArray(InputStream inputStream) throws IOException {
+        try (BufferedInputStream bis = new BufferedInputStream(inputStream);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            int len;
+            byte[] buffer = new byte[2048];
+            while ((len = bis.read(buffer)) != -1) {
+                baos.write(buffer, 0, len);
+            }
+            return baos.toByteArray();
         }
     }
 }
