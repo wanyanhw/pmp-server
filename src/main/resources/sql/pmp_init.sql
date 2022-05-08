@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 08/05/2022 09:05:37
+ Date: 08/05/2022 09:10:35
 */
 
 SET NAMES utf8mb4;
@@ -68,13 +68,13 @@ DROP TABLE IF EXISTS `person_archive`;
 CREATE TABLE `person_archive`  (
                                    `id` int(11) NOT NULL AUTO_INCREMENT,
                                    `person_id` int(11) NULL DEFAULT NULL COMMENT '个人ID',
-                                   `photo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '照片文件路径',
-                                   `mobile_phone` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '手机号码',
+                                   `photo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '照片文件路径',
+                                   `mobile_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机号码',
                                    `age` int(11) NULL DEFAULT NULL COMMENT '年龄',
                                    `sex` int(1) NULL DEFAULT NULL COMMENT '性别（1-男，2-女）',
                                    `birthday` datetime(0) NULL DEFAULT NULL COMMENT '出生日期',
                                    `death_day` datetime(0) NULL DEFAULT NULL COMMENT '死亡日期',
-                                   `address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '地址',
+                                   `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地址',
                                    `create_user` int(11) NULL DEFAULT NULL COMMENT '创建人',
                                    `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
                                    `update_user` int(100) NULL DEFAULT NULL COMMENT '修改人',
