@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 08/05/2022 08:59:10
+ Date: 08/05/2022 09:05:37
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `person`  (
                            `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
                            `deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '删除标识',
                            PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '个人信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '个人信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for person_archive
@@ -68,7 +68,10 @@ DROP TABLE IF EXISTS `person_archive`;
 CREATE TABLE `person_archive`  (
                                    `id` int(11) NOT NULL AUTO_INCREMENT,
                                    `person_id` int(11) NULL DEFAULT NULL COMMENT '个人ID',
+                                   `photo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '照片文件路径',
                                    `mobile_phone` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '手机号码',
+                                   `age` int(11) NULL DEFAULT NULL COMMENT '年龄',
+                                   `sex` int(1) NULL DEFAULT NULL COMMENT '性别（1-男，2-女）',
                                    `birthday` datetime(0) NULL DEFAULT NULL COMMENT '出生日期',
                                    `death_day` datetime(0) NULL DEFAULT NULL COMMENT '死亡日期',
                                    `address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT '地址',
