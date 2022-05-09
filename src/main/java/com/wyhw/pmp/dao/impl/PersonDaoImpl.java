@@ -6,6 +6,7 @@ import com.wyhw.pmp.dao.PersonDao;
 import com.wyhw.pmp.entity.Person;
 import com.wyhw.pmp.mapper.PersonMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class PersonDaoImpl extends ServiceImpl<PersonMapper, Person> implements 
     @Override
     public List<Person> listByName(String name) {
         return lambdaQuery()
-                .like(Person::getName, name)
+                .like(!StringUtils.isEmpty(name), Person::getName, name)
                 .eq(Person::getDeleted, false)
                 .list();
 
