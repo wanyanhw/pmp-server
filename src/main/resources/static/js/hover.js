@@ -1,4 +1,4 @@
-function mouseOn(_thisElement) {
+function mouseOver(_thisElement) {
     let id = _thisElement.id;
     let $element = $("#" + id);
     $element.css("backgroundColor", "rgba(70, 162, 233, 0.3)");
