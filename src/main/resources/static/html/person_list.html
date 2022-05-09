@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人员列表</title>
+    <script type="text/javascript" src="../js/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../js/person_list.js"></script>
+    <style>
+        .img-url {
+            width: 200px;
+            height: 200px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            object-fit: scale-down;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .pic {
+            text-align: left;
+            float: left;
+        }
+        .img-info {
+            width: 100%;
+            height: 30px;
+        }
+        .img-info div {
+            line-height: 30px;
+            float: left;
+        }
+        .key {
+            width: 40%;
+            text-align: right;
+            font: bold 18px "Microsoft YaHei UI";
+            letter-spacing: 5px;
+        }
+        .value {
+            width: 50%;
+            letter-spacing: 2px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div id="pic-area">
+        <div class="pic" id="1">
+            <img class="img-url" alt="暂无图片" src="../grass.jpg">
+            <div class="img-infos">
+                <div class="img-info">
+                    <div class="key"><label>姓名:</label></div>
+                    <div class="value"><label>草地</label></div>
+                </div>
+                <div class="img-info">
+                    <div class="key"><label>性别:</label></div>
+                    <div class="value"><label>男</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="pic" id="2">
+            <img class="img-url" alt="暂无图片" src="../moon.jpg">
+            <div class="img-infos">
+                <div class="img-info">
+                    <div class="key"><label>姓名:</label></div>
+                    <div class="value"><label>草地</label></div>
+                </div>
+                <div class="img-info">
+                    <div class="key"><label>性别:</label></div>
+                    <div class="value"><label>男</label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
