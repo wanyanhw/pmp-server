@@ -23,7 +23,7 @@ function addPicHtml(id, name, photoAddress) {
         photoAddress = SERVER_IP + photoAddress;
     }
     return "<div class=\"pic\" id=\"" + id + "\" onclick=\"selectPersonInfo(this)\" onmouseover=\"mouseOver(this)\" onmouseout=\"mouseOut(this)\">\n" +
-        "            <img class=\"img-url\" alt=\"暂无图片\" src=\"" + photoAddress + "\">\n" +
+        "            <img class=\"img-url\" draggable=\"false\" alt=\"暂无图片\" src=\"" + photoAddress + "\">\n" +
         "            <div class=\"img-infos\">\n" +
         "                <div class=\"img-info\">\n" +
         "                    <div class=\"value\"><label>" + name + "</label></div>\n" +
