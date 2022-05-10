@@ -3,6 +3,7 @@ package com.wyhw.pmp.person;
 import com.wyhw.pmp.BaseTest;
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
+import com.wyhw.pmp.entity.model.PersonInfoRelation;
 import com.wyhw.pmp.entity.model.em.RelationshipEnum;
 import com.wyhw.pmp.service.IPersonService;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void showRelatedPerson() {
-        List<PersonInfoBrief> personRelationships = iPersonService.getPersonRelationships(1);
+        List<PersonInfoRelation> personRelationships = iPersonService.getPersonRelationships(1);
         personRelationships.forEach(System.out::println);
     }
 

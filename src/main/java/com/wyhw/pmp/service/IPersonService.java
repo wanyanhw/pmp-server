@@ -2,6 +2,7 @@ package com.wyhw.pmp.service;
 
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
+import com.wyhw.pmp.entity.model.PersonInfoRelation;
 
 import java.util.List;
 
@@ -58,5 +59,5 @@ public interface IPersonService {
      * @param personId 人员ID
      * @return 关系列表
      */
-    List<PersonInfoBrief> getPersonRelationships(Integer personId);
+    List<PersonInfoRelation> getPersonRelationships(Integer personId);
 }

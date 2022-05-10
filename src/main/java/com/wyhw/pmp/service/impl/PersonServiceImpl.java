@@ -19,7 +19,9 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -130,7 +132,7 @@ public class PersonServiceImpl implements IPersonService {
         personInfoDetail.setAge(personArchive.getAge());
         personInfoDetail.setAddress(personArchive.getAddress());
         personInfoDetail.setAlive(deathDay == null);
-        personInfoDetail.setFamilyMembers(findFamilyInfoList(personId));
+        personInfoDetail.setFamilyMembers(getPersonRelationships(personId));
 
         return personInfoDetail;
     }
@@ -153,7 +155,7 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
-    public List<PersonInfoBrief> getPersonRelationships(Integer personId) {
+    public List<PersonInfoRelation> getPersonRelationships(Integer personId) {
         List<PersonRelationship> personRelationships = personRelationshipDao.listByPersonId(personId);
         if (personRelationships.isEmpty()) {
             return Collections.emptyList();
@@ -178,33 +180,6 @@ public class PersonServiceImpl implements IPersonService {
             relation.setAge(personArchive.getAge());
             relation.setAlive(personArchive.getDeathDay() == null);
             return relation;
-        }).collect(Collectors.toList());
-    }
-
-    /**
-     * 获取家人信息
-     * @param personId 个人信息ID
-     * @return 家人简略信息列表
-     */
-    private List<PersonInfoBrief> findFamilyInfoList(Integer personId) {
-        List<PersonRelationship> personRelations = personRelationshipDao.listByPersonId(personId);
-        int relatesPersonSize = personRelations.size();
-        final Map<Integer, Person> relatedPersonListMap = new HashMap<>(relatesPersonSize);
-        if (relatesPersonSize > 0) {
-            Set<Integer> relatedPersonIds = personRelations.stream().map(PersonRelationship::getRelationPersonId).collect(Collectors.toSet());
-            List<Person> relatedPersons = personDao.listByIds(relatedPersonIds);
-            Map<Integer, Person> relatedPersonById = relatedPersons.stream().collect(Collectors.toMap(Person::getId, v -> v));
-            relatedPersonListMap.putAll(relatedPersonById);
-        }
-        return personRelations.stream().map(personRelationship -> {
-            Integer personRelationshipId = personRelationship.getRelationPersonId();
-            Person relatedPerson = relatedPersonListMap.get(personRelationshipId);
-
-            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
-            personInfoBrief.setId(personRelationshipId);
-            personInfoBrief.setAccount(relatedPerson == null ? null : relatedPerson.getAccount());
-            personInfoBrief.setName(relatedPerson == null ? null : relatedPerson.getName());
-            return personInfoBrief;
         }).collect(Collectors.toList());
     }
 }

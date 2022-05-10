@@ -1,6 +1,7 @@
 package com.wyhw.pmp.controller;
 
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
+import com.wyhw.pmp.entity.model.PersonInfoDetail;
 import com.wyhw.pmp.service.IPersonService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,5 +23,10 @@ public class PersonController {
     @GetMapping("/list")
     public List<PersonInfoBrief> listPerson(String name) {
         return personService.listByName(name);
+    }
+
+    @GetMapping("/detail/get")
+    public PersonInfoDetail listPerson(Integer personId) {
+        return personService.getPersonDetail(personId);
     }
 }

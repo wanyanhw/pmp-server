@@ -1,14 +1,20 @@
 let SERVER_IP = "http://127.0.0.1/";
 
 let personListUrl = "/person/list";
+let personDetailUrl = "/person/detail/get";
+
 $().ready(function () {
-    let personList = _get(personListUrl);
+    getPersonList();
+});
+
+function getPersonList() {
     let picAreaHtml = "";
+    let personList = _get(personListUrl);
     personList.forEach(person => {
         picAreaHtml += addPicHtml(person.id, person.name, person.photo);
     });
     $("#pic-area").html(picAreaHtml);
-});
+}
 
 function addPicHtml(id, name, photoAddress) {
     if (ifEmpty(photoAddress)) {
@@ -27,7 +33,8 @@ function addPicHtml(id, name, photoAddress) {
 }
 
 function selectPersonInfo(_this) {
-    alert("TODO: 获取个人信息详情\nid:" + _this.id);
+    let personDetail = _get(personDetailUrl + "?personId=" + _this.id);
+    alert("个人信息详情\n\n" + JSON.stringify(personDetail));
 }
 
 function ifEmpty(value) {

@@ -28,5 +28,5 @@ public class PersonInfoDetail extends PersonInfoBrief {
     private String address;
 
     @ApiModelProperty("家庭成员")
-    private List<PersonInfoBrief> familyMembers;
+    private List<PersonInfoRelation> familyMembers;
 }
