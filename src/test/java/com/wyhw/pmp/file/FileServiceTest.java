@@ -40,7 +40,7 @@ public class FileServiceTest extends BaseTest {
         File sourceFile1 = new File("C:\\Users\\wanyanhw\\Pictures\\ship.mp4");
         File sourceFile2 = new File("E:\\素材\\视频\\video2.mp4");
         try {
-//            files = FileUtil.splitByQuantity(sourceFile1, 5, "ship.mp4", filePath);
+            files = FileUtil.splitByQuantity(sourceFile1, 5, "ship.mp4", filePath);
             files = FileUtil.splitByQuantity(sourceFile2, 10, "video2.mp4", filePath);
         } catch (IOException e) {
             e.printStackTrace();

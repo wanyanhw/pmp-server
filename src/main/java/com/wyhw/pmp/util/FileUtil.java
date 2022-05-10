@@ -191,7 +191,16 @@ public class FileUtil {
     private static List<File> filenameFilter(File[] files, String filename) {
         List<File> fileList = new ArrayList<>();
         for (File file : files) {
-            if (file.getName().contains(filename)) {
+            String subFilename = file.getName();
+            String[] split = subFilename.split("\\.");
+            String extension = split[split.length - 1];
+            try {
+                // 扩展名不是数字的情况下，可判断此文件不是分片文件
+                Integer.valueOf(extension);
+            } catch (Exception e) {
+                continue;
+            }
+            if (subFilename.contains(filename)) {
                 fileList.add(file);
             }
         }
