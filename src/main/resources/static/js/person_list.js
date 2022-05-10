@@ -1,10 +1,12 @@
 let SERVER_IP = "http://127.0.0.1/";
 
+let personListUrl = "/person/list";
 $().ready(function () {
+    let personList = _get(personListUrl);
     let picAreaHtml = "";
-    for (let i = 1; i <= 10; i++) {
-        picAreaHtml += addPicHtml(i, "第" + i + "个", "");
-    }
+    personList.forEach(person => {
+        picAreaHtml += addPicHtml(person.id, person.name, person.photo);
+    });
     $("#pic-area").html(picAreaHtml);
 });
 
