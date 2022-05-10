@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Head</title>
     <script type="text/javascript" src="../js/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../js/hover.js"></script>
     <style>
         .menu-font {
             font-family: "Microsoft YaHei UI";
@@ -19,9 +20,10 @@
             margin-left: 50px;
             background-color: rgba(155, 155, 155, 0.1);
             height: 50px;
-            width: 200px;
+            width: 100px;
             text-align: center;
             line-height: 50px;
+            border: 1px solid rgba(155, 155, 155, 0.3);
         }
         a {
             color: #000000;
@@ -32,8 +34,9 @@
 <body>
     <div id="menu">
         <ul>
-            <li><a id="first-button-menu" class="menu-font" href="echart.html" target="main">柱状图1</a></li>
-            <li><a id="person-list-menu" class="menu-font" href="person_list.html" target="main">人员列表</a></li>
+            <li id="first-button-menu" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"><a class="menu-font" href="echart.html" target="main">柱状图1</a></li>
+            <li id="person-list-menu" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"><a class="menu-font" href="person_list.html" target="main">人员列表</a></li>
+            <li id="person-add-menu" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)"><a class="menu-font" href="person_add.html" target="main">新增人员</a></li>
         </ul>
     </div>
 </body>

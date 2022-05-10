@@ -3,9 +3,7 @@ package com.wyhw.pmp.controller;
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
 import com.wyhw.pmp.service.IPersonService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,5 +26,10 @@ public class PersonController {
     @GetMapping("/detail/get")
     public PersonInfoDetail listPerson(Integer personId) {
         return personService.getPersonDetail(personId);
+    }
+
+    @PostMapping("/save")
+    public PersonInfoDetail savePerson(@RequestBody PersonInfoDetail personInfoDetail) {
+        return personService.save(personInfoDetail);
     }
 }

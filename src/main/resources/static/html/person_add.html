@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增人员</title>
+    <script type="text/javascript" src="../js/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../js/ajax.js"></script>
+    <script type="text/javascript" src="../js/person_add.js"></script>
+    <script type="text/javascript" src="../js/hover.js"></script>
+    <style>
+        #person-form-field {
+            margin: 80px 35% auto 30%;
+            padding: 50px 50px 20px 150px;
+            background-color: rgba(162, 162, 162, 0.1);
+            box-shadow: rgba(160, 160, 160, 0.4) 10px 10px 150px 150px;
+
+        }
+        .form-field {
+            margin-top: 10px;
+            height: 50px;
+            width: 500px;
+            line-height: 50px;
+        }
+        .form-field label {
+            font: 18px "Microsoft YaHei UI";
+            letter-spacing: 5px;
+        }
+        .form-field input {
+            border: none;
+            background: rgba(162, 162, 162, 0.3);
+            height: 30px;
+            width: 180px;
+            padding-left: 5px;
+        }
+        .form-field input[type=radio] {
+            width: 50px;
+            height: 15px;
+        }
+        #form-button {
+            margin-top: 15px;
+        }
+        #save-button button {
+            margin-left: 50px;
+            height: 35px;
+            width: 150px;
+            font: 22px "Microsoft YaHei UI";
+            background-color: transparent;
+            color: rgba(122, 122, 122, 1);
+            border: 1px solid rgba(155, 155, 155, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="person-form-field">
+        <div class="form-field">
+            <label>姓名:</label>
+            <input name="name" placeholder="请输入姓名"/>
+        </div>
+        <div class="form-field">
+            <label>账号:</label>
+            <input name="account" placeholder="请输入账号"/>
+        </div>
+        <div class="form-field">
+            <label>电话:</label>
+            <input name="phone" placeholder="请输入电话"/>
+        </div>
+        <div class="form-field">
+            <label>生日:</label>
+            <input name="birthday" placeholder="请输入出生日期"/>
+        </div>
+        <div class="form-field">
+            <label>性别:</label>
+            <input name="sex" type="radio" value="1" checked/>男
+            <input name="sex" type="radio" value="2"/>女
+        </div>
+        <div class="form-field">
+            <label>年龄:</label>
+            <input name="age" type="number" placeholder="请输入年龄"/>
+        </div>
+        <div class="form-field">
+            <label>头像:</label>
+            <input name="photo" type="file" placeholder="请上传头像"/>
+        </div>
+        <div id="form-button">
+            <div id="save-button">
+                <button id="submit" name="submit" onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">保 存</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
