@@ -11,12 +11,12 @@ function getPersonList() {
     let picAreaHtml = "";
     let personList = _get(personListUrl);
     personList.forEach(person => {
-        picAreaHtml += addPicHtml(person.id, person.name, person.photo);
+        picAreaHtml += buildPicHtml(person.id, person.name, person.photo);
     });
     $("#pic-area").html(picAreaHtml);
 }
 
-function addPicHtml(id, name, photoAddress) {
+function buildPicHtml(id, name, photoAddress) {
     if (ifEmpty(photoAddress)) {
         photoAddress = "../pic/head.jpg";
     } else {
