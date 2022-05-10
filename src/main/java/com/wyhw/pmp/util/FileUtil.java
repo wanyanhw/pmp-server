@@ -1,6 +1,8 @@
 package com.wyhw.pmp.util;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文件工具类
@@ -41,6 +43,7 @@ public class FileUtil {
      * @return true-合并成功 false-合并失败
      * @throws IOException 异常
      */
+    @Deprecated
     public static boolean mergeFile(String fileDirectory, String fileName, String separator, int chunkTotal) throws IOException {
         File dir = new File(fileDirectory);
         boolean isDirectory = dir.isDirectory();
@@ -51,8 +54,8 @@ public class FileUtil {
         if (fileArguments.length != 2) {
             return false;
         }
-        String targetName = fileArguments[0];
-        String targetType = fileArguments[1];
+        String targetFileName = fileArguments[0];
+        String targetFileType = fileArguments[1];
 
         File[] files = dir.listFiles();
         if (files == null) {
@@ -62,13 +65,13 @@ public class FileUtil {
         File targetFile = new File(fileDirectory + File.separator + fileName);
         try (FileOutputStream fos = new FileOutputStream(targetFile);
              BufferedOutputStream os = new BufferedOutputStream(fos)) {
-            byte[] bytes = new byte[1024 * 1024 * 2];
+            byte[] bytes = new byte[2 * 1024 * 1024];
             int chunkIndex = 1;
-            for (File file : files) {
-                if (file.isDirectory()) {
+            for (File splitFile : files) {
+                if (splitFile.isDirectory()) {
                     continue;
                 }
-                String tempFileName = file.getName();
+                String tempFileName = splitFile.getName();
                 String[] tempFileArguments = tempFileName.split("\\.");
                 String[] tempName = tempFileArguments[0].split(separator);
                 if (tempName.length != 2) {
@@ -77,16 +80,16 @@ public class FileUtil {
                 String type = tempFileArguments[1];
                 String name = tempName[0];
                 int index = Integer.parseInt(tempName[1]);
-                boolean match = targetName.equals(name) && targetType.equals(type) && index == chunkIndex;
+                boolean match = targetFileName.equals(name) && targetFileType.equals(type) && index == chunkIndex;
                 if (!match) {
                     continue;
                 }
-                try (FileInputStream fis = new FileInputStream(file)) {
+                try (FileInputStream fis = new FileInputStream(splitFile)) {
                     int count;
                     while ((count = fis.read(bytes)) != -1) {
                         os.write(bytes, 0, count);
                     }
-                    file.delete();
+                    splitFile.delete();
                     chunkIndex ++;
                 }
 
@@ -109,7 +112,9 @@ public class FileUtil {
      * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
      */
     public static File[] splitByQuantity(File file, int total, String filename, String basePath) throws IOException{
-        return splitBySize(file, (int) (file.length() / total), filename, basePath);
+        long subFileSize = file.length() / total;
+        long size = file.length() % total > 0 ? subFileSize + 1 : subFileSize;
+        return splitBySize(file, (int) (size), filename, basePath);
     }
 
     /**
@@ -127,17 +132,17 @@ public class FileUtil {
             int splitIndex = 0;
             int splitTotal = (int) (file.length() % size > 0 ? file.length() / size + 1 : file.length() / size);
             File[] splitFiles = new File[splitTotal];
-            byte[] b = new byte[size];
+            byte[] buffer = new byte[size];
             int length;
-            while ((length = fis.read(b, 0, b.length)) != -1) {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                bos.write(b, 0, length);
-                splitFiles[splitIndex] = new File(basePath + filename + "." + (splitIndex + 1));
-                try (FileOutputStream fos = new FileOutputStream(splitFiles[splitIndex])) {
-                    fos.write(bos.toByteArray());
+            while ((length = fis.read(buffer, 0, buffer.length)) != -1) {
+                try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                    bos.write(buffer, 0, length);
+                    splitFiles[splitIndex] = new File(basePath + filename + "." + (splitIndex + 1));
+                    try (FileOutputStream fos = new FileOutputStream(splitFiles[splitIndex])) {
+                        fos.write(bos.toByteArray());
+                    }
+                    splitIndex++;
                 }
-                bos.close();
-                splitIndex ++;
             }
             return splitFiles;
         }
@@ -146,22 +151,51 @@ public class FileUtil {
     /**
      * merge some split mini-files a large file
      *
-     * @param files The mini file array. <Strong>The suffix-number of {@code files} must be ordered by asc in the array</Strong>
+     * @param files The mini file array.
      * @param path The large target file will be stored in
      * @param filename Name the large target file
      */
-    public static void merge(File[] files, String path, String filename) throws IOException {
+    public static boolean merge(File[] files, String path, String filename) throws IOException {
+        List<File> fileList = filenameFilter(files, filename);
+        if (fileList.isEmpty()) {
+            return false;
+        }
+
+        fileList.sort((o1, o2) -> {
+            Integer index1 = Integer.valueOf(o1.getName().split("\\.")[2]);
+            Integer index2 = Integer.valueOf(o2.getName().split("\\.")[2]);
+            return index1.compareTo(index2);
+        });
+
         try (FileOutputStream fos = new FileOutputStream(new File(path + filename))) {
-            for (File file : files) {
+            for (File file : fileList) {
                 try (FileInputStream fis = new FileInputStream(file)) {
-                    byte[] b = new byte[10 * 1024 * 1024];
+                    byte[] b = new byte[2 * 1024 * 1024];
                     int length;
                     while ((length = fis.read(b)) != -1) {
                         fos.write(b, 0, length);
                     }
                 }
+                file.delete();
+            }
+            return true;
+        }
+    }
+
+    /**
+     * 按照文件名称过滤文件数组
+     * @param files 文件数组
+     * @param filename 指定文件名称
+     * @return List 过滤后的文件列表
+     */
+    private static List<File> filenameFilter(File[] files, String filename) {
+        List<File> fileList = new ArrayList<>();
+        for (File file : files) {
+            if (file.getName().contains(filename)) {
+                fileList.add(file);
             }
         }
+        return fileList;
     }
 
     /**
