@@ -153,6 +153,68 @@ $().ready(function () {
         ]
     };
 
+    var data3 = [
+        {
+            type: 'tree',
+            name: '人物关系图',
+            data: [data],
+            top: '10%',
+            left: '20%',
+            bottom: '2%',
+            right: '60%',
+            symbolSize: 150,
+            // 折线
+            edgeShape: 'polyline',
+            orient: 'vertical',
+            label: {
+                position: 'left',
+                verticalAlign: 'middle',
+                align: 'right'
+            },
+            leaves: {
+                label: {
+                    position: 'right',
+                    verticalAlign: 'middle',
+                    align: 'left'
+                }
+            },
+            emphasis: {
+                focus: 'descendant'
+            },
+            expandAndCollapse: true,
+            animationDuration: 550,
+            animationDurationUpdate: 750
+        },
+        {
+            type: 'tree',
+            name: 'tree2',
+            data: [data2],
+            top: '20%',
+            left: '60%',
+            bottom: '22%',
+            right: '18%',
+            symbolSize: 7,
+            label: {
+                position: 'left',
+                verticalAlign: 'middle',
+                align: 'right'
+            },
+            leaves: {
+                label: {
+                    position: 'right',
+                    verticalAlign: 'middle',
+                    align: 'left'
+                }
+            },
+            expandAndCollapse: true,
+            emphasis: {
+                focus: 'descendant'
+            },
+            animationDuration: 550,
+            animationDurationUpdate: 750
+        }
+    ];
+
     myChart.hideLoading();
     myChart.setOption(
         (option = {
@@ -166,7 +228,7 @@ $().ready(function () {
                 orient: 'vertical',
                 data: [
                     {
-                        name: 'tree1',
+                        name: '人物关系图',
                         icon: 'rectangle'
                     },
                     {
@@ -176,68 +238,11 @@ $().ready(function () {
                 ],
                 borderColor: '#c23531'
             },
-            series: [
-                {
-                    type: 'tree',
-                    name: 'tree1',
-                    data: [data],
-                    top: '5%',
-                    left: '7%',
-                    bottom: '2%',
-                    right: '60%',
-                    symbolSize: 7,
-                    label: {
-                        position: 'left',
-                        verticalAlign: 'middle',
-                        align: 'right'
-                    },
-                    leaves: {
-                        label: {
-                            position: 'right',
-                            verticalAlign: 'middle',
-                            align: 'left'
-                        }
-                    },
-                    emphasis: {
-                        focus: 'descendant'
-                    },
-                    expandAndCollapse: true,
-                    animationDuration: 550,
-                    animationDurationUpdate: 750
-                },
-                {
-                    type: 'tree',
-                    name: 'tree2',
-                    data: [data2],
-                    top: '20%',
-                    left: '60%',
-                    bottom: '22%',
-                    right: '18%',
-                    symbolSize: 7,
-                    label: {
-                        position: 'left',
-                        verticalAlign: 'middle',
-                        align: 'right'
-                    },
-                    leaves: {
-                        label: {
-                            position: 'right',
-                            verticalAlign: 'middle',
-                            align: 'left'
-                        }
-                    },
-                    expandAndCollapse: true,
-                    emphasis: {
-                        focus: 'descendant'
-                    },
-                    animationDuration: 550,
-                    animationDurationUpdate: 750
-                }
-            ]
+            series: data3
         })
     );
 
-    option && myChart.setOption(option);
+    myChart.setOption(option);
 
 
 });
