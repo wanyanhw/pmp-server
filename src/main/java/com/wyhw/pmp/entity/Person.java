@@ -29,6 +29,12 @@ public class Person implements Serializable {
     private Integer id;
 
     /**
+     * 父ID
+     */
+    @TableField("parent_id")
+    private Integer parentId;
+
+    /**
      * 账号
      */
     @TableField("account")

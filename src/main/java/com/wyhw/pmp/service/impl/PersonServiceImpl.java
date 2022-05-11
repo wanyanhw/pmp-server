@@ -182,4 +182,9 @@ public class PersonServiceImpl implements IPersonService {
             return relation;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<PersonInfoBrief> selectPersonTrees(Integer parentId) {
+        return personDao.selectPersonTrees(parentId);
+    }
 }

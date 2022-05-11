@@ -1,5 +1,6 @@
 package com.wyhw.pmp.person;
 
+import com.alibaba.fastjson.JSONArray;
 import com.wyhw.pmp.BaseTest;
 import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
@@ -72,5 +73,11 @@ public class PersonServiceTest extends BaseTest {
     @Test
     public void deletePersonRelationship() {
         iPersonService.delPersonRelationship(1, 4);
+    }
+
+    @Test
+    public void show() {
+        List<PersonInfoBrief> personInfoBriefs = iPersonService.selectPersonTrees(0);
+        System.out.println(JSONArray.toJSONString(personInfoBriefs));
     }
 }

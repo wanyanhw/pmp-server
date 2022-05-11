@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  *
  * @author wanyanhw
@@ -14,6 +16,9 @@ import lombok.Data;
 public class PersonInfoBrief {
     @ApiModelProperty("人员ID")
     private Integer id;
+
+    @ApiModelProperty("父ID")
+    private Integer parentId;
 
     @ApiModelProperty("照片")
     private String photo;
@@ -32,4 +37,7 @@ public class PersonInfoBrief {
 
     @ApiModelProperty("是否存活")
     private Boolean alive;
+
+    @ApiModelProperty("子女")
+    private List<PersonInfoBrief> children;
 }

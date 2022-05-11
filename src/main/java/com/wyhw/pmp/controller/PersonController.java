@@ -32,4 +32,9 @@ public class PersonController {
     public PersonInfoDetail savePerson(@RequestBody PersonInfoDetail personInfoDetail) {
         return personService.save(personInfoDetail);
     }
+
+    @GetMapping("/tree/list")
+    public List<PersonInfoBrief> listPersonTrees(Integer parentId) {
+        return personService.selectPersonTrees(parentId);
+    }
 }

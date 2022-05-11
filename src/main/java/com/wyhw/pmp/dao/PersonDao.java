@@ -2,6 +2,7 @@ package com.wyhw.pmp.dao;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wyhw.pmp.entity.Person;
+import com.wyhw.pmp.entity.model.PersonInfoBrief;
 
 import java.util.List;
 
@@ -35,4 +36,11 @@ public interface PersonDao extends IService<Person> {
      * @return 人员信息
      */
     Person getPersonById(Integer personId);
+
+    /**
+     * 获取人物关系图谱
+     * @param parentId 父ID
+     * @return List
+     */
+    List<PersonInfoBrief> selectPersonTrees(Integer parentId);
 }

@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wyhw.pmp.dao.PersonDao;
 import com.wyhw.pmp.entity.Person;
+import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.mapper.PersonMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,6 +22,9 @@ import java.util.List;
  */
 @Service
 public class PersonDaoImpl extends ServiceImpl<PersonMapper, Person> implements PersonDao {
+
+    @Resource
+    private PersonMapper personMapper;
 
     @Override
     public boolean deletePerson(Integer personId) {
@@ -43,5 +48,10 @@ public class PersonDaoImpl extends ServiceImpl<PersonMapper, Person> implements 
         return getOne(new LambdaQueryWrapper<Person>()
                 .eq(Person::getId, personId)
                 .eq(Person::getDeleted, false));
+    }
+
+    @Override
+    public List<PersonInfoBrief> selectPersonTrees(Integer parentId) {
+        return personMapper.selectPersonTrees(parentId);
     }
 }

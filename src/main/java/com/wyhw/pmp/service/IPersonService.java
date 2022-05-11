@@ -60,4 +60,11 @@ public interface IPersonService {
      * @return 关系列表
      */
     List<PersonInfoRelation> getPersonRelationships(Integer personId);
+
+    /**
+     * 获取人物关系图谱
+     * @param parentId 父ID
+     * @return List
+     */
+    List<PersonInfoBrief> selectPersonTrees(Integer parentId);
 }

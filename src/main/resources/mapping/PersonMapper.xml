@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.wyhw.pmp.entity.Person">
         <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
         <result column="account" property="account" />
         <result column="password" property="password" />
         <result column="name" property="name" />
@@ -19,7 +20,38 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, account, password, name, status, last_login_time, create_user, create_time, update_user, update_time, deleted
+        id, parent_id, account, password, name, status, last_login_time, create_user, create_time, update_user, update_time, deleted
     </sql>
 
+    <resultMap id="PersonTreeMap" type="com.wyhw.pmp.entity.model.PersonInfoBrief">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="account" property="account" />
+        <result column="photo" property="photo" />
+        <result column="name" property="name" />
+        <result column="sex" property="sex" />
+        <collection property="children" ofType="com.wyhw.pmp.entity.model.PersonInfoBrief"
+                    javaType="java.util.List" select="selectPersonTrees" column="id">
+        </collection>
+    </resultMap>
+
+    <select id="selectPersonTrees" resultMap="PersonTreeMap">
+        SELECT
+            p.id,
+            p.parent_id,
+            p.name,
+            p.account,
+            pa.sex,
+            pa.photo
+        FROM
+            `person` p
+            LEFT JOIN person_archive pa on pa.person_id = p.id
+        WHERE
+            p.deleted = 0
+            AND p.parent_id = #{parentId}
+            AND pa.deleted = 0
+            <if test="parentId == 0">
+                AND pa.sex = 1
+            </if>
+    </select>
 </mapper>
