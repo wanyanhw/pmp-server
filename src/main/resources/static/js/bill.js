@@ -3,13 +3,7 @@ $().ready(function () {
     let list_url = "/bill/list";
     let save_url = "/bill/save";
     let billEleList = _get(list_url);
-    // initScrollShow(billEleList);
-    // let $scroll_show_labels = $(".scroll-show label");
-    // let labelNum = $scroll_show_labels.length;
-    // timer = new Array(labelNum);
-    // for (let i = 0; i < labelNum; i++) {
-    //     scroll_show(i);
-    // }
+    initChartShow(billEleList);
     showList(billEleList);
     $("#submit").click(function () {
         let type = $("#type option:selected").val();
@@ -30,23 +24,55 @@ $().ready(function () {
         };
         _post(save_url, JSON.stringify(data));
         showList(_get(list_url));
+        initChartShow(billEleList);
     });
 });
 
 /**
- * 初始化弹幕区域
- * @param resultList
+ * 初始化图表展示区域
+ * @param result
  */
-function initScrollShow(resultList) {
-    for (let i = 0; i < resultList.length; i++) {
-        let result = resultList[i];
-        let total = result.total;
-        let consumer = result.consumer;
-        let remark = result.remark;
-        let consumeTime = result.consumeTime;
-        let content = consumer + "在" + consumeTime + (total > 0 ? "收入了" : "支出了") + total + "元在" + remark + "上";
-        $(".scroll-show").append("<label onmouseover=\"hover(" + i + ")\" onmouseout=\"scroll_show(" + i + ")\">" + content + "</label><br><br>")
+function initChartShow(result) {
+    result.reverse();
+    let hTotalArray = [];
+    let wTotalArray = [];
+    let timeArray = [];
+    for (let i = 0; i < result.length; i++) {
+        let element = result[i];
+        timeArray[i] = element.consumeTime;
+        hTotalArray[i] = element.total;
+        wTotalArray[i] = element.total + 200;
     }
+    let myChart = echarts.init($('#chart-show')[0]);
+    let option = {
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove'
+        },
+        xAxis: {
+            type: 'category',
+            data: timeArray
+        },
+        yAxis: [
+            {
+                type: 'value'
+            },
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                data: hTotalArray,
+                type: 'line'
+            },
+            {
+                data: wTotalArray,
+                type: 'line'
+            }
+        ]
+    };
+    myChart.setOption(option);
 }
 
 function showList(result) {
@@ -73,34 +99,4 @@ function showList(result) {
     }
     data += "</table>";
     $(".bill-list-content").html(data);
-}
-
-function scroll_show(index) {
-    let $label = $(".scroll-show label").eq(index);
-    timer[index] = setInterval(function () {
-        moveLeft($label, 0.5);
-    }, 1);
-}
-
-let labelFormerWidth;
-function moveLeft($scroll, speed) {
-    let scrollShowWidth = $(".scroll-show").css("width");
-    let scrollShowWidthPx = scrollShowWidth.substr(0, scrollShowWidth.length - 2);
-    if (labelFormerWidth == null) {
-        labelFormerWidth = $scroll.css("width");
-    }
-    let labelWidth = $scroll.css("width");
-    let labelWidthPx = labelWidth.substr(0, labelWidth.length - 2);
-    let marginLeft = $scroll.css("marginLeft");
-    let marginLeftPx = marginLeft.substr(0, marginLeft.length - 2);
-    if (marginLeftPx <= 0) {
-        if (parseInt(labelWidthPx) + parseInt(marginLeftPx) <= 0) {
-            marginLeftPx = scrollShowWidthPx;
-        }
-    }
-    $scroll.css("marginLeft", (marginLeftPx - speed));
-}
-
-function hover(index) {
-    clearInterval(timer[index]);
 }
