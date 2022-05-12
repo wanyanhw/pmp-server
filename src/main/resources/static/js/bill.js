@@ -57,14 +57,33 @@ function initChartShow(result) {
             type: 'category',
             data: timeArray
         },
-        yAxis: {},
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 元'
+            }
+        },
+        legend: {
+            data: [
+                {
+                    name: '完颜宏伟',
+                    icon: 'rect'
+                },
+                {
+                    name: '刘梦丽',
+                    icon: 'rect'
+                }
+            ]
+        },
         series: [
             {
+                name: '完颜宏伟',
                 data: hTotalArray,
                 type: 'line',
                 stack: 'x'
             },
             {
+                name: '刘梦丽',
                 data: wTotalArray,
                 type: 'line',
                 stack: 'x'
