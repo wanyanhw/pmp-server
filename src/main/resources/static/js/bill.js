@@ -40,8 +40,12 @@ function initChartShow(result) {
     for (let i = 0; i < result.length; i++) {
         let element = result[i];
         timeArray[i] = element.consumeTime;
-        hTotalArray[i] = element.total;
-        wTotalArray[i] = element.total + 200;
+        let consumer = element.consumer;
+        if (consumer === "1") {
+            hTotalArray.push(element.total);
+        } else if (consumer === "2") {
+            wTotalArray.push(element.total);
+        }
     }
     let myChart = echarts.init($('#chart-show')[0]);
     let option = {
@@ -53,22 +57,17 @@ function initChartShow(result) {
             type: 'category',
             data: timeArray
         },
-        yAxis: [
-            {
-                type: 'value'
-            },
-            {
-                type: 'value'
-            }
-        ],
+        yAxis: {},
         series: [
             {
                 data: hTotalArray,
-                type: 'line'
+                type: 'line',
+                stack: 'x'
             },
             {
                 data: wTotalArray,
-                type: 'line'
+                type: 'line',
+                stack: 'x'
             }
         ]
     };
