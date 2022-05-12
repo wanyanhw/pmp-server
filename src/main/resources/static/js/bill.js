@@ -23,8 +23,9 @@ $().ready(function () {
             "remark" : remark
         };
         _post(save_url, JSON.stringify(data));
-        showList(_get(list_url));
-        initChartShow(billEleList);
+        let list = _get(list_url);
+        showList(list);
+        initChartShow(list);
     });
 });
 
@@ -80,13 +81,16 @@ function initChartShow(result) {
                 name: '完颜宏伟',
                 data: hTotalArray,
                 type: 'line',
-                stack: 'x'
+                stack: 'x',
+                smooth: true
             },
             {
                 name: '刘梦丽',
                 data: wTotalArray,
                 type: 'line',
-                stack: 'x'
+                stack: 'x',
+                smooth: true
+
             }
         ]
     };
