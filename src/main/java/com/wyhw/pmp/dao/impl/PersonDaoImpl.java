@@ -54,4 +54,12 @@ public class PersonDaoImpl extends ServiceImpl<PersonMapper, Person> implements 
     public List<PersonInfoBrief> selectPersonTrees(Integer parentId) {
         return personMapper.selectPersonTrees(parentId);
     }
+
+    @Override
+    public boolean addParent(Integer personId, Integer parentId) {
+        return lambdaUpdate()
+                .eq(Person::getId, personId)
+                .set(Person::getParentId, parentId)
+                .update();
+    }
 }

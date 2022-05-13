@@ -45,12 +45,12 @@ public class PersonServiceTest extends BaseTest {
     @Test
     public void addRelationPerson() {
         PersonInfoDetail relatedPerson = new PersonInfoDetail();
-        relatedPerson.setName("刘峰");
+        relatedPerson.setName("刘玉强");
         relatedPerson.setSex(1);
         relatedPerson.setBirthday("1973-03-26");
-        relatedPerson.setAccount("liufeng");
+        relatedPerson.setAccount("liuyuqiang");
         relatedPerson.setPhoneNum("17154663336");
-        iPersonService.addPersonRelationship(1, RelationshipEnum.FATHER.getCode(), relatedPerson);
+        iPersonService.addPersonRelationship(11, RelationshipEnum.FATHER.getCode(), relatedPerson);
     }
 
     @Test

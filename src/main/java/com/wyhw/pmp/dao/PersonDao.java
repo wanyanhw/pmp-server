@@ -43,4 +43,12 @@ public interface PersonDao extends IService<Person> {
      * @return List
      */
     List<PersonInfoBrief> selectPersonTrees(Integer parentId);
+
+    /**
+     * 添加父ID
+     * @param personId 个人ID
+     * @param parentId 父ID
+     * @return boolean
+     */
+    boolean addParent(Integer personId, Integer parentId);
 }

@@ -10,6 +10,7 @@ import com.wyhw.pmp.entity.model.PersonInfoBrief;
 import com.wyhw.pmp.entity.model.PersonInfoDetail;
 import com.wyhw.pmp.entity.model.PersonInfoRelation;
 import com.wyhw.pmp.entity.model.em.AccountStatusEnum;
+import com.wyhw.pmp.entity.model.em.RelationshipEnum;
 import com.wyhw.pmp.service.IPersonService;
 import com.wyhw.pmp.util.DateUtil;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class PersonServiceImpl implements IPersonService {
         // 1、创建账号信息
         Person person = new Person();
         person.setId(personInfoDetail.getId());
+        person.setParentId(personInfoDetail.getParentId());
         person.setAccount(personInfoDetail.getAccount());
         person.setPassword("123456");
         person.setName(personInfoDetail.getName());
@@ -140,6 +142,19 @@ public class PersonServiceImpl implements IPersonService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addPersonRelationship(Integer personId, Integer relationship, PersonInfoDetail relatePersonInfoDetail) {
+        RelationshipEnum relationshipEnum = RelationshipEnum.getByCode(relationship);
+        boolean addParent = false;
+        switch (relationshipEnum) {
+            case FATHER:
+                addParent = true;
+                break;
+            case SON:
+            case DAUGHTER:
+                relatePersonInfoDetail.setParentId(personId);
+                break;
+            default:
+                break;
+        }
         PersonInfoDetail relatedPersonInfoDetail = save(relatePersonInfoDetail);
         Integer relatedPersonId = relatedPersonInfoDetail.getId();
         PersonRelationship personRelationship = new PersonRelationship();
@@ -147,6 +162,9 @@ public class PersonServiceImpl implements IPersonService {
         personRelationship.setRelationId(relationship);
         personRelationship.setRelationPersonId(relatedPersonId);
         personRelationshipDao.save(personRelationship);
+        if (addParent) {
+            personDao.addParent(personId, relatedPersonId);
+        }
     }
 
     @Override

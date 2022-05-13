@@ -42,7 +42,7 @@ public interface IPersonService {
     /**
      * 添加个人关系并创建关系账号
      * @param personId 人员ID
-     * @param relationship 关系类型 {@link com.wyhw.pmp.entity.model.em.RelationshipEnum}
+     * @param relationship 关系人类型 {@link com.wyhw.pmp.entity.model.em.RelationshipEnum}
      * @param relatePersonInfoDetail 关系成员信息详情
      */
     void addPersonRelationship(Integer personId, Integer relationship, PersonInfoDetail relatePersonInfoDetail);

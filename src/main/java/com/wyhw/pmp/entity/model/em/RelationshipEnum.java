@@ -44,4 +44,12 @@ public enum RelationshipEnum {
 
     private int code;
 
+    public static RelationshipEnum getByCode(Integer code) {
+        for (RelationshipEnum anEnum : RelationshipEnum.values()) {
+            if (anEnum.getCode() == code) {
+                return anEnum;
+            }
+        }
+        throw new RuntimeException("Relation code not exist");
+    }
 }
