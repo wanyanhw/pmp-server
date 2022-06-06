@@ -1,29 +1,55 @@
 package com.wyhw.pmp.game;
 
+import javax.swing.*;
+
 /**
  * @author wanyanhw
  * @date 2022/6/6 14:56
  */
 public class MineClearance {
 
-    private int width = 15;
+    private int width = 10;
 
-    private int height = 5;
+    private int height = 10;
 
-    private static int mineTotal = 20;
+    private int mineTotal = 10;
 
-    private int[][] t;
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setMineTotal(int mineTotal) {
+        this.mineTotal = mineTotal;
+    }
+
+    private int[][] map;
 
     public static final int MINE_FLAG = 9;
 
     public static void main(String[] args) {
         MineClearance mineClearance = new MineClearance();
-        mineClearance.loadMine(mineTotal);
-        mineClearance.show();
+        mineClearance.loadMine();
+//        mineClearance.show();
+        mineClearance.showFrame();
+    }
+
+    private void showFrame() {
+        int pixWidth = 50;
+        JFrame jFrame = new JFrame();
+
+        jFrame.setVisible(true);
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setSize(width * pixWidth, height * pixWidth);
+        jFrame.setLocation(800, 200);
+        jFrame.setContentPane(new MapPanel(map));
     }
 
     public void show() {
-        for (int[] l : t) {
+        for (int[] l : map) {
             for (int v : l) {
                 System.out.print(v + "  ");
             }
@@ -31,12 +57,12 @@ public class MineClearance {
         }
     }
 
-    private void loadMine(int mineTotal) {
+    private void loadMine() {
         if (width * height < mineTotal) {
             width = height = mineTotal;
             System.out.println(String.format("已自动生成 %d*%d", width, height));
         }
-        t = new int[height][width];
+        map = new int[height][width];
         int[] indexArr = new int[mineTotal * 2];
         int i = 0;
 
@@ -44,16 +70,17 @@ public class MineClearance {
         while (mineTotal > 0) {
             int x = (int) (Math.random() * height);
             int y = (int) (Math.random() * width);
-            if (t[x][y] == MINE_FLAG) {
+            if (map[x][y] == MINE_FLAG) {
                 continue;
             }
-            t[x][y] = MINE_FLAG;
+            map[x][y] = MINE_FLAG;
             indexArr[i] = x;
             indexArr[i + 1] = y;
             mineTotal--;
             i += 2;
         }
 
+        // 生成炸弹周围提示信息
         for (int i1 = 0; i1 < indexArr.length; i1+=2) {
             int indexX = indexArr[i1];
             int indexY = indexArr[i1 + 1];
@@ -94,9 +121,9 @@ public class MineClearance {
     }
 
     private void increase(int indexX, int indexY) {
-        if (t[indexX][indexY] == MINE_FLAG) {
+        if (map[indexX][indexY] == MINE_FLAG) {
             return;
         }
-        t[indexX][indexY] ++;
+        map[indexX][indexY] ++;
     }
 }
