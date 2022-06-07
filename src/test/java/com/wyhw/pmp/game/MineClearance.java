@@ -8,11 +8,11 @@ import javax.swing.*;
  */
 public class MineClearance {
 
-    private int width = 10;
+    private int width = 20;
 
     private int height = 10;
 
-    private int mineTotal = 10;
+    private int mineTotal = 20;
 
     public void setHeight(int height) {
         this.height = height;
@@ -33,7 +33,7 @@ public class MineClearance {
     public static void main(String[] args) {
         MineClearance mineClearance = new MineClearance();
         mineClearance.loadMine();
-//        mineClearance.show();
+        mineClearance.show();
         mineClearance.showFrame();
     }
 
