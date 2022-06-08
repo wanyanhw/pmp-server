@@ -134,7 +134,7 @@ public class SqlFileReader {
     private void rollback() {
         if (connection != null) {
             try {
-                System.out.println("异常回滚");
+                log.error("异常回滚");
                 connection.rollback();
             } catch (SQLException ex) {
                 ex.printStackTrace();
