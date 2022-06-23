@@ -110,6 +110,20 @@
             <version>2.2</version>
         </dependency>
 
+        <!-- 动态数据源 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <!-- 音视频编解码 -->
+        <dependency>
+            <groupId>ws.schild</groupId>
+            <artifactId>jave-all-deps</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
