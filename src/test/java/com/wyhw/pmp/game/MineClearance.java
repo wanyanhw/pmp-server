@@ -41,11 +41,15 @@ public class MineClearance {
         int pixWidth = 50;
         JFrame jFrame = new JFrame();
 
+        jFrame.setLayout(null);
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(width * pixWidth, height * pixWidth);
         jFrame.setLocation(800, 200);
-        jFrame.setContentPane(new MapPanel(map));
+        MapPanel mapPanel = new MapPanel(map);
+        mapPanel.addButton();
+        mapPanel.setBounds(40, 100, 400, 400);
+        jFrame.add(mapPanel);
     }
 
     public void show() {
