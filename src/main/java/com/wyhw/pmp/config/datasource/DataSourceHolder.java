@@ -1,4 +1,4 @@
-package com.wyhw.pmp.config;
+package com.wyhw.pmp.config.datasource;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 @Component
 @Order(0)
 public class DataSourceHolder {
-    @Pointcut("@annotation(com.wyhw.pmp.config.DataSource)")
+    @Pointcut("@annotation(com.wyhw.pmp.config.datasource.DataSource)")
     public void pointCut() {}
 
     @Around("pointCut()")

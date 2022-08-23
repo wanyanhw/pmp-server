@@ -1,4 +1,4 @@
-package com.wyhw.pmp.config;
+package com.wyhw.pmp.config.datasource;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface DataSource {
-    String target() default DataSourceNames.PMP;
+    String target();
 }

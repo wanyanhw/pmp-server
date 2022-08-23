@@ -1,4 +1,4 @@
-package com.wyhw.pmp.config;
+package com.wyhw.pmp.config.datasource;
 
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.apache.ibatis.session.SqlSessionFactory;

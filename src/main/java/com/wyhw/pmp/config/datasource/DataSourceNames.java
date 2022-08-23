@@ -1,4 +1,4 @@
-package com.wyhw.pmp.config;
+package com.wyhw.pmp.config.datasource;
 
 /**
  * @author wanyanhw
