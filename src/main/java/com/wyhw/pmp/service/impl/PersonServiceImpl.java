@@ -15,6 +15,7 @@ import com.wyhw.pmp.service.IPersonService;
 import com.wyhw.pmp.util.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -46,7 +47,7 @@ public class PersonServiceImpl implements IPersonService {
         Person person = new Person();
         person.setId(personInfoDetail.getId());
         person.setParentId(personInfoDetail.getParentId());
-        person.setAccount(personInfoDetail.getAccount());
+        person.setAccount(StringUtils.isEmpty(personInfoDetail.getAccount()) ? personInfoDetail.getName() : personInfoDetail.getAccount());
         person.setPassword("123456");
         person.setName(personInfoDetail.getName());
         person.setStatus(AccountStatusEnum.FREE.getCode());
@@ -93,17 +94,17 @@ public class PersonServiceImpl implements IPersonService {
             return Collections.emptyList();
         }
 
-        Map<Integer, Person> personById = persons.stream().collect(Collectors.toMap(Person::getId, v -> v));
         List<Integer> personIds = persons.stream().map(Person::getId).collect(Collectors.toList());
         List<PersonArchive> personArchives = personArchiveDao.listByPersonIds(personIds);
-        return personArchives.stream().map(personArchive -> {
-            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
-            Integer personId = personArchive.getPersonId();
-            personInfoBrief.setId(personId);
-            Person person = personById.get(personId);
+        Map<Integer, PersonArchive> personArchiveMap = personArchives.stream().collect(Collectors.toMap(PersonArchive::getPersonId, v -> v));
 
-            personInfoBrief.setName(person == null ? null : person.getName());
-            personInfoBrief.setAccount(person == null ? null : person.getAccount());
+        return persons.stream().map(person -> {
+            PersonArchive personArchive = personArchiveMap.getOrDefault(person.getId(), new PersonArchive());
+            PersonInfoBrief personInfoBrief = new PersonInfoBrief();
+            personInfoBrief.setId(person.getId());
+            personInfoBrief.setName(person.getName());
+            personInfoBrief.setAccount(person.getAccount());
+            personInfoBrief.setParentId(person.getParentId());
             personInfoBrief.setPhoto(personArchive.getPhoto());
             personInfoBrief.setAge(personArchive.getAge());
             personInfoBrief.setSex(personArchive.getSex());
