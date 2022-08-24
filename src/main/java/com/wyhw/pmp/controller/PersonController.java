@@ -35,7 +35,7 @@ public class PersonController {
         return personService.save(personInfoDetail);
     }
 
-    @PostMapping("/related-person/save/{personId}/{relationCode}")
+    @PostMapping("/relate/save/{personId}/{relationCode}")
     public String saveRelatedPerson(@PathVariable("personId") Integer personId,
                                     @PathVariable("relationCode") Integer relationCode,
                                     @RequestBody PersonInfoDetail personInfoDetail) {
