@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息登记</title>
+    <style>
+        .title {
+            padding-top: 50px;
+            padding-bottom: 50px;
+            text-align: center;
+            font-size: 50px;
+            letter-spacing: 5px;
+            background-color: rgba(77, 77, 0, 0.5);
+        }
+        .content {
+            text-align: center;
+            font-size: 35px;
+        }
+        .star {
+            color: red;
+        }
+        .attr {
+            padding-top: 35px;
+            padding-bottom: 25px;
+            border-bottom: black 1px dashed;
+            height: 100px;
+            line-height: 100px;
+            background-color: rgba(33, 33, 0, 0.2);
+        }
+        .attr-name {
+            float: left;
+            width: 40%;
+            /*background-color: #880000;*/
+            text-align: right;
+            padding-right: 30px;
+            letter-spacing: 10px;
+        }
+        .attr-value {
+            float: left;
+            width: auto;
+            /*background-color: #AAAAAA;*/
+            text-align: left;
+        }
+        .search {
+            float: left;
+        }
+        .input-relation-choose {
+            height: 80px;
+            font-size: 35px;
+        }
+        .attr-value input {
+            height: 80px;
+            width: 335px;
+            font-size: 35px;
+        }
+        .attr-value select {
+            height: 80px;
+            width: 100px;
+            border: none;
+            font-size: 35px;
+        }
+        .submit {
+            padding-top: 35px;
+            height: 100px;
+            line-height: 100px;
+            background-color: rgba(33, 33, 0, 0.2);
+        }
+        .btn-submit {
+            width: 300px;
+            height: 80px;
+            font-size: 38px;
+        }
+        ul {
+            list-style: none;
+            background-color: #AAAAAA;
+            border-bottom: 1px black solid;
+        }
+        ul li {
+            border-bottom: 1px black solid;
+        }
+        .selected {
+            background-color: #BBBBBB;
+        }
+    </style>
+    <script type="text/javascript" src="../../js/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+            $("#familyMemberName").keyup(function () {
+                let html = '<ul>';
+                for (let i = 0; i < 10; i++) {
+                    html += '<li onclick="choose(this)" onmouseover="selected(this)" onmouseleave="unselected(this)">小老弟' + (i + 1) + '</li>';
+                }
+                html += '</ul>';
+                $("#matchMember").html(html);
+            });
+        });
+
+        function selected(_this) {
+            $(_this).attr('class', 'selected');
+        }
+
+        function unselected(_this) {
+            $(_this).attr('class', 'none');
+        }
+
+        function choose(_this) {
+            $("#familyMemberName").val($(_this).html());
+            $("#matchMember").html('');
+        }
+    </script>
+</head>
+<body>
+<div>
+    <div class="title">
+        个人信息登记
+    </div>
+    <div class="content">
+        <div class="attr">
+            <div class="attr-name"><label class="star">*</label><label>姓名:</label></div>
+            <div class="attr-value"><label><input id="username" name="username" placeholder="请输入姓名"></label></div>
+        </div>
+        <div class="attr">
+            <div class="attr-name"><label class="star">*</label><label>性别:</label></div>
+            <div class="attr-value"><label>
+                <select id="sex" name="sex">
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                </select>
+            </label></div>
+        </div>
+        <div class="attr">
+            <div class="attr-name"><label class="star">*</label><label>电话:</label></div>
+            <div class="attr-value"><label><input id="mobilePhone" name="mobilePhone" placeholder="请输入手机号"></label></div>
+        </div>
+        <div class="attr">
+            <div class="attr-name"><label>家庭地址:</label></div>
+            <div class="attr-value"><label><input id="homeAddress" name="homeAddress" placeholder="请输入家庭地址"></label></div>
+        </div>
+        <div class="attr">
+            <div class="attr-name"><label>工作地点:</label></div>
+            <div class="attr-value"><label><input id="wordAddress" name="wordAddress" placeholder="请输入工作地址"></label></div>
+        </div>
+        <div class="attr">
+            <div class="attr-name"><label>家人姓名:</label></div>
+            <div class="attr-value">
+                <label><input id="familyMemberName" name="familyMemberName"></label>
+                <div id="matchMember">
+<!--                    <ul>-->
+<!--                        <li onmouseover="selected(this)" onmouseleave="unselected(this)">小老弟</li>-->
+<!--                        <li onmouseover="selected(this)" onmouseleave="unselected(this)">小老弟</li>-->
+<!--                        <li onmouseover="selected(this)" onmouseleave="unselected(this)">小老弟</li>-->
+<!--                    </ul>-->
+                </div>
+            </div>
+            <div class="search"><label><select class="input-relation-choose">
+                <option value="1">父亲</option>
+                <option value="2">母亲</option>
+                <option value="3">丈夫</option>
+                <option value="4">妻子</option>
+                <option value="5">儿子</option>
+                <option value="6">女儿</option>
+            </select></label></div>
+        </div>
+        <div class="submit">
+            <button class="btn-submit">提 交</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
