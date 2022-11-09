@@ -18,17 +18,17 @@ function loadTrees() {
             data: [tree],
             top: '10%',
             left: i * 50 + '%',
-            bottom: '2%',
-            right: '60%',
-            symbolSize: 20,
+            symbol: 'emptyCircle',
+            symbolSize: 50,
             // 折线
             // edgeShape: 'polyline',
+            // edgeForkPosition: '100%',
             orient: 'TB',
-            edgeForkPosition: '50%',
             label: {
-                position: 'bottom',
+                fontSize: 15,
+                position: 'top',
                 verticalAlign: 'middle',
-                align: 'right'
+                align: 'center'
             },
             lineStyle: {
                 width: 0.5,
@@ -36,9 +36,9 @@ function loadTrees() {
             },
             leaves: {
                 label: {
-                    position: 'right',
+                    position: 'top',
                     verticalAlign: 'middle',
-                    align: 'left'
+                    align: 'center'
                 }
             },
             emphasis: {
@@ -46,7 +46,8 @@ function loadTrees() {
             },
             expandAndCollapse: true,
             animationDuration: 550,
-            animationDurationUpdate: 750
+            animationDurationUpdate: 750,
+            initialTreeDepth: -1
         };
     }
 

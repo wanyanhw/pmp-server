@@ -61,8 +61,8 @@ public class PersonServiceImpl implements IPersonService {
         }
         String birthday = personInfoDetail.getBirthday();
         String deathDay = personInfoDetail.getDeathDay();
-        personArchive.setBirthday(birthday == null ? null : LocalDateTime.of(LocalDate.parse(birthday, DateUtil.STANDARD_DATE), LocalTime.now()));
-        personArchive.setDeathDay(deathDay == null ? null : LocalDateTime.of(LocalDate.parse(deathDay, DateUtil.STANDARD_DATE), LocalTime.now()));
+        personArchive.setBirthday(StringUtils.isEmpty(birthday) ? null : LocalDateTime.of(LocalDate.parse(birthday, DateUtil.STANDARD_DATE), LocalTime.now()));
+        personArchive.setDeathDay(StringUtils.isEmpty(deathDay) ? null : LocalDateTime.of(LocalDate.parse(deathDay, DateUtil.STANDARD_DATE), LocalTime.now()));
         personArchive.setAddress(personInfoDetail.getAddress());
         personArchive.setMobilePhone(personInfoDetail.getPhoneNum());
         personArchive.setSex(personInfoDetail.getSex());

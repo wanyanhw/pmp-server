@@ -22,13 +22,13 @@ function buildPicHtml(id, name, photoAddress) {
     } else {
         photoAddress = SERVER_IP + photoAddress;
     }
-    return "<div class=\"pic\" id=\"" + id + "\" onclick=\"selectPersonInfo(this)\" onmouseover=\"mouseOver(this)\" onmouseout=\"mouseOut(this)\">\n" +
-        "            <img class=\"img-url\" draggable=\"false\" alt=\"暂无图片\" src=\"" + photoAddress + "\">\n" +
-        "            <div class=\"img-infos\">\n" +
-        "                <div class=\"img-info\">\n" +
+    return "<div class=\"pic\" id=\"" + id + "\" onclick=\"selectPersonInfo(this)\" onmouseover=\"mouseOver(this)\" onmouseout=\"mouseOut(this)\">" +
+        "            <img class=\"img-url\" draggable=\"false\" alt=\"暂无图片\" src=\"" + photoAddress + "\">" +
+        "            <div class=\"img-infos\">" +
+        "                <div class=\"img-info\">" +
         "                    <div class=\"value\"><label>" + name + "</label></div>\n" +
-        "                </div>\n" +
-        "            </div>\n" +
+        "                </div>" +
+        "            </div>" +
         "        </div>";
 }
 
