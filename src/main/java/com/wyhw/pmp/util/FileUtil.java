@@ -2,6 +2,7 @@ package com.wyhw.pmp.util;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,25 +12,37 @@ import java.util.List;
 public class FileUtil {
 
 
+    private static final String SPLIT_FILE_SUFFIX = "&&";
+
     /**
      * 保存文件到指定路径
      * @param path 文件路径
      * @param fileName 文件名
-     * @param bytes 文件字节
+     * @param inputStream 文件字节
      * @return true-成功 false-失败
      * @throws IOException 异常
      */
-    public static boolean saveFile(String path, String fileName, byte[] bytes) throws IOException {
+    public static boolean saveFile(String path, String fileName, InputStream inputStream) throws IOException {
         File dir = new File(path);
-        if (!dir.isDirectory()) {
+        if (!dir.exists()) {
             // 目标不存在则新建目录
             dir.mkdirs();
         }
         File file = new File(path + File.separator + fileName);
-        try (FileOutputStream fos = new FileOutputStream(file);
-             BufferedOutputStream bos = new BufferedOutputStream(fos)) {
-            bos.write(bytes);
-            return true;
+        // 文件分片大小 100M
+        int fileSizeThreshold = 100 * 1024 * 1024;
+        if (inputStream.available() <= fileSizeThreshold) {
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 BufferedOutputStream bos = new BufferedOutputStream(fos)) {
+                byte[] buffer = new byte[2 * 1024 * 1024];
+                while (inputStream.read(buffer) != -1) {
+                    bos.write(buffer);
+                }
+                return true;
+            }
+        } else {
+            List<File> splitBySize = splitBySize(inputStream, fileSizeThreshold, file.getName(), path);
+            return merge(splitBySize, path, file.getName());
         }
     }
 
@@ -50,7 +63,7 @@ public class FileUtil {
         if (!isDirectory) {
             return false;
         }
-        String[] fileArguments = fileName.split("\\.");
+        String[] fileArguments = fileName.split(SPLIT_FILE_SUFFIX);
         if (fileArguments.length != 2) {
             return false;
         }
@@ -72,7 +85,7 @@ public class FileUtil {
                     continue;
                 }
                 String tempFileName = splitFile.getName();
-                String[] tempFileArguments = tempFileName.split("\\.");
+                String[] tempFileArguments = tempFileName.split(SPLIT_FILE_SUFFIX);
                 String[] tempName = tempFileArguments[0].split(separator);
                 if (tempName.length != 2) {
                     continue;
@@ -111,7 +124,7 @@ public class FileUtil {
      * @param basePath The file path which the mini-files will be stored in
      * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
      */
-    public static File[] splitByQuantity(File file, int total, String filename, String basePath) throws IOException{
+    public static List<File> splitByQuantity(File file, int total, String filename, String basePath) throws IOException{
         long subFileSize = file.length() / total;
         long size = file.length() % total > 0 ? subFileSize + 1 : subFileSize;
         return splitBySize(file, (int) (size), filename, basePath);
@@ -127,25 +140,29 @@ public class FileUtil {
      * @param basePath The file path which the mini-files will be stored in
      * @return The sorted array of mini-files. The suffix number of the mini-file is smaller, the index of the mini-files array is smaller
      */
-    private static File[] splitBySize(File file, int size, String filename, String basePath) throws IOException {
+    private static List<File> splitBySize(File file, int size, String filename, String basePath) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
-            int splitIndex = 0;
-            int splitTotal = (int) (file.length() % size > 0 ? file.length() / size + 1 : file.length() / size);
-            File[] splitFiles = new File[splitTotal];
-            byte[] buffer = new byte[size];
-            int length;
-            while ((length = fis.read(buffer, 0, buffer.length)) != -1) {
-                try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-                    bos.write(buffer, 0, length);
-                    splitFiles[splitIndex] = new File(basePath + filename + "." + (splitIndex + 1));
-                    try (FileOutputStream fos = new FileOutputStream(splitFiles[splitIndex])) {
-                        fos.write(bos.toByteArray());
-                    }
-                    splitIndex++;
-                }
-            }
-            return splitFiles;
+            return splitBySize(fis, size, filename, basePath);
         }
+    }
+
+    private static List<File> splitBySize(InputStream inputStream, int size, String filename, String basePath) throws IOException {
+        int splitIndex = 0;
+        List<File> splitFiles = new ArrayList<>();
+        byte[] buffer = new byte[size];
+        int length;
+        while ((length = inputStream.read(buffer)) != -1) {
+            try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                bos.write(buffer, 0, length);
+                File file = new File(basePath + File.separator + filename + SPLIT_FILE_SUFFIX + (splitIndex + 1));
+                splitFiles.add(file);
+                try (FileOutputStream fos = new FileOutputStream(file)) {
+                    fos.write(bos.toByteArray());
+                }
+                splitIndex++;
+            }
+        }
+        return splitFiles;
     }
 
     /**
@@ -155,22 +172,22 @@ public class FileUtil {
      * @param path The large target file will be stored in
      * @param filename Name the large target file
      */
-    public static boolean merge(File[] files, String path, String filename) throws IOException {
+    public static boolean merge(List<File> files, String path, String filename) throws IOException {
         List<File> fileList = filenameFilter(files, filename);
         if (fileList.isEmpty()) {
             return false;
         }
 
         fileList.sort((o1, o2) -> {
-            Integer index1 = Integer.valueOf(o1.getName().split("\\.")[2]);
-            Integer index2 = Integer.valueOf(o2.getName().split("\\.")[2]);
+            Integer index1 = Integer.valueOf(o1.getName().split(SPLIT_FILE_SUFFIX)[1]);
+            Integer index2 = Integer.valueOf(o2.getName().split(SPLIT_FILE_SUFFIX)[1]);
             return index1.compareTo(index2);
         });
 
-        try (FileOutputStream fos = new FileOutputStream(new File(path + filename))) {
+        try (FileOutputStream fos = new FileOutputStream(new File(path + File.separator + filename))) {
             for (File file : fileList) {
                 try (FileInputStream fis = new FileInputStream(file)) {
-                    byte[] b = new byte[2 * 1024 * 1024];
+                    byte[] b = new byte[50 * 1024 * 1024];
                     int length;
                     while ((length = fis.read(b)) != -1) {
                         fos.write(b, 0, length);
@@ -188,11 +205,11 @@ public class FileUtil {
      * @param filename 指定文件名称
      * @return List 过滤后的文件列表
      */
-    private static List<File> filenameFilter(File[] files, String filename) {
+    private static List<File> filenameFilter(List<File> files, String filename) {
         List<File> fileList = new ArrayList<>();
         for (File file : files) {
             String subFilename = file.getName();
-            String[] split = subFilename.split("\\.");
+            String[] split = subFilename.split(SPLIT_FILE_SUFFIX);
             String extension = split[split.length - 1];
             try {
                 // 扩展名不是数字的情况下，可判断此文件不是分片文件
@@ -223,5 +240,72 @@ public class FileUtil {
             }
             return baos.toByteArray();
         }
+    }
+
+    /**
+     * 文件转移
+     * @param from 原文件地址
+     * @param to 目的地址
+     * @param deleteOriginalFile 是否删除源文件
+     * @param ignoreEmptyFolderCreation 是否忽略创建空文件夹，若 true, 则不创建内部空文件夹；否则即使为空依然创建
+     */
+    public static void moveTo(String from, String to, boolean deleteOriginalFile, boolean ignoreEmptyFolderCreation) {
+        File fromFile = new File(from);
+        boolean directory = fromFile.isDirectory();
+        if (directory) {
+            String[] pathNames = fromFile.list();
+            if (pathNames == null || pathNames.length == 0) {
+                fromFile.delete();
+                if (!ignoreEmptyFolderCreation) {
+                    new File(to).mkdir();
+                }
+                return;
+            }
+            Arrays.stream(pathNames).parallel().forEach(subPath -> {
+                File subFile = new File(from + File.separator + subPath);
+                if (subFile.isDirectory()) {
+                    moveTo(from + File.separator + subPath, to + File.separator + subPath, deleteOriginalFile, ignoreEmptyFolderCreation);
+                } else {
+                    saveFile(to, subFile, deleteOriginalFile);
+                }
+            });
+            if (deleteOriginalFile) {
+                fromFile.delete();
+            }
+            return;
+        }
+        saveFile(to, fromFile, deleteOriginalFile);
+    }
+
+    private static void saveFile(String to, File fromFile, boolean deleteOriginalFile) {
+        try (InputStream inputStream = new FileInputStream(fromFile)) {
+            saveFile(to, fromFile.getName(), inputStream);
+            StringBuilder infoBuilder = new StringBuilder();
+            infoBuilder.append(fromFile.getName())
+                    .append(" 文件已保存至: ")
+                    .append(to)
+                    .append(File.separator)
+                    .append(fromFile.getName());
+            if (deleteOriginalFile) {
+                boolean delete = fromFile.delete();
+                if (delete) {
+                    infoBuilder.append(", 源文件已删除！");
+                }
+            }
+            System.out.println(infoBuilder.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        long begin = System.currentTimeMillis();
+        String from = "E:\\BaiduNetdiskDownload\\";
+//        String from = "E:\\BaiduNetdiskDownload\\PS2022(64bit).rar";
+//        String from = "E:\\BaiduNetdiskDownload\\InDesign2022(64bit).rar";
+        String to = "D:\\wyhw\\backup";
+        moveTo(from, to, false, false);
+        long end = System.currentTimeMillis();
+        System.out.println("cost time: " + (end - begin) + "ms");
     }
 }

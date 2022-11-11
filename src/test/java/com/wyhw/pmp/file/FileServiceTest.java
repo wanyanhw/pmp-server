@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author wanyanhw
@@ -33,7 +36,7 @@ public class FileServiceTest extends BaseTest {
         System.out.println(delete);
     }
 
-    private File[] files;
+    private List<File> files;
 
     @Test
     public void chunkUploadTest() {
@@ -51,7 +54,7 @@ public class FileServiceTest extends BaseTest {
     public void mergeTest() {
         try {
             File file = new File(filePath);
-            files = file.listFiles();
+            files = Arrays.asList(Objects.requireNonNull(file.listFiles()));
             FileUtil.merge(files, filePath, "ship.mp4");
             FileUtil.merge(files, filePath, "video2.mp4");
         } catch (IOException e) {

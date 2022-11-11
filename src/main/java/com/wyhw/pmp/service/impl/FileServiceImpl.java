@@ -29,8 +29,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String upload(InputStream inputStream, String filename) throws IOException {
-        byte[] bytes = FileUtil.toByteArray(inputStream);
-        boolean success = FileUtil.saveFile(filePath, filename, bytes);
+//        byte[] bytes = FileUtil.toByteArray(inputStream);
+        boolean success = FileUtil.saveFile(filePath, filename, inputStream);
         if (success) {
             return filePath + filename;
         }
