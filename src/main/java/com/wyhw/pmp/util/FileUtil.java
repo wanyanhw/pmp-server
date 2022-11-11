@@ -1,6 +1,7 @@
 package com.wyhw.pmp.util;
 
 import java.io.*;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,14 +36,22 @@ public class FileUtil {
             try (FileOutputStream fos = new FileOutputStream(file);
                  BufferedOutputStream bos = new BufferedOutputStream(fos)) {
                 byte[] buffer = new byte[2 * 1024 * 1024];
-                while (inputStream.read(buffer) != -1) {
-                    bos.write(buffer);
+                int len;
+                while ((len = inputStream.read(buffer)) != -1) {
+                    bos.write(buffer, 0, len);
                 }
                 return true;
             }
         } else {
             List<File> splitBySize = splitBySize(inputStream, fileSizeThreshold, file.getName(), path);
-            return merge(splitBySize, path, file.getName());
+            new Thread(() -> {
+                try {
+                    merge(splitBySize, path, file.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            return true;
         }
     }
 
@@ -298,8 +307,9 @@ public class FileUtil {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         long begin = System.currentTimeMillis();
+//        String from = "E:\\BaiduNetdiskDownload\\Photoshop 2020 v21.0.2.57\\products\\CCXP\\CCX-Process-mul.zip";
         String from = "E:\\BaiduNetdiskDownload\\";
 //        String from = "E:\\BaiduNetdiskDownload\\PS2022(64bit).rar";
 //        String from = "E:\\BaiduNetdiskDownload\\InDesign2022(64bit).rar";
@@ -307,5 +317,13 @@ public class FileUtil {
         moveTo(from, to, false, false);
         long end = System.currentTimeMillis();
         System.out.println("cost time: " + (end - begin) + "ms");
+
+        Thread.sleep(300 * 1000);
+    }
+
+    public void main2(String[] args) throws FileNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream("");
+        FileChannel channel = fileInputStream.getChannel();
+        // http://t.zoukankan.com/nullllun-p-8648496.html NIO实现数据拷贝
     }
 }
