@@ -253,8 +253,8 @@ public class FileUtil {
 
     /**
      * 文件转移
-     * @param from 原文件地址
-     * @param to 目的地址
+     * @param from 原文件（夹）地址
+     * @param to 目的文件夹地址
      * @param deleteOriginalFile 是否删除源文件
      * @param ignoreEmptyFolderCreation 是否忽略创建空文件夹，若 true, 则不创建内部空文件夹；否则即使为空依然创建
      */
