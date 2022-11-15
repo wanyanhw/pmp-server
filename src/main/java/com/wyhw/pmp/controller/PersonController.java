@@ -26,7 +26,7 @@ public class PersonController {
     }
 
     @GetMapping("/detail/get")
-    public PersonInfoDetail listPerson(Integer personId) {
+    public PersonInfoDetail getPersonDetail(Integer personId) {
         return personService.getPersonDetail(personId);
     }
 

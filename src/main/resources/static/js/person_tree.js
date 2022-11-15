@@ -16,19 +16,19 @@ function loadTrees() {
             type: 'tree',
             name: '人物关系图' + i,
             data: [tree],
-            top: '10%',
-            left: i * 50 + '%',
+            top: '0%',
+            left: '10%',
             symbol: 'emptyCircle',
-            symbolSize: 50,
+            symbolSize: 25,
+            layout: 'orthogonal',
+            height: '100%',
             // 折线
             // edgeShape: 'polyline',
             // edgeForkPosition: '100%',
-            orient: 'TB',
+            orient: 'LR',
             label: {
                 fontSize: 15,
-                position: 'top',
-                verticalAlign: 'middle',
-                align: 'center'
+                position: 'right'
             },
             lineStyle: {
                 width: 0.5,
@@ -36,9 +36,7 @@ function loadTrees() {
             },
             leaves: {
                 label: {
-                    position: 'top',
-                    verticalAlign: 'middle',
-                    align: 'center'
+                    position: 'right'
                 }
             },
             emphasis: {
