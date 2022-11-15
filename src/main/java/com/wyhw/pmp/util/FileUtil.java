@@ -264,18 +264,20 @@ public class FileUtil {
         if (directory) {
             String[] pathNames = fromFile.list();
             if (pathNames == null || pathNames.length == 0) {
-                fromFile.delete();
                 if (!ignoreEmptyFolderCreation) {
                     new File(to).mkdir();
                 }
                 return;
+            } else {
+                new File(to).mkdirs();
             }
             Arrays.stream(pathNames).parallel().forEach(subPath -> {
                 File subFile = new File(from + File.separator + subPath);
                 if (subFile.isDirectory()) {
                     moveTo(from + File.separator + subPath, to + File.separator + subPath, deleteOriginalFile, ignoreEmptyFolderCreation);
                 } else {
-                    saveFile(to, subFile, deleteOriginalFile);
+                    transferFileFromChannel(from + File.separator + subPath, to + File.separator + subFile.getName());
+//                    saveFile(to, subFile, deleteOriginalFile);
                 }
             });
             if (deleteOriginalFile) {
@@ -283,9 +285,27 @@ public class FileUtil {
             }
             return;
         }
-        saveFile(to, fromFile, deleteOriginalFile);
+        transferFileFromChannel(from, to + File.separator + fromFile.getName());
+//        saveFile(to, fromFile, deleteOriginalFile);
     }
 
+    private static void transferFileFromChannel(String from, String to) {
+        try {
+            RandomAccessFile fromAccess = new RandomAccessFile(from, "rw");
+            FileChannel fromChannel = fromAccess.getChannel();
+
+            RandomAccessFile toAccess = new RandomAccessFile(to, "rw");
+            FileChannel toChannel = toAccess.getChannel();
+
+            toChannel.transferFrom(fromChannel, 0L, fromChannel.size());
+            fromChannel.close();
+            toChannel.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Deprecated
     private static void saveFile(String to, File fromFile, boolean deleteOriginalFile) {
         try (InputStream inputStream = new FileInputStream(fromFile)) {
             saveFile(to, fromFile.getName(), inputStream);
@@ -319,11 +339,5 @@ public class FileUtil {
         System.out.println("cost time: " + (end - begin) + "ms");
 
         Thread.sleep(300 * 1000);
-    }
-
-    public void main2(String[] args) throws FileNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream("");
-        FileChannel channel = fileInputStream.getChannel();
-        // http://t.zoukankan.com/nullllun-p-8648496.html NIO实现数据拷贝
     }
 }
