@@ -15,7 +15,9 @@ public class MineClearance {
 
     private int height = 10;
 
-    private int mineTotal = 15;
+    private final int mineNum = 15;
+
+    private int mineTotal = mineNum;
 
     public void setHeight(int height) {
         this.height = height;
@@ -121,7 +123,7 @@ public class MineClearance {
     }
 
     private void resetMineTotal() {
-        this.mineTotal = 15;
+        this.mineTotal = mineNum;
     }
 
     private void increase(int indexX, int indexY) {
@@ -208,7 +210,8 @@ public class MineClearance {
             for (int i = 0; i < map.length; i++) {
                 for (int j = 0; j < map[i].length; j++) {
                     if (map[i][j] == MINE_FLAG) {
-                        buttons[i][j].setText(MINE_FLAG + "");
+                        JButton thisButton = buttons[i][j];
+                        thisButton.setText(MINE_FLAG + "");
                     }
                 }
             }
