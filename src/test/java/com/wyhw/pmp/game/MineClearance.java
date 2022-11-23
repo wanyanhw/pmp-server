@@ -2,17 +2,19 @@ package com.wyhw.pmp.game;
 
 import javax.swing.*;
 
+import static com.wyhw.pmp.game.MapPanel.PIX_WIDTH;
+
 /**
  * @author wanyanhw
  * @date 2022/6/6 14:56
  */
 public class MineClearance {
 
-    private int width = 20;
+    private int width = 10;
 
     private int height = 10;
 
-    private int mineTotal = 20;
+    private int mineTotal = 15;
 
     public void setHeight(int height) {
         this.height = height;
@@ -28,40 +30,32 @@ public class MineClearance {
 
     private int[][] map;
 
-    public static final int MINE_FLAG = 9;
+    private static final MineClearance mineClearanceInstance = new MineClearance();
+
+    private static final JFrame jFrame = new JFrame();
+
+    public static final int MINE_FLAG = -1;
+
+    public static final int NO_MINE_NEAR = 0;
 
     public static void main(String[] args) {
-        MineClearance mineClearance = new MineClearance();
-        mineClearance.loadMine();
-        mineClearance.show();
-        mineClearance.showFrame();
+        initMap();
+    }
+
+    public static void initMap() {
+        mineClearanceInstance.loadMineMapData();
+        mineClearanceInstance.showFrame();
     }
 
     private void showFrame() {
-        int pixWidth = 50;
-        JFrame jFrame = new JFrame();
-
-        jFrame.setLayout(null);
-        jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        jFrame.setSize(width * pixWidth, height * pixWidth);
+        jFrame.setSize((width + 2) * PIX_WIDTH, (height + 3) * PIX_WIDTH);
         jFrame.setLocation(800, 200);
-        MapPanel mapPanel = new MapPanel(map);
-        mapPanel.addButton();
-        mapPanel.setBounds(40, 100, 400, 400);
-        jFrame.add(mapPanel);
+        jFrame.add(new MapPanel(map), 0);
+        jFrame.setVisible(true);
     }
 
-    public void show() {
-        for (int[] l : map) {
-            for (int v : l) {
-                System.out.print(v + "  ");
-            }
-            System.out.println();
-        }
-    }
-
-    private void loadMine() {
+    private void loadMineMapData() {
         if (width * height < mineTotal) {
             width = height = mineTotal;
             System.out.println(String.format("已自动生成 %d*%d", width, height));
@@ -83,6 +77,7 @@ public class MineClearance {
             mineTotal--;
             i += 2;
         }
+        resetMineTotal();
 
         // 生成炸弹周围提示信息
         for (int i1 = 0; i1 < indexArr.length; i1+=2) {
@@ -122,6 +117,10 @@ public class MineClearance {
                 }
             }
         }
+    }
+
+    private void resetMineTotal() {
+        this.mineTotal = 15;
     }
 
     private void increase(int indexX, int indexY) {
