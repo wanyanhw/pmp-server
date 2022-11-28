@@ -124,6 +124,13 @@
             <version>3.1.1</version>
         </dependency>
 
+        <!-- 生成gif -->
+        <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>animated-gif-lib</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
