@@ -14,7 +14,7 @@ import java.io.IOException;
  * @date 2022/11/25 11:27
  */
 public class DrawUtil {
-    public static BufferedImage drawTaiJi(int x, int y, int r) {
+    public static BufferedImage drawTaiJi(int x, int y, int r, double theta) {
         int rate = 5;
         BufferedImage image = new BufferedImage(2 * r, 2 * r, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) image.getGraphics();
@@ -41,32 +41,38 @@ public class DrawUtil {
         g.setColor(Color.BLACK);
         g.fillRoundRect((int) (x + r * 0.9), (int) (y + r * 1.4), r / rate, r / rate, r / rate, r / rate);
 
+        return rotate(image, theta);
+    }
+
+    private static BufferedImage rotate(BufferedImage image, double theta) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         graphics.setColor(new Color(127, 127, 127));
-        graphics.fillRect(x, y, 2 * r, 2 * r);
-        graphics.rotate(Math.PI / 8 * 8, image.getWidth() / 2, image.getTileHeight() / 2);
+        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+        graphics.rotate(theta, image.getWidth() / 2, image.getTileHeight() / 2);
         graphics.drawImage(image, 0, 0, null);
         return bufferedImage;
     }
 
-    public static void output(BufferedImage image) {
+    public static void output(BufferedImage image, String outputPath) {
         try {
-            ImageIO.write(image, "png", new FileOutputStream("C:\\Users\\wanyanhw\\Desktop\\wyhw9.png"));
+            ImageIO.write(image, "png", new FileOutputStream(outputPath));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main1(String[] args) {
-        BufferedImage image = drawTaiJi(0, 0, 200);
-        output(image);
+    private static void outPutPngFile(int fileCount) {
+        for (int i = 0; i < fileCount; i++) {
+            BufferedImage image = drawTaiJi(0, 0, 200, Math.PI / fileCount * 2 * i);
+            output(image, "C:\\Users\\wanyanhw\\Desktop\\taiji\\taiji" + (i + 1) + ".png");
+        }
     }
 
-    public static void main(String[] args) throws IOException {
-        BufferedImage[] bufferedImages = new BufferedImage[16];
-        for (int i = 0; i < 16; i++) {
-            String path = "C:\\Users\\wanyanhw\\Desktop\\taiji\\wyhw" + (i + 1) + ".png";
+    private static void outPutGifFile(int fileCount) throws IOException {
+        BufferedImage[] bufferedImages = new BufferedImage[fileCount];
+        for (int i = 0; i < fileCount; i++) {
+            String path = "C:\\Users\\wanyanhw\\Desktop\\taiji\\taiji" + (i + 1) + ".png";
             bufferedImages[i] = ImageIO.read(new File(path));
         }
 
@@ -79,5 +85,11 @@ public class DrawUtil {
             gifEncoder.addFrame(bufferedImage);
         }
         gifEncoder.finish();
+    }
+
+    public static void main(String[] args) throws IOException {
+        int fileCount = 1;
+        outPutPngFile(fileCount);
+        outPutGifFile(fileCount);
     }
 }
