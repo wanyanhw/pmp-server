@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
  * @author wanyanhw
  * @date 2022/6/6 14:56
  */
-public class MineClearance {
+public class MineClearanceGame {
 
     private int width = 10;
 
@@ -33,7 +33,7 @@ public class MineClearance {
 
     private int[][] map;
 
-    private static final MineClearance mineClearanceInstance = new MineClearance();
+    private static final MineClearanceGame mineClearanceInstance = new MineClearanceGame();
 
     private static final JFrame jFrame = new JFrame();
 
