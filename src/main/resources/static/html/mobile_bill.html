@@ -84,8 +84,13 @@
             font-weight: bolder;
             font-style: italic
         }
+        .bill-list .td-sort {
+            width: auto;
+            font-size: 37px;
+            text-align: left
+        }
         .bill-list .td-desc {
-            width: auto; font-size: 37px; text-align: left
+            width: auto; font-size: 25px; text-align: left
         }
         .btn-hover {
             font-weight: bolder;
@@ -103,6 +108,7 @@
     <script type="text/javascript" src="../js/jquery/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../js/ajax.js"></script>
     <script>
+        let sortNames = ["其他", "食品", "文化娱乐", "运动", "时尚"];
         $().ready(function () {
             // 角色
             let role = null;
@@ -163,6 +169,7 @@
             for (let i = 0; i < result.length; i++) {
                 let element = result[i];
                 let total = element.total;
+                let sort = element.sort;
                 let remark = element.remark;
                 let consumeTime = element.consumeTime;
                 let type = "收";
@@ -180,6 +187,7 @@
                     "<td class='td-type' style='color: " + color + "'>" + type + "</td>" +
                     "<td class='td-date'>" + consumeTime + "</td>" +
                     "<td class='td-count' style='color: " + color + "'>" + total + "</td>" +
+                    "<td class='td-sort'>" + sortNames[sort]+ "</td>" +
                     "<td class='td-desc'>" + remark+ "</td>" +
                     "</tr>";
             }

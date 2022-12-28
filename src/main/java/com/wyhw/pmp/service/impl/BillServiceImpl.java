@@ -27,6 +27,7 @@ public class BillServiceImpl implements BillService {
         BillEntity entity = new BillEntity();
         entity.setTotal(billInfo.getTotal());
         entity.setRemark(billInfo.getRemark());
+        entity.setSort(billInfo.getSort());
         entity.setOperator("1");
         entity.setConsumer(billInfo.getConsumer());
         entity.setConsumeTime(LocalDateTime.now());
@@ -41,6 +42,7 @@ public class BillServiceImpl implements BillService {
             BillInfo info = new BillInfo();
             info.setId(e.getId());
             info.setTotal(e.getTotal());
+            info.setSort(e.getSort());
             info.setConsumer(e.getConsumer());
             info.setRemark(e.getRemark());
             info.setConsumeTime(e.getConsumeTime() == null ? "" : e.getConsumeTime().format(DateUtil.STANDARD_DATE_TIME));

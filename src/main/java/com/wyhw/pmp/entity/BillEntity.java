@@ -1,13 +1,14 @@
 package com.wyhw.pmp.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -32,6 +33,12 @@ public class BillEntity implements Serializable {
      */
     @TableField("total")
     private Double total;
+
+    /**
+     * 账单分类，1-食物，2-文化娱乐，3-运动，4-时尚，0-其他
+     */
+    @TableField("sort")
+    private Integer sort;
 
     /**
      * 类别

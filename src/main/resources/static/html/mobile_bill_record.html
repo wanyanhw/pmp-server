@@ -10,6 +10,7 @@
            $("#submit").click(function () {
                let consumer = $("#consumer").val();
                let type = $("#type").val();
+               let sort = $("#sort").val();
                let total = $("#total").val();
                let remark = $("#remark").val();
                if (type == 1) {
@@ -19,6 +20,7 @@
                let data = {
                    "consumer": consumer,
                    "total" : total,
+                   "sort": sort,
                    "remark" : remark
                };
                let postResult = _post("/bill/save", JSON.stringify(data));
@@ -121,6 +123,20 @@
                     <select class="select" id="type" name="type">
                         <option value="1">支出</option>
                         <option value="2">收入</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="bill-input">
+            <div class="bill-label-1">分类：</div>
+            <div class="bill-label-2">
+                <label>
+                    <select class="select" id="sort" name="type">
+                        <option value="1">食品</option>
+                        <option value="2">文化娱乐</option>
+                        <option value="3">运动</option>
+                        <option value="4">时尚</option>
+                        <option value="0">其他</option>
                     </select>
                 </label>
             </div>

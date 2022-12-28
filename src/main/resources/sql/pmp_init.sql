@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS `bill`;
 CREATE TABLE `bill`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `total` double(255, 2) NULL DEFAULT NULL,
+  `sort` int(1) NULL DEFAULT NULL,
   `consumer` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `consume_time` datetime(0) NULL DEFAULT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL,
