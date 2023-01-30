@@ -1,5 +1,10 @@
 package com.wyhw.pmp.ffmepg;
 
+import org.bytedeco.ffmpeg.global.avcodec;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FFmpegFrameRecorder;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.junit.Test;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.EncoderException;
@@ -12,7 +17,9 @@ import ws.schild.jave.info.MultimediaInfo;
 import ws.schild.jave.info.VideoInfo;
 import ws.schild.jave.info.VideoSize;
 
+import javax.swing.*;
 import java.io.File;
+
 
 /**
  * @author wanyanhw
@@ -52,5 +59,42 @@ public class FFmpegTest {
         } catch (EncoderException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void playVideo() throws Exception {
+        File file = new File("C:\\Users\\wanyanhw\\Pictures\\ship.mp4");
+        File file2 = new File("C:\\Users\\wanyanhw\\Pictures\\ship2.mp4");
+        if (!file2.exists()) {
+            file2.createNewFile();
+        }
+
+        JFrame window = new JFrame();
+        window.setSize(800, 800);
+        JLabel jLabel = new JLabel();
+        window.add(jLabel);
+        window.setVisible(true);
+
+        FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(file);
+        grabber.start();
+
+        FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(file2, 0);
+        recorder.setImageWidth(grabber.getImageWidth());
+        recorder.setImageHeight(grabber.getImageHeight());
+        recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+        recorder.setFormat("mp4");
+        recorder.start();
+        while (true) {
+            Frame f = grabber.grab();
+            if (f != null) {
+                recorder.record(f);
+                jLabel.setIcon(new ImageIcon((new Java2DFrameConverter()).getBufferedImage(f)));
+//                Thread.sleep(1000 / 25);
+                continue;
+            }
+            grabber.close();
+            break;
+        }
+        recorder.close();
     }
 }
