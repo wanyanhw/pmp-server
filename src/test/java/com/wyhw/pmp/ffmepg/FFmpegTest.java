@@ -1,10 +1,8 @@
 package com.wyhw.pmp.ffmepg;
 
-import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.Java2DFrameConverter;
 import org.junit.Test;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.EncoderException;
@@ -78,18 +76,19 @@ public class FFmpegTest {
         FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(file);
         grabber.start();
 
-        FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(file2, 0);
+        FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(file2, grabber.getAudioChannels());
         recorder.setImageWidth(grabber.getImageWidth());
         recorder.setImageHeight(grabber.getImageHeight());
-        recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-        recorder.setFormat("mp4");
+        recorder.setVideoCodec(grabber.getVideoCodec());
+        recorder.setAudioCodec(grabber.getAudioCodec());
+        recorder.setVideoBitrate(grabber.getVideoBitrate());
+        recorder.setFrameRate(25);
+        recorder.setMaxBFrames(0);
         recorder.start();
         while (true) {
             Frame f = grabber.grab();
             if (f != null) {
                 recorder.record(f);
-                jLabel.setIcon(new ImageIcon((new Java2DFrameConverter()).getBufferedImage(f)));
-//                Thread.sleep(1000 / 25);
                 continue;
             }
             grabber.close();
