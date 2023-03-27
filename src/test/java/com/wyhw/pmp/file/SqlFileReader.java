@@ -28,7 +28,7 @@ public class SqlFileReader {
     // 执行数据定义语言(Database Definition Language)（自动提交，不支持回滚）
     private final static String[] DDL = {"CREATE", "ALTER", "DROP", "TRUNCATE"};
 
-    // 执行数据定义语言(Database Manipulation Language)（支持回滚）
+    // 执行数据操纵语言(Database Manipulation Language)（支持回滚）
     private final static String[] DML = {"INSERT", "UPDATE", "DELETE"};
 
     private static Connection connection = null;
