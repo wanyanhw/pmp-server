@@ -103,6 +103,38 @@ CREATE TABLE `person_relationship`  (
   INDEX `IDX_PERSION`(`person_id`, `relation_person_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '个人关系表' ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for pic_order
+-- ----------------------------
+DROP TABLE IF EXISTS `pic_order`;
+CREATE TABLE `pic_order`  (
+                              `id` int(11) NOT NULL AUTO_INCREMENT,
+                              `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                              `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                              `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                              `date` datetime(0) NULL DEFAULT NULL,
+                              `type_id` int(11) NULL DEFAULT NULL,
+                              `pacage_id` int(11) NULL DEFAULT NULL,
+                              `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+                              `status` int(1) NULL DEFAULT 0,
+                              `open_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                              PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for picture
+-- ----------------------------
+DROP TABLE IF EXISTS `picture`;
+CREATE TABLE `picture`  (
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                            `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                            `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                            `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                            `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+                            `deleted` bit(1) NULL DEFAULT b'0',
+                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
 INSERT INTO `pmp`.`base_relationship`(`id`, `name`) VALUES (1, '父亲');
 INSERT INTO `pmp`.`base_relationship`(`id`, `name`) VALUES (2, '母亲');
 INSERT INTO `pmp`.`base_relationship`(`id`, `name`) VALUES (3, '儿子');
