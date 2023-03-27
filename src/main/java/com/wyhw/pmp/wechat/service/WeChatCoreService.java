@@ -34,4 +34,6 @@ public interface WeChatCoreService {
      * @return 消息发送结果（json格式）
      */
     String sendTemplateData(String accessToken, String toUser, String templateId, String url, String appId, String data);
+
+    String getUserOpenId(String code);
 }

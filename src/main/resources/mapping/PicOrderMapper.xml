@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyhw.pmp.mapper.PicOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wyhw.pmp.entity.PicOrder">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="phone" property="phone" />
+        <result column="address" property="address" />
+        <result column="date" property="date" />
+        <result column="type_id" property="typeId" />
+        <result column="pacage_id" property="pacageId" />
+        <result column="create_time" property="createTime" />
+        <result column="status" property="status" />
+        <result column="open_id" property="openId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, phone, address, date, type_id, pacage_id, create_time, status, open_id
+    </sql>
+
+</mapper>

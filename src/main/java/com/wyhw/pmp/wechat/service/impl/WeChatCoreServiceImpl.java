@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.thoughtworks.xstream.XStream;
 import com.wyhw.pmp.util.HttpUtil;
 import com.wyhw.pmp.wechat.AccessToken;
+import com.wyhw.pmp.wechat.ConstApi;
 import com.wyhw.pmp.wechat.WeChatConfig;
 import com.wyhw.pmp.wechat.bean.TemplateData;
 import com.wyhw.pmp.wechat.bean.TemplateDataDetail;
@@ -34,13 +35,11 @@ import java.util.*;
 @Service
 @Slf4j
 public class WeChatCoreServiceImpl implements WeChatCoreService {
-    @Autowired
-    private HttpUtil httpUtil;
 
     @Autowired
     private PushUtil pushUtil;
 
-    WeChatConfig weChatConfig = WeChatConfig.getInstance();
+    private final WeChatConfig weChatConfig = WeChatConfig.getInstance();
 
     @Override
     public String checkSignature(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -146,7 +145,7 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
         JSONObject postData = (JSONObject) JSONObject.toJSON(wechatTemplate);
         if (postData != null) {
 //            String result = pushUtil.push(postUrl, postData.toString());
-            String result = httpUtil.doPost(postUrl, postData);
+            String result = HttpUtil.doPost(postUrl, postData);
             JSONObject jsonResult = JSONObject.parseObject(result);
             Integer errcode = jsonResult.getInteger("errcode");
             String errmsg = jsonResult.getString("errmsg");
@@ -157,6 +156,12 @@ public class WeChatCoreServiceImpl implements WeChatCoreService {
             log.error("消息发送失败！！！ errcode:{ {} }, errmsg{ {} }", errcode, errmsg);
         }
         return null;
+    }
+
+    @Override
+    public String getUserOpenId(String code) {
+        String url = ConstApi.buildApi(ConstApi.Api.CODE_2_SESSION, WeChatConfig.APP_ID, WeChatConfig.SECRET, code);
+        return HttpUtil.doGet(url);
     }
 
     private Map<String, Object> parseData(String data) {

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,30 +15,26 @@ import java.util.Set;
  */
 public class WeChatConfig {
 
-    @Resource
-    private HttpUtil httpUtil;
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    public final static String ORIGINAL_ID = "gh_abc18eecbc7f";
+    public final static String APP_ID = "wxe65ccd09fb6351ae";
+    public final static String SECRET = "2e0ee893ac1c0b0870c8fb1bfbcce0e2";
 
     private WeChatConfig() {}
 
-    private static WeChatConfig instance;
+    private static final class InstanceHolder {
+        static final WeChatConfig instance = new WeChatConfig();
+    }
 
     public static WeChatConfig getInstance() {
-        if (instance == null) {
-            synchronized (WeChatConfig.class) {
-                if (instance == null) {
-                    instance = new WeChatConfig();
-                }
-            }
-        }
-        return instance;
+        return InstanceHolder.instance;
     }
 
     /**
      * 数据管理容器
      */
-    private static Map<String, Map<String, Long>> contextMap = new HashMap<>(16);
+    private static final Map<String, Map<String, Long>> contextMap = new HashMap<>(16);
 
     /**
      * AccessToken设置刷新时间，单位；秒（S）
@@ -84,7 +79,7 @@ public class WeChatConfig {
         String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APP_ID&secret=APP_SECRET";
         String url = ACCESS_TOKEN_URL.replace("APP_ID", appId).replace("APP_SECRET", appSecret);
 
-        String resultJsonData = httpUtil.doGet(url);
+        String resultJsonData = HttpUtil.doGet(url);
         JSONObject jsonObject = JSONObject.parseObject(resultJsonData);
         if (jsonObject != null) {
             access_token = jsonObject.getString("access_token");

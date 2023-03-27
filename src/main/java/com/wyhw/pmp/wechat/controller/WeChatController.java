@@ -22,7 +22,7 @@ public class WeChatController {
     @Autowired
     private WeChatCoreService coreService;
 
-    private WeChatConfig instance = WeChatConfig.getInstance();
+    private final WeChatConfig instance = WeChatConfig.getInstance();
 
     @ApiOperation("开发者认证接口")
     @RequestMapping("/wxMessage")
@@ -39,6 +39,11 @@ public class WeChatController {
     @GetMapping("/getAccessToken")
     public AccessToken getAccessToken(String appId, String appSecret) {
         return instance.getAccessToken(appId, appSecret);
+    }
+
+    @GetMapping("/user/openId/get")
+    public String get(String code) {
+        return coreService.getUserOpenId(code);
     }
 
 }
