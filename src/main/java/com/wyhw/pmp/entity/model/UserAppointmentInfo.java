@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Data
 @ApiModel("预约单")
 @Accessors(chain = true)
-public class PicOrderInfo {
+public class UserAppointmentInfo {
     private Integer id;
     private String name;
     private String date;

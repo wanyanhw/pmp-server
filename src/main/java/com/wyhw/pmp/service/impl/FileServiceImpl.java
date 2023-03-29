@@ -32,7 +32,7 @@ public class FileServiceImpl implements FileService {
 //        byte[] bytes = FileUtil.toByteArray(inputStream);
         boolean success = FileUtil.saveFile(filePath, filename, inputStream);
         if (success) {
-            return filePath + filename;
+            return filename;
         }
         return "";
     }

@@ -10,7 +10,21 @@ import java.util.List;
  * @since 2023/3/27 10:20
  */
 public interface PictureService {
+    /**
+     * 保存文件
+     * @param file 文件
+     */
     void save(MultipartFile file);
 
+    /**
+     * 遍历图片
+     * @return 图片集合
+     */
     List<PicModel> list();
+
+    /**
+     * 遍历优选图片
+     * @return 图片集合
+     */
+    List<PicModel> listTop();
 }

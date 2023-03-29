@@ -1,7 +1,7 @@
 package com.wyhw.pmp.controller;
 
-import com.wyhw.pmp.entity.model.PicOrderInfo;
-import com.wyhw.pmp.service.OrderService;
+import com.wyhw.pmp.entity.model.UserAppointmentInfo;
+import com.wyhw.pmp.service.UserAppointmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +18,19 @@ import javax.annotation.Resource;
 public class OrderController {
 
     @Resource
-    private OrderService orderService;
+    private UserAppointmentService appointmentService;
 
     @ApiOperation("提交预约单")
     @PostMapping("/submit")
-    public String save(@RequestBody PicOrderInfo order) {
-        orderService.save(order);
+    public String save(@RequestBody UserAppointmentInfo order) {
+        appointmentService.save(order);
         return "success";
     }
 
     @ApiOperation("获取用户预约单")
     @GetMapping("/getBinding")
-    public PicOrderInfo getBinding(String openId) {
-        return orderService.getBinding(openId);
+    public UserAppointmentInfo getBinding(String openId) {
+        return appointmentService.getBinding(openId);
     }
+
 }

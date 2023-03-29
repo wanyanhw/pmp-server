@@ -13,49 +13,79 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 
+ * 用户预约表
  * </p>
  *
  * @author wanyanhw
- * @since 2023-03-27
+ * @since 2023-03-28
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("pic_order")
+@TableName("user_appointment")
 @Accessors(chain = true)
-public class PicOrder implements Serializable {
+public class UserAppointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * id
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    /**
+     * 用户名
+     */
     @TableField("username")
     private String username;
 
+    /**
+     * 手机号
+     */
     @TableField("phone")
     private String phone;
 
+    /**
+     * 地址
+     */
     @TableField("address")
     private String address;
 
+    /**
+     * 时间
+     */
     @TableField("date")
     private LocalDateTime date;
 
+    /**
+     * 类型ID
+     */
     @TableField("type_id")
     private Integer typeId;
 
+    /**
+     * 套餐ID
+     */
     @TableField("pacage_id")
     private Integer pacageId;
 
-    @TableField("create_time")
-    private LocalDateTime createTime;
-
+    /**
+     * 状态
+     */
     @TableField("status")
     private Integer status;
 
+    /**
+     * 微信用户openId
+     */
     @TableField("open_id")
     private String openId;
+
+    /**
+     * 创建时间
+     */
+    @TableField("create_time")
+    private LocalDateTime createTime;
 
 
 }

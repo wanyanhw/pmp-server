@@ -77,6 +77,7 @@ public class GeneratorExecutorOriginal extends AbstractMainGenerator {
 				.setRestControllerStyle(true)
 				.setControllerMappingHyphenStyle(true)
 				.setEntityTableFieldAnnotationEnable(true)
+				.setLogicDeleteFieldName("deleted")
 				.setNaming(NamingStrategy.underline_to_camel);
 
 		TemplateConfig templateConfig = new TemplateConfig();

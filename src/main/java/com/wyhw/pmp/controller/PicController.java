@@ -2,6 +2,7 @@ package com.wyhw.pmp.controller;
 
 import com.wyhw.pmp.entity.model.PicModel;
 import com.wyhw.pmp.service.PictureService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,4 +34,9 @@ public class PicController {
         return "success";
     }
 
+    @ApiOperation("获取优选图集")
+    @GetMapping("/getTopList")
+    public List<PicModel> getTopList() {
+        return pictureService.listTop();
+    }
 }
